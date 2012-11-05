@@ -1,0 +1,5 @@
+*.swp
+*.hi
+*.o
+hsfiles/
+yesod-scaffold/
