@@ -1,16 +1,7 @@
 name:              PROJECTNAME
 version:           0.0.0
-license:           BSD3
-license-file:      LICENSE
-author:            DEVELOPERNAME
-maintainer:        DEVELOPERNAME
-synopsis:          The greatest Yesod web application ever.
-description:       I'm sure you can say something clever here if you try.
-category:          Web
-stability:         Experimental
 cabal-version:     >= 1.8
 build-type:        Simple
-homepage:          http://PROJECTNAME.yesodweb.com/
 
 Flag dev
     Description:   Turn on development settings, like auto-reload templates.
@@ -62,7 +53,7 @@ library
                  , bytestring                    >= 0.9        && < 0.11
                  , text                          >= 0.11       && < 0.12
                  , persistent                    >= 1.0        && < 1.1
-                 , persistent-mongoDB     >= 1.0        && < 1.1
+                 , persistent-mongoDB            >= 1.0        && < 1.1
                  , template-haskell
                  , hamlet                        >= 1.1        && < 1.2
                  , shakespeare-css               >= 1.0        && < 1.1
@@ -100,5 +91,5 @@ test-suite test
                  , yesod-test
                  , yesod-default
                  , yesod-core
-                 , persistent                    >= 1.0        && < 1.1
-                 , persistent-mongoDB     >= 1.0        && < 1.1
+                 , persistent
+                 , persistent-mongoDB
