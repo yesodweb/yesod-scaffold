@@ -62,7 +62,7 @@ library
                  , bytestring                    >= 0.9        && < 0.11
                  , text                          >= 0.11       && < 0.12
                  , persistent                    >= 1.0        && < 1.1
-                 , persistent-postgresql     >= 1.0        && < 1.1
+                 , persistent-mysql     >= 1.0        && < 1.1
                  , template-haskell
                  , hamlet                        >= 1.1        && < 1.2
                  , shakespeare-css               >= 1.0        && < 1.1
@@ -101,4 +101,4 @@ test-suite test
                  , yesod-default
                  , yesod-core
                  , persistent                    >= 1.0        && < 1.1
-                 , persistent-postgresql     >= 1.0        && < 1.1
+                 , persistent-mysql     >= 1.0        && < 1.1
