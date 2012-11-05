@@ -7,6 +7,8 @@ import Shelly (shellyNoDir, rm_rf, run_, run, fromText, cd)
 import Control.Monad (forM_, unless)
 import Data.Conduit.Filesystem (sinkFile)
 import MultiFile (createMultiFile)
+import Filesystem (createTree)
+import Filesystem.Path (directory)
 
 branches :: [LText]
 branches = ["postgres", "sqlite", "mysql", "mongo", "simple"]
@@ -27,8 +29,10 @@ main = shellyNoDir $ do
         run_ "yesod" ["test"]
         run_ "git" ["clean", "-fxd"]
         files <- run "git" ["ls-tree", "-r", branch, "--name-only"]
+        let fp = "hsfiles" </> fromText branch <.> "hsfiles"
+        liftIO $ createTree $ directory fp
         liftIO
             $ runResourceT
             $ mapM_ (yield . fromText) (lines files)
            $$ createMultiFile "yesod-scaffold"
-           =$ sinkFile ("hsfiles" </> fromText branch <.> "hsfiles")
+           =$ sinkFile fp
