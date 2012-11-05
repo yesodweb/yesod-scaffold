@@ -16,4 +16,4 @@ main = do
     conf <- loadConfig $ (configSettings Testing) { csParseExtra = parseExtra }
     foundation <- makeFoundation conf
     app <- toWaiAppPlain foundation
-    runTests app (connPool foundation) homeSpecs
+    runTests app (error "No database available") homeSpecs
