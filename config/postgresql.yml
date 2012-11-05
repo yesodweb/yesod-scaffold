@@ -1,0 +1,24 @@
+Default: &defaults
+  user: PROJECTNAME
+  password: PROJECTNAME
+  host: localhost
+  port: 5432
+  database: PROJECTNAME
+  poolsize: 10
+
+Development:
+  <<: *defaults
+
+Testing:
+  database: PROJECTNAME_test
+  <<: *defaults
+
+Staging:
+  database: PROJECTNAME_staging
+  poolsize: 100
+  <<: *defaults
+
+Production:
+  database: PROJECTNAME_production
+  poolsize: 100
+  <<: *defaults
