@@ -13,7 +13,7 @@ import qualified Settings
 import Settings.Development (development)
 import qualified Database.Persist.Store
 import Settings.StaticFiles
-import Database.Persist.GenericSql
+import Database.Persist.MongoDB hiding (master)
 import Settings (widgetFile, Extra (..))
 import Model
 import Text.Jasmine (minifym)
@@ -110,7 +110,7 @@ instance Yesod App where
 
 -- How to run database actions.
 instance YesodPersist App where
-    type YesodPersistBackend App = SqlPersist
+    type YesodPersistBackend App = Action
     runDB f = do
         master <- getYesod
         Database.Persist.Store.runPool

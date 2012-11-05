@@ -6,9 +6,9 @@ module TestImport
     ) where
 
 import Yesod.Test
-import Database.Persist.GenericSql
+import Database.Persist.MongoDB hiding (master)
 
 type Specs = SpecsConn Connection
 
-runDB :: SqlPersist IO a -> OneSpec Connection a
-runDB = runDBRunner runSqlPool
+runDB :: Action IO a -> OneSpec Connection a
+runDB = runDBRunner runMongoDBPoolDef
