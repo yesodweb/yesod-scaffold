@@ -19,6 +19,7 @@ getHomeR = do
         aDomId <- lift newIdent
         setTitle "Welcome To Yesod!"
         $(widgetFile "homepage")
+        $(fayFile "Home")
 
 postHomeR :: Handler RepHtml
 postHomeR = do

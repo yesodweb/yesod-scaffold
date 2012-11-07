@@ -17,6 +17,7 @@ import Control.Applicative
 import Settings.Development
 import Data.Default (def)
 import Text.Hamlet
+import Yesod.Fay
 
 -- | Which Persistent backend this site is using.
 type PersistConfig = PostgresConf
@@ -60,6 +61,11 @@ widgetFile :: String -> Q Exp
 widgetFile = (if development then widgetFileReload
                              else widgetFileNoReload)
               widgetFileSettings
+
+fayFile :: FayFile
+fayFile
+    | development = fayFileReload
+    | otherwise   = fayFileProd
 
 data Extra = Extra
     { extraCopyright :: Text

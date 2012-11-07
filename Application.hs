@@ -15,9 +15,11 @@ import Network.Wai.Middleware.RequestLogger (logStdout, logStdoutDev)
 import qualified Database.Persist.Store
 import Database.Persist.GenericSql (runMigration)
 import Network.HTTP.Conduit (newManager, def)
+import Yesod.Fay (getFaySite)
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
+import Handler.Fay
 import Handler.Home
 
 -- This line actually creates our YesodDispatch instance. It is the second half
@@ -47,7 +49,7 @@ makeFoundation conf = do
               Database.Persist.Store.applyEnv
     p <- Database.Persist.Store.createPoolConfig (dbconf :: Settings.PersistConfig)
     Database.Persist.Store.runPool dbconf (runMigration migrateAll) p
-    return $ App conf s p manager dbconf
+    return $ App conf s p manager dbconf onCommand
 
 -- for yesod devel
 getApplicationDev :: IO (Int, Application)

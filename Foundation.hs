@@ -19,6 +19,8 @@ import Model
 import Text.Jasmine (minifym)
 import Web.ClientSession (getKey)
 import Text.Hamlet (hamletFile)
+import SharedTypes (Command)
+import Yesod.Fay
 
 -- | The site argument for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -30,6 +32,7 @@ data App = App
     , connPool :: Database.Persist.Store.PersistConfigPool Settings.PersistConfig -- ^ Database connection pool.
     , httpManager :: Manager
     , persistConfig :: Settings.PersistConfig
+    , fayCommandHandler :: CommandHandler App App
     }
 
 -- Set up i18n messages. See the message folder.
@@ -107,6 +110,16 @@ instance Yesod App where
     -- in development, and warnings and errors in production.
     shouldLog _ _source level =
         development || level == LevelWarn || level == LevelError
+
+instance YesodJquery App
+instance YesodFay App where
+    type YesodFayCommand App = Command
+
+    fayRoute = FaySiteR
+
+    yesodFayCommand render command = do
+        master <- getYesod
+        fayCommandHandler master render command
 
 -- How to run database actions.
 instance YesodPersist App where

@@ -12,6 +12,7 @@ Flag library-only
     Default:       False
 
 library
+    hs-source-dirs: ., fay-shared
     exposed-modules: Application
                      Foundation
                      Import
@@ -19,6 +20,8 @@ library
                      Settings
                      Settings.StaticFiles
                      Settings.Development
+                     SharedTypes
+                     Handler.Fay
                      Handler.Home
 
     if flag(dev) || flag(library-only)
@@ -39,6 +42,7 @@ library
                 FlexibleContexts
                 EmptyDataDecls
                 NoMonomorphismRestriction
+                RankNTypes
 
     build-depends: base                          >= 4          && < 5
                  -- , yesod-platform                >= 1.1        && < 1.2
@@ -49,6 +53,8 @@ library
                  , yesod-default                 >= 1.1        && < 1.2
                  , yesod-form                    >= 1.1        && < 1.2
                  , yesod-test                    >= 0.3        && < 0.4
+                 , yesod-fay                     >= 0.1
+                 , fay                           >= 0.9
                  , clientsession                 >= 0.8        && < 0.9
                  , bytestring                    >= 0.9        && < 0.11
                  , text                          >= 0.11       && < 0.12
