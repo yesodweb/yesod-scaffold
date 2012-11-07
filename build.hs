@@ -8,12 +8,7 @@ import Data.Conduit.Filesystem (sinkFile)
 import Text.ProjectTemplate (createTemplate)
 import Filesystem (createTree)
 import Filesystem.Path (directory)
-
-branches :: [LText]
-branches = ["postgres", "sqlite", "mysql", "mongo", "simple"]
-
-master :: LText
-master = "postgres"
+import Shared
 
 main :: IO ()
 main = shellyNoDir $ do
