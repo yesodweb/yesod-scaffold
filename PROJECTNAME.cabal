@@ -48,7 +48,6 @@ library
                  , yesod-static                  >= 1.1        && < 1.2
                  , yesod-default                 >= 1.1        && < 1.2
                  , yesod-form                    >= 1.1        && < 1.2
-                 , yesod-test                    >= 0.3        && < 0.4
                  , clientsession                 >= 0.8        && < 0.9
                  , bytestring                    >= 0.9        && < 0.11
                  , text                          >= 0.11       && < 0.12
@@ -88,7 +87,7 @@ test-suite test
 
     build-depends: base
                  , PROJECTNAME
-                 , yesod-test
+                 , yesod-test >= 0.3 && < 0.4
                  , yesod-default
                  , yesod-core
                  , persistent
