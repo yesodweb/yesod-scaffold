@@ -4,9 +4,8 @@ module Main (main) where
 
 import ClassyPrelude.Conduit
 import Shelly (shellyNoDir, rm_rf, run_, run, fromText, cd)
-import Control.Monad (forM_, unless)
 import Data.Conduit.Filesystem (sinkFile)
-import MultiFile (createMultiFile)
+import Text.ProjectTemplate (createTemplate)
 import Filesystem (createTree)
 import Filesystem.Path (directory)
 
@@ -33,6 +32,8 @@ main = shellyNoDir $ do
         liftIO $ createTree $ directory fp
         liftIO
             $ runResourceT
-            $ mapM_ (yield . fromText) (lines files)
-           $$ createMultiFile "yesod-scaffold"
-           =$ sinkFile fp
+            $ mapM_ (yield . toPair "yesod-scaffold" . fromText) (lines files)
+           $$ createTemplate
+           =$ writeFile fp
+  where
+    toPair root fp = (fp, readFile $ root </> fp)
