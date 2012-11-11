@@ -3,11 +3,7 @@
 module Main (main) where
 
 import ClassyPrelude.Conduit
-import Shelly (shellyNoDir, rm_rf, run_, run, fromText, cd)
-import Data.Conduit.Filesystem (sinkFile)
-import Text.ProjectTemplate (createTemplate)
-import Filesystem (createTree)
-import Filesystem.Path (directory)
+import Shelly (shellyNoDir, run_)
 import Shared
 
 main :: IO ()

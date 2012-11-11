@@ -3,3 +3,4 @@
 *.o
 hsfiles/
 yesod-scaffold/
+dist/

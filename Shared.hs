@@ -25,8 +25,8 @@ createHsFiles root branch fp = do
     liftIO $ createTree $ directory fp
     liftIO
         $ runResourceT
-        $ mapM_ (yield . toPair root . fromText) (lines files)
+        $ mapM_ (yield . toPair . fromText) (lines files)
        $$ createTemplate
        =$ writeFile fp
   where
-    toPair root fp' = (fp', readFile $ root </> fp')
+    toPair fp' = (fp', readFile $ root </> fp')
