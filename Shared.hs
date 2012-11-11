@@ -16,15 +16,16 @@ master = "postgres"
 
 -- | Works in the current Shelly directory. Confusingly, the @FilePath@
 -- destination is relative to the original working directory.
-createHsFiles :: LText -- ^ branch
+createHsFiles :: FilePath -- ^ root
+              -> LText -- ^ branch
               -> FilePath -- ^ destination
               -> Sh ()
-createHsFiles branch fp = do
+createHsFiles root branch fp = do
     files <- run "git" ["ls-tree", "-r", branch, "--name-only"]
     liftIO $ createTree $ directory fp
     liftIO
         $ runResourceT
-        $ mapM_ (yield . toPair "yesod-scaffold" . fromText) (lines files)
+        $ mapM_ (yield . toPair root . fromText) (lines files)
        $$ createTemplate
        =$ writeFile fp
   where

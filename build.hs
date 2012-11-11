@@ -18,4 +18,4 @@ main = shellyNoDir $ do
         run_ "cabal" ["install", "--only-dependencies"]
         run_ "yesod" ["test"]
         run_ "git" ["clean", "-fxd"]
-        createHsFiles branch $ "hsfiles" </> fromText branch <.> "hsfiles"
+        createHsFiles "yesod-scaffold" branch $ "hsfiles" </> fromText branch <.> "hsfiles"

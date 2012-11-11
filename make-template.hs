@@ -16,4 +16,4 @@ main = do
             _ -> error "Usage: make-template <repo location> <destination file>"
     shellyNoDir $ do
         cd root
-        createHsFiles "HEAD" dest
+        createHsFiles root "HEAD" dest
