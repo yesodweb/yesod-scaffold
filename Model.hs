@@ -11,5 +11,8 @@ import Language.Haskell.TH.Syntax
 -- You can find more information on persistent and how to declare entities
 -- at:
 -- http://www.yesodweb.com/book/persistent/
-share [mkPersist MkPersistSettings { mpsBackend = ConT ''MongoBackend }, mkMigrate "migrateAll"]
+let mongoSettings = (mkPersistSettings (ConT ''MongoBackend))
+                        { mpsGeneric = False
+                        }
+ in share [mkPersist mongoSettings]
     $(persistFileWith lowerCaseSettings "config/models")
