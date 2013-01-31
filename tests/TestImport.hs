@@ -1,6 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 module TestImport
     ( module Yesod.Test
+<<<<<<< HEAD
+=======
+    , module Model
+    , module Database.Persist
+    , runDB
+>>>>>>> postgres
     , Specs
     ) where
 
