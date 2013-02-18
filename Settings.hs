@@ -62,10 +62,16 @@ widgetFile = (if development then widgetFileReload
                              else widgetFileNoReload)
               widgetFileSettings
 
-fayFile :: FayFile
-fayFile
-    | development = fayFileReload
-    | otherwise   = fayFileProd
+fayFile' :: Exp -> FayFile
+fayFile' staticR moduleName
+    | development = fayFileReload settings
+    | otherwise   = fayFileProd settings
+  where
+    settings = (yesodFaySettings moduleName)
+        { yfsSeparateRuntime = Just ("static", staticR)
+        -- , yfsPostProcess = readProcess "java" ["-jar", "closure-compiler.jar"]
+        , yfsExternal = Just ("static", staticR)
+        }
 
 data Extra = Extra
     { extraCopyright :: Text
