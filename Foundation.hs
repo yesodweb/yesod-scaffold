@@ -18,7 +18,6 @@ import Settings (widgetFile, Extra (..))
 import Model
 import Web.ClientSession (getKey)
 import Text.Hamlet (hamletFile)
-import SharedTypes (Command)
 import Yesod.Fay
 
 -- | The site argument for your application. This can be a good place to
@@ -112,7 +111,6 @@ instance Yesod App where
 
 instance YesodJquery App
 instance YesodFay App where
-    type YesodFayCommand App = Command
 
     fayRoute = FaySiteR
 

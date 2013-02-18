@@ -2,13 +2,12 @@
 {-# LANGUAGE EmptyDataDecls    #-}
 module Home where
 
-import Language.Fay.Prelude
+import Prelude
 import Language.Fay.FFI
 import Language.Fay.Yesod
 import SharedTypes
 
 data Element
-instance Foreign Element
 
 getElementById :: String -> Fay Element
 getElementById = ffi "document.getElementById(%1)"
