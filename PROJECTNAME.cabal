@@ -46,8 +46,8 @@ library
 
     build-depends: base                          >= 4          && < 5
                  -- , yesod-platform                >= 1.1        && < 1.2
-                 , yesod                         >= 1.1.4      && < 1.2
-                 , yesod-core                    >= 1.1.5      && < 1.2
+                 , yesod                         >= 1.1.5      && < 1.2
+                 , yesod-core                    >= 1.1.7      && < 1.2
                  , yesod-auth                    >= 1.1        && < 1.2
                  , yesod-static                  >= 1.1        && < 1.2
                  , yesod-default                 >= 1.1        && < 1.2
@@ -59,6 +59,7 @@ library
                  , text                          >= 0.11       && < 0.12
                  , persistent                    >= 1.1        && < 1.2
                  , persistent-postgresql         >= 1.1        && < 1.2
+                 , persistent-template           >= 1.1.1      && < 1.2
                  , template-haskell
                  , hamlet                        >= 1.1        && < 1.2
                  , shakespeare-css               >= 1.0        && < 1.1
@@ -98,3 +99,4 @@ test-suite test
                  , yesod-core
                  , persistent
                  , persistent-postgresql
+                 , resourcet
