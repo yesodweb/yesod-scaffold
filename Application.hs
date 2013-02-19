@@ -9,8 +9,11 @@ import Import
 import Yesod.Default.Config
 import Yesod.Default.Main
 import Yesod.Default.Handlers
-import Network.Wai.Middleware.RequestLogger (logStdout, logStdoutDev)
+import Network.Wai.Middleware.RequestLogger
 import Network.HTTP.Conduit (newManager, def)
+import Control.Monad.Logger (runLoggingT)
+import System.IO (stdout)
+import System.Log.FastLogger (mkLogger)
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
@@ -28,17 +31,30 @@ mkYesodDispatch "App" resourcesApp
 makeApplication :: AppConfig DefaultEnv Extra -> IO Application
 makeApplication conf = do
     foundation <- makeFoundation conf
+
+    -- Initialize the logging middleware
+    logWare <- mkRequestLogger def
+        { outputFormat =
+            if development
+                then Detailed True
+                else Apache FromSocket
+        , destination = Logger $ appLogger foundation
+        }
+
+    -- Create the WAI application and apply middlewares
     app <- toWaiAppPlain foundation
     return $ logWare app
-  where
-    logWare   = if development then logStdoutDev
-                               else logStdout
 
+-- | Loads up any necessary settings, creates your foundation datatype, and
+-- performs some initialization.
 makeFoundation :: AppConfig DefaultEnv Extra -> IO App
 makeFoundation conf = do
     manager <- newManager def
     s <- staticSite
-    return $ App conf s manager
+    logger <- mkLogger True stdout
+    let foundation = App conf s manager logger
+
+    return foundation
 
 -- for yesod devel
 getApplicationDev :: IO (Int, Application)
