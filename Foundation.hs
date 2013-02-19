@@ -19,6 +19,7 @@ import Model
 import Web.ClientSession (getKey)
 import Text.Hamlet (hamletFile)
 import Yesod.Fay
+import System.Log.FastLogger (Logger)
 
 -- | The site argument for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -31,6 +32,7 @@ data App = App
     , httpManager :: Manager
     , persistConfig :: Settings.PersistConfig
     , fayCommandHandler :: CommandHandler App App
+    , appLogger :: Logger
     }
 
 -- Set up i18n messages. See the message folder.
