@@ -7,6 +7,7 @@ import Shelly (Sh, run, fromText)
 import Text.ProjectTemplate (createTemplate)
 import Filesystem (createTree)
 import Filesystem.Path (directory)
+import Data.Conduit.Filesystem (sinkFile)
 
 branches :: [LText]
 branches = ["postgres", "sqlite", "mysql", "mongo", "simple"]
@@ -27,6 +28,6 @@ createHsFiles root branch fp = do
         $ runResourceT
         $ mapM_ (yield . toPair . fromText) (lines files)
        $$ createTemplate
-       =$ writeFile fp
+       =$ sinkFile fp
   where
     toPair fp' = (fp', readFile $ root </> fp')
