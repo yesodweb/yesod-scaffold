@@ -10,7 +10,7 @@ import Filesystem.Path (directory)
 import Data.Conduit.Filesystem (sinkFile)
 
 branches :: [LText]
-branches = ["postgres", "sqlite", "mysql", "mongo", "simple"]
+branches = ["postgres", "sqlite", "mysql", "mongo", "simple", "postgres-fay"]
 
 master :: LText
 master = "postgres"
