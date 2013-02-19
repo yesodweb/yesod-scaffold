@@ -118,6 +118,8 @@ instance Yesod App where
     shouldLog _ _source level =
         development || level == LevelWarn || level == LevelError
 
+    getLogger = return . appLogger
+
 -- How to run database actions.
 instance YesodPersist App where
     type YesodPersistBackend App = SqlPersist
