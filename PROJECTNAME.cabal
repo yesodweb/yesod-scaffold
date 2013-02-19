@@ -98,3 +98,4 @@ test-suite test
                  , persistent
                  , persistent-postgresql
                  , resourcet
+                 , monad-logger
