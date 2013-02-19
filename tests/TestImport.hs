@@ -11,12 +11,15 @@ import Yesod.Test
 import Database.Persist hiding (get)
 import Database.Persist.MongoDB hiding (master)
 import Control.Monad.Trans.Resource (ResourceT, runResourceT)
+import Control.Monad.Logger (NoLoggingT, runNoLoggingT)
 
 import Model
 
 type Specs = SpecsConn Connection
 
-runDB :: Action (ResourceT IO) a -> OneSpec Connection a
+runDB :: Action (NoLoggingT (ResourceT IO)) a -> OneSpec Connection a
 runDB = runDBRunner poolRunner
   where
-    poolRunner query pool = runResourceT $ runMongoDBPoolDef query pool
+    poolRunner query pool = runResourceT
+                          $ runNoLoggingT
+                          $ runMongoDBPoolDef query pool
