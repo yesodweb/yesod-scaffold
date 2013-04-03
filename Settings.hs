@@ -19,7 +19,7 @@ import Data.Default (def)
 import Text.Hamlet
 
 -- | Which Persistent backend this site is using.
-type PersistConfig = PostgresConf
+type PersistConf = PostgresConf
 
 -- Static setting below. Changing these requires a recompile
 
