@@ -19,7 +19,7 @@ import Data.Default (def)
 import Text.Hamlet
 
 -- | Which Persistent backend this site is using.
-type PersistConfig = MySQLConf
+type PersistConf = MySQLConf
 
 -- Static setting below. Changing these requires a recompile
 
