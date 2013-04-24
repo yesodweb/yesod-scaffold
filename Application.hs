@@ -12,8 +12,8 @@ import Yesod.Default.Config
 import Yesod.Default.Main
 import Yesod.Default.Handlers
 import Network.Wai.Middleware.RequestLogger
-import qualified Database.Persist.Store
-import Database.Persist.GenericSql (runMigration)
+import qualified Database.Persist
+import Database.Persist.Sql (runMigration)
 import Network.HTTP.Conduit (newManager, def)
 import Yesod.Fay (getFaySite)
 import Control.Monad.Logger (runLoggingT)
@@ -58,15 +58,15 @@ makeFoundation conf = do
     manager <- newManager def
     s <- staticSite
     dbconf <- withYamlEnvironment "config/postgresql.yml" (appEnv conf)
-              Database.Persist.Store.loadConfig >>=
-              Database.Persist.Store.applyEnv
-    p <- Database.Persist.Store.createPoolConfig (dbconf :: Settings.PersistConfig)
+              Database.Persist.loadConfig >>=
+              Database.Persist.applyEnv
+    p <- Database.Persist.createPoolConfig (dbconf :: Settings.PersistConf)
     logger <- mkLogger True stdout
     let foundation = App conf s p manager dbconf onCommand logger
 
     -- Perform database migration using our application's logging settings.
     runLoggingT
-        (Database.Persist.Store.runPool dbconf (runMigration migrateAll) p)
+        (Database.Persist.runPool dbconf (runMigration migrateAll) p)
         (messageLoggerSource foundation logger)
 
     return foundation
@@ -76,6 +76,6 @@ getApplicationDev :: IO (Int, Application)
 getApplicationDev =
     defaultDevelApp loader makeApplication
   where
-    loader = loadConfig (configSettings Development)
+    loader = Yesod.Default.Config.loadConfig (configSettings Development)
         { csParseExtra = parseExtra
         }
