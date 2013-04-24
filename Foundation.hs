@@ -11,7 +11,6 @@ import Settings.Development (development)
 import Settings.StaticFiles
 import Settings (widgetFile, Extra (..))
 import Text.Jasmine (minifym)
-import Web.ClientSession (getKey)
 import Text.Hamlet (hamletFile)
 import System.Log.FastLogger (Logger)
 
@@ -50,7 +49,7 @@ mkMessage "App" "messages" "en"
 -- split these actions into two functions and place them in separate files.
 mkYesodData "App" $(parseRoutesFile "config/routes")
 
-type Form x = Html -> MForm App App (FormResult x, Widget)
+type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
 
 -- Please see the documentation for the Yesod typeclass. There are a number
 -- of settings which can be configured by overriding methods here.
@@ -59,11 +58,9 @@ instance Yesod App where
 
     -- Store session data on the client in encrypted cookies,
     -- default session idle timeout is 120 minutes
-    makeSessionBackend _ = do
-        key <- getKey "config/client_session_key.aes"
-        let timeout = 120 * 60 -- 120 minutes
-        (getCachedDate, _closeDateCache) <- clientSessionDateCacher timeout
-        return . Just $ clientSessionBackend2 key getCachedDate
+    makeSessionBackend _ = fmap Just $ defaultClientSessionBackend
+        (120 * 60) -- 120 minutes
+        "config/client_session_key.aes"
 
     defaultLayout widget = do
         master <- getYesod
@@ -76,8 +73,10 @@ instance Yesod App where
         -- you to use normal widget features in default-layout.
 
         pc <- widgetToPageContent $ do
-            $(widgetFile "normalize")
-            addStylesheet $ StaticR css_bootstrap_css
+            $(combineStylesheets 'StaticR
+                [ css_normalize_css
+                , css_bootstrap_css
+                ])
             $(widgetFile "default-layout")
         hamletToRepHtml $(hamletFile "templates/default-layout-wrapper.hamlet")
 
@@ -107,7 +106,7 @@ instance Yesod App where
     shouldLog _ _source level =
         development || level == LevelWarn || level == LevelError
 
-    getLogger = return . appLogger
+    makeLogger = return . appLogger
 
 -- This instance is required to use forms. You can modify renderMessage to
 -- achieve customized and internationalized form validation messages.

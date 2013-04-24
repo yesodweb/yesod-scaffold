@@ -61,6 +61,6 @@ getApplicationDev :: IO (Int, Application)
 getApplicationDev =
     defaultDevelApp loader makeApplication
   where
-    loader = loadConfig (configSettings Development)
+    loader = Yesod.Default.Config.loadConfig (configSettings Development)
         { csParseExtra = parseExtra
         }
