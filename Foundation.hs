@@ -122,7 +122,7 @@ instance Yesod App where
 
 -- How to run database actions.
 instance YesodPersist App where
-    type YesodPersistBackend App = MongoBackend
+    type YesodPersistBackend App = Action
     runDB = defaultRunDB persistConfig connPool
 
 instance YesodAuth App where
