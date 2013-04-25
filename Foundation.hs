@@ -30,7 +30,7 @@ data App = App
     , connPool :: Database.Persist.PersistConfigPool Settings.PersistConf -- ^ Database connection pool.
     , httpManager :: Manager
     , persistConfig :: Settings.PersistConf
-    , fayCommandHandler :: CommandHandler App App
+    , fayCommandHandler :: CommandHandler App
     , appLogger :: Logger
     }
 
