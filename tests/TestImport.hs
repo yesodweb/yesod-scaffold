@@ -5,7 +5,8 @@ module TestImport
     , module Foundation
     , module Database.Persist
     , runDB
-    , Specs
+    , Spec
+    , Example
     ) where
 
 import Yesod.Test
@@ -18,7 +19,8 @@ import Control.Monad.IO.Class (liftIO)
 import Foundation
 import Model
 
-type Specs = YesodSpec App
+type Spec = YesodSpec App
+type Example = YesodExample App
 
 runDB :: Action (NoLoggingT (ResourceT IO)) a -> YesodExample App a
 runDB query = do
