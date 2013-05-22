@@ -6,7 +6,7 @@ module HomeTest
 import TestImport
 import qualified Data.List as L
 
-homeSpecs :: Specs
+homeSpecs :: Spec
 homeSpecs =
     ydescribe "These are some example tests" $ do
 

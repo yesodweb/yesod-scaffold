@@ -5,12 +5,13 @@ module TestImport
     , module Foundation
     , module Database.Persist
     , runDB
-    , Specs
+    , Spec
+    , Example
     ) where
 
 import Yesod.Test
 import Database.Persist hiding (get)
-import Database.Persist.Sql (runSqlPool, SqlPersist, Connection)
+import Database.Persist.Sql (SqlPersistM, runSqlPersistMPool)
 import Control.Monad.Trans.Resource (ResourceT, runResourceT)
 import Control.Monad.Logger (NoLoggingT, runNoLoggingT)
 import Control.Monad.IO.Class (liftIO)
@@ -18,9 +19,10 @@ import Control.Monad.IO.Class (liftIO)
 import Foundation
 import Model
 
-type Specs = YesodSpec App
+type Spec = YesodSpec App
+type Example = YesodExample App
 
-runDB :: SqlPersist (NoLoggingT (ResourceT IO)) a -> YesodExample App a
+runDB :: SqlPersistM a -> Example a
 runDB query = do
     pool <- fmap connPool getTestYesod
-    liftIO $ runResourceT $ runNoLoggingT $ runSqlPool query pool
+    liftIO $ runSqlPersistMPool query pool
