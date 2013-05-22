@@ -5,7 +5,7 @@ module HomeTest
 
 import TestImport
 
-homeSpecs :: Specs
+homeSpecs :: Spec
 homeSpecs =
     ydescribe "These are some example tests" $ do
 

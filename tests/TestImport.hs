@@ -2,10 +2,12 @@
 module TestImport
     ( module Yesod.Test
     , module Foundation
-    , Specs
+    , Spec
+    , Example
     ) where
 
 import Yesod.Test
 import Foundation
 
-type Specs = YesodSpec App
+type Spec = YesodSpec App
+type Example = YesodExample App
