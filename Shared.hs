@@ -9,16 +9,16 @@ import Filesystem (createTree)
 import Filesystem.Path (directory)
 import Data.Conduit.Filesystem (sinkFile)
 
-branches :: [LText]
+branches :: [Text]
 branches = ["postgres", "sqlite", "mysql", "mongo", "simple", "postgres-fay"]
 
-master :: LText
+master :: Text
 master = "postgres"
 
 -- | Works in the current Shelly directory. Confusingly, the @FilePath@
 -- destination is relative to the original working directory.
 createHsFiles :: FilePath -- ^ root
-              -> LText -- ^ branch
+              -> Text -- ^ branch
               -> FilePath -- ^ destination
               -> Sh ()
 createHsFiles root branch fp = do
