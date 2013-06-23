@@ -8,7 +8,7 @@ import Language.Fay.Yesod
 #ifdef FAY
 import FFI
 #else
-import Language.Fay.FFI
+--import Language.Fay.FFI
 #endif
 
 data Command = GetFib Int (Returns Int)
