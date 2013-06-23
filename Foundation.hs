@@ -12,7 +12,6 @@ import Network.HTTP.Conduit (Manager)
 import qualified Settings
 import Settings.Development (development)
 import qualified Database.Persist
-import Database.Persist.Sql (SqlPersistT)
 import Settings.StaticFiles
 import Database.Persist.MongoDB hiding (master)
 import Settings (widgetFile, Extra (..))
@@ -87,7 +86,7 @@ instance Yesod App where
                 , css_bootstrap_css
                 ])
             $(widgetFile "default-layout")
-        hamletToRepHtml $(hamletFile "templates/default-layout-wrapper.hamlet")
+        giveUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
     -- This is done to provide an optimization for serving static files from
     -- a separate domain. Please see the staticRoot setting in Settings.hs
