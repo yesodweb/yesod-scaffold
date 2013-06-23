@@ -11,7 +11,7 @@ import Language.Haskell.TH ( Exp(..) )
 -- The majority of the code you will write in Yesod lives in these handler
 -- functions. You can spread them across multiple files if you are so
 -- inclined, or create a single monolithic file.
-getHomeR :: Handler RepHtml
+getHomeR :: Handler Html
 getHomeR = do
     (formWidget, formEnctype) <- generateFormPost sampleForm
     let submission = Nothing :: Maybe (FileInfo, Text)
@@ -22,7 +22,7 @@ getHomeR = do
         $(widgetFile "homepage")
         $(fayFile' (ConE 'StaticR) "Home")
 
-postHomeR :: Handler RepHtml
+postHomeR :: Handler Html
 postHomeR = do
     ((result, formWidget), formEnctype) <- runFormPost sampleForm
     let handlerName = "postHomeR" :: Text
