@@ -12,8 +12,6 @@ module TestImport
 import Yesod.Test
 import Database.Persist hiding (get)
 import Database.Persist.Sql (SqlPersistM, runSqlPersistMPool)
-import Control.Monad.Trans.Resource (ResourceT, runResourceT)
-import Control.Monad.Logger (NoLoggingT, runNoLoggingT)
 import Control.Monad.IO.Class (liftIO)
 
 import Foundation
