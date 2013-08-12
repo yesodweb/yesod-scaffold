@@ -5,4 +5,5 @@ config/client_session_key.aes
 *.o
 *.sqlite3
 .hsenv*
+cabal-dev/
 yesod-devel/
