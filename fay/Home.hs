@@ -3,7 +3,7 @@
 module Home where
 
 import Prelude
-import Language.Fay.FFI
+import Fay.FFI
 import Language.Fay.Yesod
 import SharedTypes
 
