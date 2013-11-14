@@ -7,7 +7,6 @@ import Shelly (Sh, run, fromText)
 import Text.ProjectTemplate (createTemplate)
 import Filesystem (createTree)
 import Filesystem.Path (directory)
-import Data.Conduit.Filesystem (sinkFile)
 
 branches :: [Text]
 branches = ["postgres", "sqlite", "mysql", "mongo", "simple", "postgres-fay"]
