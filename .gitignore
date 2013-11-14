@@ -8,3 +8,5 @@ fay/Language/Fay/Yesod.hs
 .hsenv*
 cabal-dev/
 yesod-devel/
+.cabal-sandbox
+cabal.sandbox.config
