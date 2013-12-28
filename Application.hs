@@ -14,7 +14,6 @@ import Network.Wai.Middleware.RequestLogger
     )
 import qualified Network.Wai.Middleware.RequestLogger as RequestLogger
 import Network.HTTP.Conduit (newManager, conduitManagerSettings)
-import qualified GHC.IO.FD
 import System.Log.FastLogger (newLoggerSet, defaultBufSize)
 import Network.Wai.Logger (clockDateCacher)
 import Data.Default (def)
@@ -57,7 +56,7 @@ makeFoundation conf = do
     manager <- newManager conduitManagerSettings
     s <- staticSite
 
-    loggerSet' <- newLoggerSet defaultBufSize GHC.IO.FD.stdout
+    loggerSet' <- newLoggerSet defaultBufSize Nothing
     (getter, _) <- clockDateCacher
 
     let logger = Yesod.Core.Types.Logger loggerSet' getter
