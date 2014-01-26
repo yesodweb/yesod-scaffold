@@ -66,9 +66,9 @@ makeFoundation conf = do
     p <- Database.Persist.createPoolConfig (dbconf :: Settings.PersistConf)
 
     loggerSet' <- newLoggerSet defaultBufSize Nothing
-    (getter, _) <- clockDateCacher
+    (getter, updater) <- clockDateCacher
 
-    let logger = Yesod.Core.Types.Logger loggerSet' getter
+    let logger = Yesod.Core.Types.Logger loggerSet' (updater >> getter)
         foundation = App conf s p manager dbconf logger
 
     -- Perform database migration using our application's logging settings.
