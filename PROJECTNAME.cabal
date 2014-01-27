@@ -73,7 +73,7 @@ library
                  , aeson                         >= 0.6        && < 0.8
                  , conduit                       >= 1.0        && < 2.0
                  , monad-logger                  >= 0.3        && < 0.4
-                 , fast-logger                   >= 2.1        && < 2.2
+                 , fast-logger                   >= 2.1.4      && < 2.2
                  , wai-logger                    >= 2.1        && < 2.2
 
 executable         PROJECTNAME
