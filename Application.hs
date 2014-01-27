@@ -15,7 +15,7 @@ import Network.Wai.Middleware.RequestLogger
 import qualified Network.Wai.Middleware.RequestLogger as RequestLogger
 import Network.HTTP.Conduit (newManager, conduitManagerSettings)
 import Control.Concurrent (forkIO, threadDelay)
-import System.Log.FastLogger (newLoggerSet, defaultBufSize)
+import System.Log.FastLogger (newStdoutLoggerSet, defaultBufSize)
 import Network.Wai.Logger (clockDateCacher)
 import Data.Default (def)
 import Yesod.Core.Types (loggerSet, Logger (Logger))
@@ -57,7 +57,7 @@ makeFoundation conf = do
     manager <- newManager conduitManagerSettings
     s <- staticSite
 
-    loggerSet' <- newLoggerSet defaultBufSize Nothing
+    loggerSet' <- newStdoutLoggerSet defaultBufSize
     (getter, updater) <- clockDateCacher
 
     -- If the Yesod logger (as opposed to the request logger middleware) is
