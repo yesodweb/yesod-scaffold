@@ -15,7 +15,7 @@ main = shellyNoDir $ do
         run_ "git" ["checkout", branch]
         unless (branch == master) $ run_ "git" ["merge", master]
         run_ "git" ["diff", "--exit-code"]
-        run_ "cabal" ["install", "--only-dependencies", "--force-reinstalls"]
+        run_ "cabal" ["install", "--only-dependencies", "--force-reinstalls", "--enable-tests"]
         run_ "yesod" ["test"]
         run_ "git" ["clean", "-fxd"]
         createHsFiles "yesod-scaffold" branch $ "hsfiles" </> fromText branch <.> "hsfiles"
