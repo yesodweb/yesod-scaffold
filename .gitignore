@@ -10,3 +10,4 @@ cabal-dev/
 yesod-devel/
 .cabal-sandbox
 cabal.sandbox.config
+.DS_Store
