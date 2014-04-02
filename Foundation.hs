@@ -8,7 +8,7 @@ import Yesod.Auth.BrowserId
 import Yesod.Auth.GoogleEmail
 import Yesod.Default.Config
 import Yesod.Default.Util (addStaticContentExternal)
-import Network.HTTP.Conduit (Manager)
+import Network.HTTP.Client.Conduit (Manager)
 import qualified Settings
 import Settings.Development (development)
 import qualified Database.Persist
