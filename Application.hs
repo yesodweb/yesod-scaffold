@@ -17,7 +17,7 @@ import Network.Wai.Middleware.RequestLogger
 import qualified Network.Wai.Middleware.RequestLogger as RequestLogger
 import qualified Database.Persist
 import Database.Persist.Sql (runMigration)
-import Network.HTTP.Conduit (newManager, conduitManagerSettings)
+import Network.HTTP.Client.Conduit (newManager)
 import Yesod.Fay (getFaySite)
 import Control.Monad.Logger (runLoggingT)
 import Control.Concurrent (forkIO, threadDelay)
@@ -62,7 +62,7 @@ makeApplication conf = do
 -- performs some initialization.
 makeFoundation :: AppConfig DefaultEnv Extra -> IO App
 makeFoundation conf = do
-    manager <- newManager conduitManagerSettings
+    manager <- newManager
     s <- staticSite
     dbconf <- withYamlEnvironment "config/postgresql.yml" (appEnv conf)
               Database.Persist.loadConfig >>=
