@@ -19,7 +19,7 @@ executable yesod-scaffold-build
                      , project-template >= 0.1
                      , system-fileio >= 0.3
                      , system-filepath >= 0.4
-                     , filesystem-conduit
+                     , conduit
 
 executable yesod-scaffold-make-template
   main-is:             make-template.hs
@@ -30,7 +30,6 @@ executable yesod-scaffold-make-template
                      , project-template >= 0.1
                      , system-fileio >= 0.3
                      , system-filepath >= 0.4
-                     , filesystem-conduit
 
 executable yesod-scaffold-merge
   main-is:             merge.hs
@@ -41,4 +40,3 @@ executable yesod-scaffold-merge
                      , project-template >= 0.1
                      , system-fileio >= 0.3
                      , system-filepath >= 0.4
-                     , filesystem-conduit
