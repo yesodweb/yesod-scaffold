@@ -15,7 +15,7 @@ import Network.Wai.Middleware.RequestLogger
 import qualified Network.Wai.Middleware.RequestLogger as RequestLogger
 import Network.HTTP.Client.Conduit (newManager)
 import Control.Concurrent (forkIO, threadDelay)
-import System.Log.FastLogger (newStdoutLoggerSet, defaultBufSize)
+import System.Log.FastLogger (newStdoutLoggerSet, defaultBufSize, flushLogStr)
 import Network.Wai.Logger (clockDateCacher)
 import Data.Default (def)
 import Yesod.Core.Types (loggerSet, Logger (Logger))
@@ -49,7 +49,7 @@ makeApplication conf = do
     -- Create the WAI application and apply middlewares
     app <- toWaiAppPlain foundation
     let logFunc = messageLoggerSource foundation (appLogger foundation)
-    return (logWare app, logFunc)
+    return (logWare $ defaultMiddlewaresNoLogging app, logFunc)
 
 -- | Loads up any necessary settings, creates your foundation datatype, and
 -- performs some initialization.
@@ -68,6 +68,7 @@ makeFoundation conf = do
     let updateLoop = do
             threadDelay 1000000
             updater
+            flushLogStr loggerSet'
             updateLoop
     _ <- forkIO updateLoop
 
