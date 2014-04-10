@@ -1,5 +1,6 @@
 dist*
 static/tmp/
+static/combined/
 config/client_session_key.aes
 *.hi
 *.o
@@ -10,3 +11,4 @@ yesod-devel/
 .cabal-sandbox
 cabal.sandbox.config
 .DS_Store
+*.swp
