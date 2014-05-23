@@ -16,4 +16,4 @@ let mongoSettings = (mkPersistSettings (ConT ''MongoBackend))
                         { mpsGeneric = False
                         }
  in share [mkPersist mongoSettings]
-    $(persistFileWith lowerCaseSettings "config/models")
+    $(persistFileWith upperCaseSettings "config/models")
