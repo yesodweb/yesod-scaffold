@@ -3,6 +3,8 @@ module Foundation where
 import Prelude
 import Yesod
 import Yesod.Static
+import Yesod.Auth
+import Yesod.Auth.BrowserId
 import Yesod.Default.Config
 import Yesod.Default.Util (addStaticContentExternal)
 import Network.HTTP.Client.Conduit (Manager, HasHttpManager (getHttpManager))
