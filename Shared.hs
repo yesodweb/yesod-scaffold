@@ -6,7 +6,6 @@ import ClassyPrelude.Conduit
 import Shelly (Sh, run, fromText)
 import Text.ProjectTemplate (createTemplate)
 import Filesystem (createTree)
-import Filesystem.Path (directory)
 
 branches :: [Text]
 branches = ["postgres", "sqlite", "mysql", "mongo", "simple", "postgres-fay"]
