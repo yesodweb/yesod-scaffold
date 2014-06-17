@@ -1,14 +1,21 @@
 -- | Development version to be run inside GHCi.
 --
--- The foreign-store package is required for this module.
+-- start this up with:
 --
--- It is also recommended to run the following in GHCi or to add it to
+-- cabal repl --ghc-options="-O0 -fobject-code"
+--
+-- You will need to add these packages to your .cabal file
+-- * foreign-store (very light-weight)
+-- * warp (you already depend on this, it just isn't in your .cabal file)
+--
+-- If you don't use cabal repl, you will need
+-- to run the following in GHCi or to add it to
 -- your .ghci file.
 --
 -- :set -DDEVELOPMENT
 --
--- Which will make assets like lucius files reload when you refresh
--- pages that use them.
+-- There is more information about this approach,
+-- on the wiki: https://github.com/yesodweb/yesod/wiki/ghci
 
 module DevelMain where
 
