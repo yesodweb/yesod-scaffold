@@ -4,17 +4,21 @@
 --
 -- cabal repl --ghc-options="-O0 -fobject-code"
 --
+-- run with:
+--
+-- :l DevelMain
+-- DevelMain.update
+--
 -- You will need to add these packages to your .cabal file
 -- * foreign-store >= 0.1 (very light-weight)
 -- * warp (you already depend on this, it just isn't in your .cabal file)
 --
 -- If you don't use cabal repl, you will need
--- to run the following in GHCi or to add it to
--- your .ghci file.
+-- to add settings to your .ghci file.
 --
 -- :set -DDEVELOPMENT
 --
--- There is more information about this approach,
+-- There is more information about using ghci
 -- on the wiki: https://github.com/yesodweb/yesod/wiki/ghci
 
 module DevelMain where
