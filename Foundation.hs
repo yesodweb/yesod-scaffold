@@ -3,8 +3,6 @@ module Foundation where
 import Prelude
 import Yesod
 import Yesod.Static
-import Yesod.Auth
-import Yesod.Auth.BrowserId
 import Yesod.Default.Config
 import Yesod.Default.Util (addStaticContentExternal)
 import Network.HTTP.Client.Conduit (Manager, HasHttpManager (getHttpManager))
@@ -80,7 +78,6 @@ instance Yesod App where
     urlRenderOverride _ _ = Nothing
 
     -- Routes not requiring authenitcation.
-    isAuthorized (AuthR _) _ = return Authorized
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR _ = return Authorized
     -- Default to Authorized for now.
