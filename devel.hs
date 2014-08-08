@@ -5,7 +5,7 @@ import Network.Wai.Handler.Warp
 import Control.Concurrent (forkIO)
 import System.Directory (doesFileExist, removeFile)
 import System.Exit (exitSuccess)
-import System.Posix.Signals (installHandler, sigInt, Handler(Catch))
+import System.Posix.Signals (installHandler, sigINT, Handler(Catch))
 import Control.Concurrent (threadDelay)
 
 main :: IO ()
