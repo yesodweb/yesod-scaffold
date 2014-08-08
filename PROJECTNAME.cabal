@@ -70,7 +70,7 @@ library
                  , conduit                       >= 1.0
                  , monad-logger                  >= 0.3
                  , fast-logger                   >= 0.3
-                 , unix                          >= 2.6
+                 , unix                          >= 2.5
 
 executable         PROJECTNAME
     if flag(library-only)
