@@ -5,10 +5,12 @@ import Network.Wai.Handler.Warp
 import Control.Concurrent (forkIO)
 import System.Directory (doesFileExist, removeFile)
 import System.Exit (exitSuccess)
+import System.Posix.Signals (installHandler, sigINT, Handler(Catch))
 import Control.Concurrent (threadDelay)
 
 main :: IO ()
 main = do
+    _ <- installHandler sigINT (Catch $ return ()) Nothing
     putStrLn "Starting devel application"
     (port, app) <- getApplicationDev
     forkIO $ runSettings (setPort port defaultSettings) app
