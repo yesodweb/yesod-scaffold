@@ -27,11 +27,11 @@
     \<a href="http://www.yesodweb.com/book/forms">Forms chapter</a> #
     on the yesod book to learn more about them.
     $maybe (info,con) <- submission
-      <div .message>
+      <div .message .alert .alert-success>
         Your file's type was <em>#{fileContentType info}</em>. You say it has: <em>#{con}</em>
     <form method=post action=@{HomeR}#form enctype=#{formEnctype}>
       ^{formWidget}
-      <input type="submit" value="Send it!">
+      <input .btn .btn-primary type="submit" value="Send it!">
 
   <li> And last but not least, Testing. In <em>tests/main.hs</em> you will find a #
     test suite that performs tests on this page. #
