@@ -1,3 +1,12 @@
+# NOTE: These settings can be overridden by environment variables as well, in
+# particular:
+#
+#    MYSQL_HOST
+#    MYSQL_PORT
+#    MYSQL_USER
+#    MYSQL_PASSWORD
+#    MYSQL_DATABASE
+
 Default: &defaults
   user: PROJECTNAME
   password: PROJECTNAME
