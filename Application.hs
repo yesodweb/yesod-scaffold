@@ -61,7 +61,17 @@ makeFoundation conf = do
     (getter, _) <- clockDateCacher
 
     let logger = Yesod.Core.Types.Logger loggerSet' getter
-        foundation = App conf s manager logger
+        foundation = App
+            { settings = conf
+            , getStatic = s
+            , httpManager = manager
+            , appLogger = logger
+            }
+
+    -- Perform database migration using our application's logging settings.
+    runLoggingT
+        (Database.Persist.runPool dbconf (runMigration migrateAll) p)
+        (messageLoggerSource foundation logger)
 
     return foundation
 
