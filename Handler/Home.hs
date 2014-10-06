@@ -3,6 +3,8 @@ module Handler.Home where
 
 import Import
 import Language.Haskell.TH ( Exp(..) )
+import Yesod.Form.Bootstrap3
+    ( BootstrapFormLayout (..), renderBootstrap3, withSmallInput )
 
 -- This is a handler function for the GET request method on the HomeR
 -- resource pattern. All of your resource patterns are defined in
@@ -36,6 +38,6 @@ postHomeR = do
         $(widgetFile "homepage")
 
 sampleForm :: Form (FileInfo, Text)
-sampleForm = renderDivs $ (,)
+sampleForm = renderBootstrap3 BootstrapBasicForm $ (,)
     <$> fileAFormReq "Choose a file"
-    <*> areq textField "What's on the file?" Nothing
+    <*> areq textField (withSmallInput "What's on the file?") Nothing
