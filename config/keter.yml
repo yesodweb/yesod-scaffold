@@ -53,4 +53,5 @@ stanzas:
 # If you would like to have Keter automatically create a PostgreSQL database
 # and set appropriate environment variables for it to be discovered, uncomment
 # the following line.
-# postgres: true
+# plugins:
+#   postgres: true
