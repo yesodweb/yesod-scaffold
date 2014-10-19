@@ -6,7 +6,6 @@ module Application
     ) where
 
 import Import
-import Settings
 import Yesod.Auth
 import Yesod.Default.Config
 import Yesod.Default.Main
@@ -17,6 +16,7 @@ import Network.Wai.Middleware.RequestLogger
 import qualified Network.Wai.Middleware.RequestLogger as RequestLogger
 import qualified Database.Persist
 import Database.Persist.Sql (runMigration)
+import Database.Persist.Postgresql (createPostgresqlPool, pgConnStr, pgPoolSize)
 import Network.HTTP.Client.Conduit (newManager)
 import Control.Monad.Logger (runLoggingT)
 import System.Log.FastLogger (newStdoutLoggerSet, defaultBufSize)
@@ -64,13 +64,12 @@ makeFoundation conf = do
     dbconf <- withYamlEnvironment "config/postgresql.yml" (appEnv conf)
               Database.Persist.loadConfig >>=
               Database.Persist.applyEnv
-    p <- Database.Persist.createPoolConfig (dbconf :: Settings.PersistConf)
 
     loggerSet' <- newStdoutLoggerSet defaultBufSize
     (getter, _) <- clockDateCacher
 
     let logger = Yesod.Core.Types.Logger loggerSet' getter
-        foundation = App
+        mkFoundation p = App
             { settings = conf
             , getStatic = s
             , connPool = p
@@ -78,11 +77,16 @@ makeFoundation conf = do
             , persistConfig = dbconf
             , appLogger = logger
             }
+        tempFoundation = mkFoundation $ error "connPool forced in tempFoundation"
+        logFunc = messageLoggerSource tempFoundation logger
+
+    p <- flip runLoggingT logFunc
+       $ createPostgresqlPool (pgConnStr dbconf) (pgPoolSize dbconf)
+    let foundation = mkFoundation p
 
     -- Perform database migration using our application's logging settings.
-    runLoggingT
+    flip runLoggingT logFunc
         (Database.Persist.runPool dbconf (runMigration migrateAll) p)
-        (messageLoggerSource foundation logger)
 
     return foundation
 
