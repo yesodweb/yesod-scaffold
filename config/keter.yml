@@ -24,6 +24,10 @@ stanzas:
       # root.
       - www.PROJECTNAME.com
 
+    # Enable to force Keter to redirect to https
+    # Can be added to any stanza
+    require-secure: false
+
   # Static files.
   - type: static-files
     hosts:
