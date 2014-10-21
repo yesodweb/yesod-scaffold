@@ -1,12 +1,12 @@
-module HomeTest
-    ( homeSpecs
+module Handler.HomeSpec
+    ( spec
     ) where
 
 import TestImport
 import qualified Data.List as L
 
-homeSpecs :: Spec
-homeSpecs =
+spec :: Spec
+spec =
     ydescribe "These are some example tests" $ do
 
         yit "loads the index and checks it looks right" $ do
