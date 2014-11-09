@@ -1,12 +1,11 @@
-{-# LANGUAGE OverloadedStrings #-}
-module HomeTest
-    ( homeSpecs
+module Handler.HomeSpec
+    ( spec
     ) where
 
 import TestImport
 
-homeSpecs :: Spec
-homeSpecs =
+spec :: Spec
+spec =
     ydescribe "These are some example tests" $ do
 
         yit "loads the index and checks it looks right" $ do
@@ -18,11 +17,11 @@ homeSpecs =
                 setMethod "POST"
                 setUrl HomeR
                 addNonce
-                fileByLabel "Choose a file" "test/main.hs" "text/plain" -- talk about self-reference
+                fileByLabel "Choose a file" "test/Spec.hs" "text/plain" -- talk about self-reference
                 byLabel "What's on the file?" "Some Content"
 
             statusIs 200
-            printBody
+            -- more debugging printBody
             htmlCount ".message" 1
             htmlAllContain ".message" "Some Content"
             htmlAllContain ".message" "text/plain"
