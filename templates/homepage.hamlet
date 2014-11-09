@@ -32,7 +32,7 @@
     <form method=post action=@{HomeR}#form enctype=#{formEnctype}>
       ^{formWidget}
       <button .btn .btn-primary type="submit">
-         Send it!  <span class="glyphicon glyphicon-upload"></span>
+         Send it! <span class="glyphicon glyphicon-upload"></span>
 
   <li> And last but not least, Testing. In <em>tests/main.hs</em> you will find a #
     test suite that performs tests on this page. #
