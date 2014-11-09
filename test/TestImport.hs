@@ -1,9 +1,9 @@
-{-# LANGUAGE OverloadedStrings #-}
 module TestImport
     ( module Yesod.Test
     , module Model
     , module Foundation
     , module Database.Persist
+    , module Prelude
     , runDB
     , Spec
     , Example
@@ -15,6 +15,7 @@ import Database.Persist.MongoDB hiding (master)
 import Control.Monad.Trans.Resource (ResourceT, runResourceT)
 import Control.Monad.Logger (NoLoggingT, runNoLoggingT)
 import Control.Monad.IO.Class (liftIO)
+import Prelude
 
 import Foundation
 import Model
