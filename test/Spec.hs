@@ -1,7 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE NoMonomorphismRestriction #-}
-{-# OPTIONS_GHC -fno-warn-orphans #-}
-
 module Main where
 
 import Import
@@ -10,7 +6,7 @@ import Yesod.Test
 import Test.Hspec (hspec)
 import Application (makeFoundation)
 
-import HomeTest
+import qualified Handler.HomeSpec
 
 main :: IO ()
 main = do
@@ -20,4 +16,4 @@ main = do
     foundation <- makeFoundation conf
     hspec $ do
         yesodSpec foundation $ do
-            homeSpecs
+            Handler.HomeSpec.spec

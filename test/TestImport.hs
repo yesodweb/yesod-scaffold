@@ -1,9 +1,9 @@
-{-# LANGUAGE OverloadedStrings #-}
 module TestImport
     ( module Yesod.Test
     , module Model
     , module Foundation
     , module Database.Persist
+    , module Prelude
     , runDB
     , Spec
     , Example
@@ -13,6 +13,7 @@ import Yesod.Test
 import Database.Persist hiding (get)
 import Database.Persist.Sql (SqlPersistM, runSqlPersistMPool)
 import Control.Monad.IO.Class (liftIO)
+import Prelude
 
 import Foundation
 import Model
