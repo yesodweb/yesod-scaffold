@@ -1,11 +1,13 @@
 dist*
 static/tmp/
 static/combined/
+static/fay-runtime.js
+static/faygen*.js
 config/client_session_key.aes
 *.hi
 *.o
 *.sqlite3
-fay/Language/Fay/Yesod.hs
+fay/Fay/Yesod.hs
 .hsenv*
 cabal-dev/
 yesod-devel/
