@@ -85,22 +85,6 @@ instance FromJSON AppSettings where
 
         return AppSettings {..}
 
--- Static setting below. Changing these requires a recompile
-
--- | Raw bytes at compile time of @config/settings.yml@
-configSettingsYml :: ByteString
-configSettingsYml = $(embedFile "config/settings.yml")
-
--- | A version of @AppSettings@ parsed at compile time from @config/settings.yml@.
-compileTimeAppSettings :: AppSettings
-compileTimeAppSettings =
-    case decodeEither' configSettingsYml of
-        Left e -> throw e
-        Right value ->
-            case fromJSON $ applyEnv mempty value of
-                Error e -> error e
-                Success settings -> settings
-
 -- | Settings for 'widgetFile', such as which template languages to support and
 -- default Hamlet settings.
 --
@@ -122,3 +106,17 @@ widgetFile = (if appReloadTemplates compileTimeAppSettings
                 then widgetFileReload
                 else widgetFileNoReload)
               widgetFileSettings
+
+-- | Raw bytes at compile time of @config/settings.yml@
+configSettingsYml :: ByteString
+configSettingsYml = $(embedFile "config/settings.yml")
+
+-- | A version of @AppSettings@ parsed at compile time from @config/settings.yml@.
+compileTimeAppSettings :: AppSettings
+compileTimeAppSettings =
+    case decodeEither' configSettingsYml of
+        Left e -> throw e
+        Right value ->
+            case fromJSON $ applyEnv mempty value of
+                Error e -> error e
+                Success settings -> settings
