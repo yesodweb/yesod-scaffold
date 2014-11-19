@@ -1,0 +1,35 @@
+static-dir:
+    env:   STATIC_DIR
+    value: static
+host:
+    env:   HOST
+    value: "*4" # any IPv4 host
+port:
+    env:   PORT
+    value: 3000
+approot:
+    env:   APPROOT
+    value: "http://localhost:3000"
+
+database:
+  user:
+    env:   PGUSER
+    value: PROJECTNAME
+  password:
+    env:   PGPASS
+    value: PROJECTNAME
+  host:
+    env:   PGHOST
+    value: localhost
+  port:
+    env:   PGPORT
+    value: 5432
+  database:
+    env:   PGDATABASE
+    value: PROJECTNAME
+  poolsize:
+    env:   PGPOOLSIZE
+    value: 10
+
+copyright: Insert copyright statement here
+#analytics: UA-YOURCODE
