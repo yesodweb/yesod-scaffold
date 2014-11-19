@@ -15,7 +15,7 @@ import Text.Jasmine (minifym)
 import Text.Hamlet (hamletFile)
 import Yesod.Core.Types (Logger)
 
--- | The site argument for your application. This can be a good place to
+-- | The foundation datatype for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
 -- starts running, such as database connections. Every handler will have
 -- access to the data present here.
@@ -39,11 +39,14 @@ instance HasHttpManager App where
 -- explanation for this split.
 mkYesodData "App" $(parseRoutesFile "config/routes")
 
+-- | A convenient synonym for creating forms.
 type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
 
 -- Please see the documentation for the Yesod typeclass. There are a number
 -- of settings which can be configured by overriding methods here.
 instance Yesod App where
+    -- Controls the base of generated URLs. For more information on modifying,
+    -- see: https://github.com/yesodweb/yesod/wiki/Overriding-approot
     approot = ApprootMaster $ appRoot . appSettings
 
     -- Store session data on the client in encrypted cookies,
@@ -144,9 +147,10 @@ instance YesodAuthPersist App
 instance RenderMessage App FormMessage where
     renderMessage _ _ = defaultFormMessage
 
--- Note: previous versions of the scaffolding included a deliver function to
--- send emails. Unfortunately, there are too many different options for us to
--- give a reasonable default. Instead, the information is available on the
--- wiki:
+-- Note: Some functionality previously present in the scaffolding has been
+-- moved to documentation in the Wiki. Following are some hopefully helpful
+-- links:
 --
 -- https://github.com/yesodweb/yesod/wiki/Sending-email
+-- https://github.com/yesodweb/yesod/wiki/Serve-static-files-from-a-separate-domain
+-- https://github.com/yesodweb/yesod/wiki/i18n-messages-in-the-scaffolding

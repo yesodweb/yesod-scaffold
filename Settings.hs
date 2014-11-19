@@ -13,7 +13,6 @@ import Control.Exception (throw)
 import Data.Aeson
 import Data.Text (Text)
 import Data.Default (def)
-import Text.Hamlet
 import Database.Persist.Postgresql (PostgresConf)
 import Network.Wai.Handler.Warp (HostPreference)
 import Data.String (fromString)
