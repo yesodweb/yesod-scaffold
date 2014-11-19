@@ -81,7 +81,13 @@ configSettingsYml = $(embedFile "config/settings.yml")
 
 -- | A version of @AppSettings@ parsed at compile time from @config/settings.yml@.
 compileTimeAppSettings :: AppSettings
-compileTimeAppSettings = either throw id $ decodeEither' configSettingsYml
+compileTimeAppSettings =
+    case decodeEither' configSettingsYml of
+        Left e -> throw e
+        Right value ->
+            case fromJSON $ applyEnv mempty value of
+                Error e -> error e
+                Success settings -> settings
 
 -- | The base URL for your static files. As you can see by the default
 -- value, this can simply be "static" appended to your application root.
