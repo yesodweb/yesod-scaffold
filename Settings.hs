@@ -20,24 +20,31 @@ import Text.Hamlet
 -- loaded from various sources: defaults, environment variables, config files,
 -- theoretically even a database.
 data AppSettings = AppSettings
-    { appDevelopment :: !Bool
+    { appDevelopment :: Bool
     -- ^ Is this application running in development mode?
+    , appStaticDir :: FilePath
+    -- ^ Directory from which to serve static files.
     }
 
 -- Static setting below. Changing these requires a recompile
 
-development :: Bool -- FIXME from config?
-development =
+-- | A compile time value indicating whether we're in development or not. This
+-- should be used for compile-time constructs only, such as whether to use
+-- automatic template reloading. For runtime changes, please use
+-- 'appDevelopment' instead.
+compileTimeDevelopment :: Bool
+compileTimeDevelopment =
 #if DEVELOPMENT
   True
 #else
   False
 #endif
 
--- | The location of static files on your system. This is a file system
--- path. The default value works properly with your scaffolded site.
-staticDir :: FilePath -- FIXME necessary for the staticFiles call, but otherwise should be config
-staticDir = "static"
+-- | A compile time value for where static files are located. This should be
+-- used for compile-time constructs only, such as where to generate static file
+-- identifiers from. For runtime change, please use 'appStaticDir' instead.
+compileTimeStaticDir :: FilePath
+compileTimeStaticDir = "static"
 
 -- | The base URL for your static files. As you can see by the default
 -- value, this can simply be "static" appended to your application root.
@@ -72,8 +79,9 @@ widgetFileSettings = def
 -- user.
 
 widgetFile :: String -> Q Exp
-widgetFile = (if development then widgetFileReload
-                             else widgetFileNoReload)
+widgetFile = (if compileTimeDevelopment
+                then widgetFileReload
+                else widgetFileNoReload)
               widgetFileSettings
 
 data Extra = Extra

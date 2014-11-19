@@ -10,15 +10,14 @@ import Data.Default (def)
 -- | use this to create your static file serving site
 staticSite :: AppSettings -> IO Static.Static
 staticSite settings =
-    if appDevelopment settings
-        then Static.staticDevel staticDir
-        else Static.static      staticDir
+    (if appDevelopment settings then Static.staticDevel else Static.static)
+    (appStaticDir settings)
 
 -- | This generates easy references to files in the static directory at compile time,
 --   giving you compile-time verification that referenced files exist.
 --   Warning: any files added to your static directory during run-time can't be
 --   accessed this way. You'll have to use their FilePath or URL to access them.
-$(staticFiles Settings.staticDir)
+$(staticFiles Settings.compileTimeStaticDir)
 
 combineSettings :: CombineSettings
 combineSettings = def
@@ -30,7 +29,7 @@ combineSettings = def
 -- > $(combineStylesheets 'StaticR [style1_css, style2_css])
 
 combineStylesheets :: Name -> [Route Static] -> Q Exp
-combineStylesheets = combineStylesheets' development combineSettings
+combineStylesheets = combineStylesheets' compileTimeDevelopment combineSettings
 
 combineScripts :: Name -> [Route Static] -> Q Exp
-combineScripts = combineScripts' development combineSettings
+combineScripts = combineScripts' compileTimeDevelopment combineSettings

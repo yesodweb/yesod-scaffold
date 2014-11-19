@@ -44,7 +44,7 @@ makeApplication conf = do
     -- Initialize the logging middleware
     logWare <- mkRequestLogger def
         { outputFormat =
-            if development
+            if appDevelopment $ appSettings foundation
                 then Detailed True
                 else Apache FromSocket
         , destination = RequestLogger.Logger $ loggerSet $ appLogger foundation
@@ -61,12 +61,8 @@ makeFoundation :: AppConfig DefaultEnv Extra -> IO App
 makeFoundation conf = do
     manager <- newManager
     let settings' = AppSettings -- FIXME
-            { appDevelopment =
-#if DEVELOPMENT
-                True
-#else
-                False
-#endif
+            { appDevelopment = compileTimeDevelopment
+            , appStaticDir = compileTimeStaticDir
             }
     s <- staticSite settings'
     dbconf <- withYamlEnvironment "config/postgresql.yml" (appEnv conf)
