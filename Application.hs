@@ -13,15 +13,13 @@ import Network.Wai.Middleware.RequestLogger
     ( mkRequestLogger, outputFormat, OutputFormat (..), IPAddrSource (..), destination
     )
 import qualified Network.Wai.Middleware.RequestLogger as RequestLogger
-import qualified Database.Persist
-import Database.Persist.Sql (runMigration)
+import Database.Persist.Sql (runMigration, runSqlPool)
 import Database.Persist.Postgresql (createPostgresqlPool, pgConnStr, pgPoolSize)
 import Network.HTTP.Client.Conduit (newManager)
 import Control.Monad.Logger (runLoggingT)
 import System.Log.FastLogger (newStdoutLoggerSet, defaultBufSize, toLogStr)
-import Network.Wai.Logger (clockDateCacher)
 import Data.Default (def)
-import Yesod.Core.Types (loggerSet, Logger (Logger))
+import Yesod.Core.Types (loggerSet)
 import Network.Wai.Handler.Warp (runSettings, defaultSettings, setPort, setHost, setOnException, defaultShouldDisplayException, Settings)
 import Control.Monad (when)
 import Control.Monad.Logger (liftLoc)
@@ -44,36 +42,34 @@ mkYesodDispatch "App" resourcesApp
 -- the place to put your migrate statements to have automatic database
 -- migrations handled by Yesod.
 makeFoundation :: AppSettings -> IO App
-makeFoundation settings = do
-    manager <- newManager
-    static <-
-        (if appMutableStatic settings then Static.staticDevel else Static.static)
-        (appStaticDir settings)
+makeFoundation appSettings = do
+    -- Some basic initializations: HTTP connection manager, logger, and static
+    -- subsite.
+    httpManager <- newManager
+    appLogger <- newStdoutLoggerSet defaultBufSize >>= makeYesodLogger
+    getStatic <-
+        (if appMutableStatic appSettings then Static.staticDevel else Static.static)
+        (appStaticDir appSettings)
 
-    loggerSet' <- newStdoutLoggerSet defaultBufSize
-    (getter, _) <- clockDateCacher
-
-    let logger = Yesod.Core.Types.Logger loggerSet' getter
-        mkFoundation pool = App
-            { appSettings = settings
-            , getStatic = static
-            , connPool = pool
-            , httpManager = manager
-            , appLogger = logger
-            }
+    -- We need a log function to create a connection pool. We need a connection
+    -- pool to create our foundation. And we need our foundation to get a
+    -- logging function. To get out of this loop, we initially create a
+    -- temporary foundation without a real connection pool, get a log function
+    -- from there, and then create the real foundation.
+    let mkFoundation connPool = App {..}
         tempFoundation = mkFoundation $ error "connPool forced in tempFoundation"
-        logFunc = messageLoggerSource tempFoundation logger
+        logFunc = messageLoggerSource tempFoundation appLogger
 
-    let dbconf = appPostgresConf settings
-    pool <- flip runLoggingT logFunc
-          $ createPostgresqlPool (pgConnStr dbconf) (pgPoolSize dbconf)
-    let foundation = mkFoundation pool
+    -- Create the database connection pool
+    pool <- flip runLoggingT logFunc $ createPostgresqlPool
+        (pgConnStr  $ appPostgresConf appSettings)
+        (pgPoolSize $ appPostgresConf appSettings)
 
     -- Perform database migration using our application's logging settings.
-    flip runLoggingT logFunc
-        (Database.Persist.runPool dbconf (runMigration migrateAll) pool)
+    runLoggingT (runSqlPool (runMigration migrateAll) pool) logFunc
 
-    return foundation
+    -- Return the foundation
+    return $ mkFoundation pool
 
 -- | Convert our foundation to a WAI Application by calling @toWaiAppPlain@ and
 -- applyng some additional middlewares.
