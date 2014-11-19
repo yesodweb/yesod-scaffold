@@ -10,8 +10,7 @@ import Yesod.Default.Util (addStaticContentExternal)
 import Network.HTTP.Client.Conduit (Manager, HasHttpManager (getHttpManager))
 import qualified Settings
 import Settings.Development (development)
-import qualified Database.Persist
-import Database.Persist.Sql (SqlBackend)
+import Database.Persist.Postgresql (SqlBackend, ConnectionPool, runSqlPool)
 import Settings.StaticFiles
 import Settings (widgetFile, Extra (..))
 import Model
@@ -26,9 +25,8 @@ import Yesod.Core.Types (Logger)
 data App = App
     { settings :: AppConfig DefaultEnv Extra
     , getStatic :: Static -- ^ Settings for static file serving.
-    , connPool :: Database.Persist.PersistConfigPool Settings.PersistConf -- ^ Database connection pool.
+    , connPool :: ConnectionPool -- ^ Database connection pool.
     , httpManager :: Manager
-    , persistConfig :: Settings.PersistConf
     , appLogger :: Logger
     }
 
@@ -116,7 +114,9 @@ instance Yesod App where
 -- How to run database actions.
 instance YesodPersist App where
     type YesodPersistBackend App = SqlBackend
-    runDB = defaultRunDB persistConfig connPool
+    runDB action = do
+        master <- getYesod
+        runSqlPool action (connPool master)
 instance YesodPersistRunner App where
     getDBRunner = defaultGetDBRunner connPool
 

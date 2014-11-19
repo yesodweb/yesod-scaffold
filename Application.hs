@@ -74,7 +74,6 @@ makeFoundation conf = do
             , getStatic = s
             , connPool = p
             , httpManager = manager
-            , persistConfig = dbconf
             , appLogger = logger
             }
         tempFoundation = mkFoundation $ error "connPool forced in tempFoundation"
