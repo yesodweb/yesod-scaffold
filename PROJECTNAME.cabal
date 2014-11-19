@@ -70,6 +70,7 @@ library
                  , fast-logger                   >= 2.2        && < 2.3
                  , wai-logger                    >= 2.2        && < 2.3
                  , file-embed
+                 , safe
 
     -- see https://github.com/yesodweb/yesod/issues/814
     if !os(windows)
@@ -81,9 +82,7 @@ executable         PROJECTNAME
 
     main-is:           main.hs
     hs-source-dirs:    app
-    build-depends:     base
-                     , PROJECTNAME
-                     , yesod
+    build-depends:     base, PROJECTNAME
 
     ghc-options:       -threaded -O2 -rtsopts -with-rtsopts=-N
 

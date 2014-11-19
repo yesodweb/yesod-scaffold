@@ -8,13 +8,12 @@ module Settings where
 import Prelude
 import Text.Shakespeare.Text (st)
 import Language.Haskell.TH.Syntax
-import Yesod.Default.Config
 import Yesod.Default.Util
 import Data.Text (Text)
-import Data.Yaml
-import Control.Applicative
 import Data.Default (def)
 import Text.Hamlet
+import Database.Persist.Postgresql (PostgresConf)
+import Network.Wai.Handler.Warp (HostPreference)
 
 -- | Runtime settings to configure this application. These settings can be
 -- loaded from various sources: defaults, environment variables, config files,
@@ -24,6 +23,20 @@ data AppSettings = AppSettings
     -- ^ Is this application running in development mode?
     , appStaticDir :: FilePath
     -- ^ Directory from which to serve static files.
+    , appPostgresConf :: PostgresConf
+    -- ^ Configuration settings for accessing the PostgreSQL database.
+    , appRoot :: Text
+    -- ^ Base for all generated URLs.
+    , appHost :: HostPreference
+    -- ^ Host/interface the server should bind to.
+    , appPort :: Int
+    -- ^ Port to listen on
+
+    -- Example app-specific configuration values.
+    , appCopyright :: Text
+    -- ^ Copyright text to appear in the footer of the page
+    , appAnalytics :: Maybe Text
+    -- ^ Google Analytics code
     }
 
 -- Static setting below. Changing these requires a recompile
@@ -59,8 +72,8 @@ compileTimeStaticDir = "static"
 -- have to make a corresponding change here.
 --
 -- To see how this value is used, see urlRenderOverride in Foundation.hs
-staticRoot :: AppConfig DefaultEnv x -> Text
-staticRoot conf = [st|#{appRoot conf}/static|]
+staticRoot :: AppSettings -> Text
+staticRoot settings = [st|#{appRoot settings}/static|]
 
 -- | Settings for 'widgetFile', such as which template languages to support and
 -- default Hamlet settings.
@@ -83,13 +96,3 @@ widgetFile = (if compileTimeDevelopment
                 then widgetFileReload
                 else widgetFileNoReload)
               widgetFileSettings
-
-data Extra = Extra
-    { extraCopyright :: Text
-    , extraAnalytics :: Maybe Text -- ^ Google Analytics
-    } deriving Show
-
-parseExtra :: DefaultEnv -> Object -> Parser Extra
-parseExtra _ o = Extra
-    <$> o .:  "copyright"
-    <*> o .:? "analytics"
