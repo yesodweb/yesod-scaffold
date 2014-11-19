@@ -23,5 +23,5 @@ type Example = YesodExample App
 
 runDB :: SqlPersistM a -> Example a
 runDB query = do
-    pool <- fmap connPool getTestYesod
+    pool <- fmap appConnPool getTestYesod
     liftIO $ runSqlPersistMPool query pool

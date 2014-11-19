@@ -45,9 +45,9 @@ makeFoundation :: AppSettings -> IO App
 makeFoundation appSettings = do
     -- Some basic initializations: HTTP connection manager, logger, and static
     -- subsite.
-    httpManager <- newManager
+    appHttpManager <- newManager
     appLogger <- newStdoutLoggerSet defaultBufSize >>= makeYesodLogger
-    getStatic <-
+    appStatic <-
         (if appMutableStatic appSettings then Static.staticDevel else Static.static)
         (appStaticDir appSettings)
 
@@ -56,7 +56,7 @@ makeFoundation appSettings = do
     -- logging function. To get out of this loop, we initially create a
     -- temporary foundation without a real connection pool, get a log function
     -- from there, and then create the real foundation.
-    let mkFoundation connPool = App {..}
+    let mkFoundation appConnPool = App {..}
         tempFoundation = mkFoundation $ error "connPool forced in tempFoundation"
         logFunc = messageLoggerSource tempFoundation appLogger
 
