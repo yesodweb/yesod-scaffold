@@ -22,6 +22,7 @@ import Data.Yaml (decodeEither')
 import Data.ByteString (ByteString)
 import Data.Monoid (mempty)
 import Yesod.Default.Config2 (applyEnv)
+import Yesod.Static
 
 -- | Runtime settings to configure this application. These settings can be
 -- loaded from various sources: defaults, environment variables, config files,
@@ -98,6 +99,10 @@ widgetFileSettings = def
         }
     }
 
+-- | How static files should be combined.
+combineSettings :: CombineSettings
+combineSettings = def
+
 -- The rest of this file contains settings which rarely need changing by a
 -- user.
 
@@ -120,3 +125,19 @@ compileTimeAppSettings =
             case fromJSON $ applyEnv mempty value of
                 Error e -> error e
                 Success settings -> settings
+
+-- The following two functions can be used to combine multiple CSS or JS files
+-- at compile time to decrease the number of http requests.
+-- Sample usage (inside a Widget):
+--
+-- > $(combineStylesheets 'StaticR [style1_css, style2_css])
+
+combineStylesheets :: Name -> [Route Static] -> Q Exp
+combineStylesheets = combineStylesheets'
+    (appSkipCombining compileTimeAppSettings)
+    combineSettings
+
+combineScripts :: Name -> [Route Static] -> Q Exp
+combineScripts = combineScripts'
+    (appSkipCombining compileTimeAppSettings)
+    combineSettings

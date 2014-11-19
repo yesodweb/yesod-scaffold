@@ -37,6 +37,7 @@ import Yesod.Default.Config2
 import System.Directory (doesFileExist)
 import Control.Concurrent (forkIO, threadDelay)
 import System.Exit (exitSuccess)
+import qualified Yesod.Static as Static
 
 #ifndef mingw32_HOST_OS
 import System.Posix.Signals (installHandler, sigINT, Handler(Catch))
@@ -119,7 +120,9 @@ loadAppSettings runTimeFiles useEnv useCompileConfig = do
 makeFoundation :: AppSettings -> IO App
 makeFoundation settings = do
     manager <- newManager
-    static <- staticSite settings
+    static <-
+        (if appMutableStatic settings then Static.staticDevel else Static.static)
+        (appStaticDir settings)
 
     loggerSet' <- newStdoutLoggerSet defaultBufSize
     (getter, _) <- clockDateCacher
