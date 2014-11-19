@@ -70,12 +70,6 @@ instance Yesod App where
             $(widgetFile "default-layout")
         withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
-    -- This is done to provide an optimization for serving static files from
-    -- a separate domain. Please see the staticRoot setting in Settings.hs
-    urlRenderOverride y (StaticR s) =
-        Just $ uncurry (joinPath y (staticRoot $ appSettings y)) $ renderRoute s
-    urlRenderOverride _ _ = Nothing
-
     -- The page to be redirected to when authentication is required.
     authRoute _ = Just $ AuthR LoginR
 

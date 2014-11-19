@@ -6,7 +6,6 @@
 module Settings where
 
 import Prelude
-import Text.Shakespeare.Text (st)
 import Language.Haskell.TH.Syntax
 import Yesod.Default.Util
 import Control.Applicative
@@ -101,22 +100,6 @@ compileTimeAppSettings =
             case fromJSON $ applyEnv mempty value of
                 Error e -> error e
                 Success settings -> settings
-
--- | The base URL for your static files. As you can see by the default
--- value, this can simply be "static" appended to your application root.
--- A powerful optimization can be serving static files from a separate
--- domain name. This allows you to use a web server optimized for static
--- files, more easily set expires and cache values, and avoid possibly
--- costly transference of cookies on static files. For more information,
--- please see:
---   http://code.google.com/speed/page-speed/docs/request.html#ServeFromCookielessDomain
---
--- If you change the resource pattern for StaticR in Foundation.hs, you will
--- have to make a corresponding change here.
---
--- To see how this value is used, see urlRenderOverride in Foundation.hs
-staticRoot :: AppSettings -> Text
-staticRoot settings = [st|#{appRoot settings}/static|]
 
 -- | Settings for 'widgetFile', such as which template languages to support and
 -- default Hamlet settings.
