@@ -20,7 +20,7 @@ import Data.FileEmbed (embedFile)
 import Data.Yaml (decodeEither')
 import Data.ByteString (ByteString)
 import Data.Monoid (mempty)
-import Yesod.Default.Config2 (applyEnv)
+import Yesod.Default.Config2 (applyEnv, configSettingsYml)
 import Yesod.Static
 
 -- | Runtime settings to configure this application. These settings can be
@@ -108,18 +108,19 @@ widgetFile = (if appReloadTemplates compileTimeAppSettings
               widgetFileSettings
 
 -- | Raw bytes at compile time of @config/settings.yml@
-configSettingsYml :: ByteString
-configSettingsYml = $(embedFile "config/settings.yml")
+configSettingsYmlBS :: ByteString
+configSettingsYmlBS = $(embedFile configSettingsYml)
+
+-- | @config/settings.yml@, parsed to a @Value@.
+configSettingsYmlValue :: Value
+configSettingsYmlValue = either throw id $ decodeEither' configSettingsYmlBS
 
 -- | A version of @AppSettings@ parsed at compile time from @config/settings.yml@.
 compileTimeAppSettings :: AppSettings
 compileTimeAppSettings =
-    case decodeEither' configSettingsYml of
-        Left e -> throw e
-        Right value ->
-            case fromJSON $ applyEnv mempty value of
-                Error e -> error e
-                Success settings -> settings
+    case fromJSON $ applyEnv mempty configSettingsYmlValue of
+        Error e -> error e
+        Success settings -> settings
 
 -- The following two functions can be used to combine multiple CSS or JS files
 -- at compile time to decrease the number of http requests.

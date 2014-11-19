@@ -11,7 +11,7 @@ main :: IO ()
 main = do
     settings <- loadAppSettings
         ["config/settings-test.yml", "config/settings.yml"]
-        False
+        []
         False
     foundation <- makeFoundation settings
     hspec $ do

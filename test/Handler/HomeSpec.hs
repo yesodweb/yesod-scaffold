@@ -12,7 +12,7 @@ spec =
         yit "loads the index and checks it looks right" $ do
             get HomeR
             statusIs 200
-            htmlAllContain "h1" "Hello"
+            htmlAllContain "h1" "Welcome to Yesod"
 
             request $ do
                 setMethod "POST"

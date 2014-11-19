@@ -9,7 +9,6 @@ module Application
 
 import Import hiding (applyEnv)
 import Yesod.Auth
-import Yesod.Default.Main
 import Network.Wai.Middleware.RequestLogger
     ( mkRequestLogger, outputFormat, OutputFormat (..), IPAddrSource (..), destination
     )
@@ -23,25 +22,12 @@ import System.Log.FastLogger (newStdoutLoggerSet, defaultBufSize, toLogStr)
 import Network.Wai.Logger (clockDateCacher)
 import Data.Default (def)
 import Yesod.Core.Types (loggerSet, Logger (Logger))
-import System.Environment (getEnvironment, getArgs)
-import Data.Maybe (fromMaybe)
-import Safe (readMay)
-import Network.Wai.Handler.Warp (runSettings, defaultSettings, setPort, setHost, setOnException, defaultShouldDisplayException)
-import Control.Exception (throwIO)
-import Control.Monad (when, forM)
+import Network.Wai.Handler.Warp (runSettings, defaultSettings, setPort, setHost, setOnException, defaultShouldDisplayException, Settings)
+import Control.Monad (when)
 import Control.Monad.Logger (liftLoc)
 import Language.Haskell.TH.Syntax (qLocation)
-import Data.Yaml (decodeEither', decodeFileEither)
-import Data.Aeson (fromJSON, Result (..))
 import Yesod.Default.Config2
-import System.Directory (doesFileExist)
-import Control.Concurrent (forkIO, threadDelay)
-import System.Exit (exitSuccess)
 import qualified Yesod.Static as Static
-
-#ifndef mingw32_HOST_OS
-import System.Posix.Signals (installHandler, sigINT, Handler(Catch))
-#endif
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
@@ -53,70 +39,10 @@ import Handler.Home
 -- comments there for more details.
 mkYesodDispatch "App" resourcesApp
 
--- This function allocates resources (such as a database connection pool),
--- performs initialization and creates a WAI application. This is also the
--- place to put your migrate statements to have automatic database
+-- | This function allocates resources (such as a database connection pool),
+-- performs initialization and return a foundation datatype value. This is also
+-- the place to put your migrate statements to have automatic database
 -- migrations handled by Yesod.
-makeApplication :: AppSettings -> IO (Application, LogFunc)
-makeApplication settings = do
-    foundation <- makeFoundation settings
-
-    -- Initialize the logging middleware
-    logWare <- mkRequestLogger def
-        { outputFormat =
-            if appDetailedRequestLogging settings
-                then Detailed True
-                else Apache
-                        (if appIpFromHeader settings
-                            then FromFallback
-                            else FromSocket)
-        , destination = RequestLogger.Logger $ loggerSet $ appLogger foundation
-        }
-
-    -- Create the WAI application and apply middlewares
-    app <- toWaiAppPlain foundation
-    let logFunc = messageLoggerSource foundation (appLogger foundation)
-    return (logWare $ defaultMiddlewaresNoLogging app, logFunc)
-
--- | Load the settings from the following three sources:
---
--- * Run time config files
---
--- * Run time environment variables
---
--- * The default compile time config file
-loadAppSettings :: [FilePath] -- ^ run time config files to use, earlier files have precedence
-                -> Bool -- ^ use environment variables
-                -> Bool -- ^ use the compile time config file as a base config
-                -> IO AppSettings
-loadAppSettings runTimeFiles useEnv useCompileConfig = do
-    compileValues <-
-        if useCompileConfig
-            then
-                case decodeEither' configSettingsYml of
-                    Left e -> do
-                        putStrLn "Unable to parse compile-time config/settings.yml as YAML"
-                        throwIO e
-                    Right value -> return [value]
-            else return []
-    runValues <- forM runTimeFiles $ \fp -> do
-        eres <- decodeFileEither fp
-        case eres of
-            Left e -> do
-                putStrLn $ "Could not parse file as YAML: " ++ fp
-                throwIO e
-            Right value -> return value
-    let value' = getMergedValue $ mconcat $ map MergedValue $ runValues ++ compileValues
-    value <-
-        if useEnv
-            then applyCurrentEnv value'
-            else return $ applyEnv mempty value'
-
-    case fromJSON value of
-        Error s -> error $ "Could not convert to AppSettings: " ++ s
-        Success settings -> return settings
-
--- | Creates your foundation datatype and performs some initialization.
 makeFoundation :: AppSettings -> IO App
 makeFoundation settings = do
     manager <- newManager
@@ -149,66 +75,69 @@ makeFoundation settings = do
 
     return foundation
 
--- for yesod devel
-getApplicationDev :: IO (Int, Application)
+-- | Convert our foundation to a WAI Application by calling @toWaiAppPlain@ and
+-- applyng some additional middlewares.
+makeApplication :: App -> IO Application
+makeApplication foundation = do
+    logWare <- mkRequestLogger def
+        { outputFormat =
+            if appDetailedRequestLogging $ appSettings foundation
+                then Detailed True
+                else Apache
+                        (if appIpFromHeader $ appSettings foundation
+                            then FromFallback
+                            else FromSocket)
+        , destination = RequestLogger.Logger $ loggerSet $ appLogger foundation
+        }
+
+    -- Create the WAI application and apply middlewares
+    appPlain <- toWaiAppPlain foundation
+    return $ logWare $ defaultMiddlewaresNoLogging appPlain
+
+-- | Warp settings for the given foundation value.
+warpSettings :: App -> Settings
+warpSettings foundation =
+      setPort (appPort $ appSettings foundation)
+    $ setHost (appHost $ appSettings foundation)
+    $ setOnException (\_req e ->
+        when (defaultShouldDisplayException e) $ messageLoggerSource
+            foundation
+            (appLogger foundation)
+            $(qLocation >>= liftLoc)
+            "yesod"
+            LevelError
+            (toLogStr $ "Exception from Warp: " ++ show e))
+      defaultSettings
+
+-- | For yesod devel, return the Warp settings and WAI Application.
+getApplicationDev :: IO (Settings, Application)
 getApplicationDev = do
-    settings <- loadAppSettings ["config/settings.yml"] True False
-    (app, _logFunc) <- makeApplication settings
-
-    env <- getEnvironment
-    let p = fromMaybe (appPort settings) $ lookup "PORT" env >>= readMay
-        pdisplay = fromMaybe p $ lookup "DISPLAY_PORT" env >>= readMay
-    putStrLn $ "Devel application launched: http://localhost:" ++ show pdisplay
-
-    return (p, app)
+    settings <- loadAppSettings [configSettingsYml] [] True
+    foundation <- makeFoundation settings
+    app <- makeApplication foundation
+    wsettings <- getDevSettings $ warpSettings foundation
+    return (wsettings, app)
 
 -- | main function for use by yesod devel
 develMain :: IO ()
-develMain = do
-#ifndef mingw32_HOST_OS
-    _ <- installHandler sigINT (Catch $ return ()) Nothing
-#endif
-
-    putStrLn "Starting devel application"
-    (port, app) <- getApplicationDev
-    _ <- forkIO $ runSettings (setPort port defaultSettings) app
-    loop
-  where
-    loop :: IO ()
-    loop = do
-        threadDelay 100000
-        e <- doesFileExist "yesod-devel/devel-terminate"
-        if e then terminateDevel else loop
-
-    terminateDevel :: IO ()
-    terminateDevel = exitSuccess
+develMain = develMainHelper getApplicationDev
 
 -- | The @main@ function for an executable running this site.
 appMain :: IO ()
 appMain = do
-    runTimeConfigs' <- getArgs
-    runTimeConfigs <-
-        if null runTimeConfigs'
-            then do
-                let fp = "config/settings.yml"
-                exists <- doesFileExist fp
-                if exists
-                    then return [fp]
-                    else return []
-            else return runTimeConfigs'
-    settings <- loadAppSettings
-        runTimeConfigs
-        True -- allow environment variables to override
-        True -- fall back to compile-time values, set to False to require values at runtime
-    (app, logFunc) <- makeApplication settings
-    runSettings
-        ( setPort (appPort settings)
-        $ setHost (appHost settings)
-        $ setOnException (\_req e ->
-            when (defaultShouldDisplayException e) $ logFunc
-                $(qLocation >>= liftLoc)
-                "yesod"
-                LevelError
-                (toLogStr $ "Exception from Warp: " ++ show e))
-          defaultSettings)
-        app
+    -- Get the settings from all relevant sources
+    settings <- loadAppSettingsArgs
+        -- fall back to compile-time values, set to [] to require values at runtime
+        [configSettingsYmlValue]
+
+        -- allow environment variables to override
+        True
+
+    -- Generate the foundation from the settings
+    foundation <- makeFoundation settings
+
+    -- Generate a WAI Application from the foundation
+    app <- makeApplication foundation
+
+    -- Run the application with Warp
+    runSettings (warpSettings foundation) app
