@@ -9,7 +9,10 @@ import qualified Handler.HomeSpec
 
 main :: IO ()
 main = do
-    settings <- loadAppSettings True
+    settings <- loadAppSettings
+        ["config/settings-test.yml", "config/settings.yml"]
+        False
+        False
     foundation <- makeFoundation settings
     hspec $ do
         yesodSpec foundation $ do

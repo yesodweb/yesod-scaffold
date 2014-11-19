@@ -9,17 +9,24 @@ import Prelude
 import Text.Shakespeare.Text (st)
 import Language.Haskell.TH.Syntax
 import Yesod.Default.Util
+import Control.Applicative
+import Control.Exception (throw)
+import Data.Aeson
 import Data.Text (Text)
 import Data.Default (def)
 import Text.Hamlet
 import Database.Persist.Postgresql (PostgresConf)
 import Network.Wai.Handler.Warp (HostPreference)
+import Data.String (fromString)
+import Data.FileEmbed (embedFile)
+import Data.Yaml (decodeEither')
+import Data.ByteString (ByteString)
 
 -- | Runtime settings to configure this application. These settings can be
 -- loaded from various sources: defaults, environment variables, config files,
 -- theoretically even a database.
 data AppSettings = AppSettings
-    { appDevelopment :: Bool
+    { appDevelopment :: Bool -- FIXME this is a bad variable, isn't it? need something more fine-grained
     -- ^ Is this application running in development mode?
     , appStaticDir :: FilePath
     -- ^ Directory from which to serve static files.
@@ -39,25 +46,35 @@ data AppSettings = AppSettings
     -- ^ Google Analytics code
     }
 
+instance FromJSON AppSettings where
+    parseJSON = withObject "AppSettings" $ \o -> do
+        let defaultDev =
+#if DEVELOPMENT
+                True
+#else
+                False
+#endif
+        appDevelopment  <- o .:? "development" .!= defaultDev
+        appStaticDir    <- o .: "static-dir"
+        appPostgresConf <- o .: "database"
+        appRoot         <- o .: "approot"
+        appHost         <- fromString <$> o .: "host"
+        appPort         <- o .: "port"
+
+        appCopyright    <- o .: "copyright"
+        appAnalytics    <- o .:? "analytics"
+
+        return AppSettings {..}
+
 -- Static setting below. Changing these requires a recompile
 
--- | A compile time value indicating whether we're in development or not. This
--- should be used for compile-time constructs only, such as whether to use
--- automatic template reloading. For runtime changes, please use
--- 'appDevelopment' instead.
-compileTimeDevelopment :: Bool
-compileTimeDevelopment =
-#if DEVELOPMENT
-  True
-#else
-  False
-#endif
+-- | Raw bytes at compile time of @config/settings.yml@
+configSettingsYml :: ByteString
+configSettingsYml = $(embedFile "config/settings.yml")
 
--- | A compile time value for where static files are located. This should be
--- used for compile-time constructs only, such as where to generate static file
--- identifiers from. For runtime change, please use 'appStaticDir' instead.
-compileTimeStaticDir :: FilePath
-compileTimeStaticDir = "static"
+-- | A version of @AppSettings@ parsed at compile time from @config/settings.yml@.
+compileTimeAppSettings :: AppSettings
+compileTimeAppSettings = either throw id $ decodeEither' configSettingsYml
 
 -- | The base URL for your static files. As you can see by the default
 -- value, this can simply be "static" appended to your application root.
@@ -92,7 +109,7 @@ widgetFileSettings = def
 -- user.
 
 widgetFile :: String -> Q Exp
-widgetFile = (if compileTimeDevelopment
+widgetFile = (if appDevelopment compileTimeAppSettings
                 then widgetFileReload
                 else widgetFileNoReload)
               widgetFileSettings

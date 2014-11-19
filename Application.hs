@@ -6,7 +6,7 @@ module Application
     , loadAppSettings
     ) where
 
-import Import
+import Import hiding (applyEnv)
 import Yesod.Auth
 import Yesod.Default.Main
 import Network.Wai.Middleware.RequestLogger
@@ -22,13 +22,18 @@ import System.Log.FastLogger (newStdoutLoggerSet, defaultBufSize, toLogStr)
 import Network.Wai.Logger (clockDateCacher)
 import Data.Default (def)
 import Yesod.Core.Types (loggerSet, Logger (Logger))
-import System.Environment (getEnvironment)
+import System.Environment (getEnvironment, getArgs)
 import Data.Maybe (fromMaybe)
 import Safe (readMay)
 import Network.Wai.Handler.Warp (runSettings, defaultSettings, setPort, setHost, setOnException, defaultShouldDisplayException)
-import Control.Monad (when)
+import Control.Exception (throwIO)
+import Control.Monad (when, forM)
 import Control.Monad.Logger (liftLoc)
 import Language.Haskell.TH.Syntax (qLocation)
+import Data.Yaml (decodeEither', decodeFileEither)
+import Data.Aeson (fromJSON, Result (..))
+import SettingsLib
+import System.Directory (doesFileExist)
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
@@ -62,18 +67,43 @@ makeApplication settings = do
     let logFunc = messageLoggerSource foundation (appLogger foundation)
     return (logWare $ defaultMiddlewaresNoLogging app, logFunc)
 
-loadAppSettings :: Bool -- ^ for tests?
+-- | Load the settings from the following three sources:
+--
+-- * Run time config files
+--
+-- * Run time environment variables
+--
+-- * The default compile time config file
+loadAppSettings :: [FilePath] -- ^ run time config files to use, earlier files have precedence
+                -> Bool -- ^ use environment variables
+                -> Bool -- ^ use the compile time config file as a base config
                 -> IO AppSettings
-loadAppSettings _tests = return AppSettings -- FIXME
-    { appDevelopment = compileTimeDevelopment
-    , appStaticDir = compileTimeStaticDir
-    , appPostgresConf = error "appPostgresConf"
-    , appRoot = "http://localhost:3000"
-    , appHost = "*4"
-    , appPort = 3000
-    , appCopyright = "Insert copyright statement here"
-    , appAnalytics = Nothing
-    }
+loadAppSettings runTimeFiles useEnv useCompileConfig = do
+    compileValues <-
+        if useCompileConfig
+            then
+                case decodeEither' configSettingsYml of
+                    Left e -> do
+                        putStrLn "Unable to parse compile-time config/settings.yml as YAML"
+                        throwIO e
+                    Right value -> return [value]
+            else return []
+    runValues <- forM runTimeFiles $ \fp -> do
+        eres <- decodeFileEither fp
+        case eres of
+            Left e -> do
+                putStrLn $ "Could not parse file as YAML: " ++ fp
+                throwIO e
+            Right value -> return value
+    let value' = getMergedValue $ mconcat $ map MergedValue $ runValues ++ compileValues
+    value <-
+        if useEnv
+            then applyCurrentEnv value'
+            else return $ applyEnv mempty value'
+
+    case fromJSON value of
+        Error s -> error $ "Could not convert to AppSettings: " ++ s
+        Success settings -> return settings
 
 -- | Creates your foundation datatype and performs some initialization.
 makeFoundation :: AppSettings -> IO App
@@ -109,7 +139,7 @@ makeFoundation settings = do
 -- for yesod devel
 getApplicationDev :: IO (Int, Application)
 getApplicationDev = do
-    settings <- loadAppSettings False
+    settings <- loadAppSettings ["config/settings.yml"] True False
     (app, _logFunc) <- makeApplication settings
 
     env <- getEnvironment
@@ -122,7 +152,20 @@ getApplicationDev = do
 -- | The @main@ function for an executable running this site.
 appMain :: IO ()
 appMain = do
-    settings <- loadAppSettings False
+    runTimeConfigs' <- getArgs
+    runTimeConfigs <-
+        if null runTimeConfigs'
+            then do
+                let fp = "config/settings.yml"
+                exists <- doesFileExist fp
+                if exists
+                    then return [fp]
+                    else return []
+            else return runTimeConfigs'
+    settings <- loadAppSettings
+        runTimeConfigs
+        True -- allow environment variables to override
+        True -- fall back to compile-time values, set to False to require values at runtime
     (app, logFunc) <- makeApplication settings
     runSettings
         ( setPort (appPort settings)

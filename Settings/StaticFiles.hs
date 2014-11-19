@@ -17,7 +17,7 @@ staticSite settings =
 --   giving you compile-time verification that referenced files exist.
 --   Warning: any files added to your static directory during run-time can't be
 --   accessed this way. You'll have to use their FilePath or URL to access them.
-$(staticFiles Settings.compileTimeStaticDir)
+$(staticFiles (appStaticDir compileTimeAppSettings))
 
 combineSettings :: CombineSettings
 combineSettings = def
@@ -29,7 +29,11 @@ combineSettings = def
 -- > $(combineStylesheets 'StaticR [style1_css, style2_css])
 
 combineStylesheets :: Name -> [Route Static] -> Q Exp
-combineStylesheets = combineStylesheets' compileTimeDevelopment combineSettings
+combineStylesheets = combineStylesheets'
+    (appDevelopment compileTimeAppSettings)
+    combineSettings
 
 combineScripts :: Name -> [Route Static] -> Q Exp
-combineScripts = combineScripts' compileTimeDevelopment combineSettings
+combineScripts = combineScripts'
+    (appDevelopment compileTimeAppSettings)
+    combineSettings

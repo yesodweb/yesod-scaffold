@@ -18,6 +18,7 @@ library
                      Model
                      Settings
                      Settings.StaticFiles
+                     SettingsLib
                      Handler.Common
                      Handler.Home
 
@@ -42,6 +43,7 @@ library
                 DeriveDataTypeable
                 ViewPatterns
                 TupleSections
+                RecordWildCards
 
     build-depends: base                          >= 4          && < 5
                  , yesod                         >= 1.4.0      && < 1.5
@@ -52,7 +54,7 @@ library
                  , bytestring                    >= 0.9        && < 0.11
                  , text                          >= 0.11       && < 2.0
                  , persistent                    >= 2.0        && < 2.2
-                 , persistent-postgresql         >= 2.0        && < 2.2
+                 , persistent-postgresql         >= 2.1.1      && < 2.2
                  , persistent-template           >= 2.0        && < 2.2
                  , template-haskell
                  , shakespeare                   >= 2.0        && < 2.1
@@ -71,6 +73,10 @@ library
                  , wai-logger                    >= 2.2        && < 2.3
                  , file-embed
                  , safe
+                 , unordered-containers
+                 , containers
+                 , vector
+                 , time
 
     -- see https://github.com/yesodweb/yesod/issues/814
     if !os(windows)
