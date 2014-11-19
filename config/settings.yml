@@ -11,6 +11,10 @@ approot:
     env:   APPROOT
     value: "http://localhost:3000"
 
+# Optional values with good default
+# development: false
+# detailed-logging: false
+
 database:
   user:
     env:   PGUSER

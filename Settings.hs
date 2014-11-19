@@ -21,6 +21,8 @@ import Data.String (fromString)
 import Data.FileEmbed (embedFile)
 import Data.Yaml (decodeEither')
 import Data.ByteString (ByteString)
+import Data.Monoid (mempty)
+import SettingsLib (applyEnv)
 
 -- | Runtime settings to configure this application. These settings can be
 -- loaded from various sources: defaults, environment variables, config files,
@@ -39,6 +41,9 @@ data AppSettings = AppSettings
     , appPort :: Int
     -- ^ Port to listen on
 
+    , appDetailedLogging :: Bool
+    -- ^ Use detailed logging system
+
     -- Example app-specific configuration values.
     , appCopyright :: Text
     -- ^ Copyright text to appear in the footer of the page
@@ -54,15 +59,17 @@ instance FromJSON AppSettings where
 #else
                 False
 #endif
-        appDevelopment  <- o .:? "development" .!= defaultDev
-        appStaticDir    <- o .: "static-dir"
-        appPostgresConf <- o .: "database"
-        appRoot         <- o .: "approot"
-        appHost         <- fromString <$> o .: "host"
-        appPort         <- o .: "port"
+        appDevelopment     <- o .:? "development" .!= defaultDev
+        appStaticDir       <- o .: "static-dir"
+        appPostgresConf    <- o .: "database"
+        appRoot            <- o .: "approot"
+        appHost            <- fromString <$> o .: "host"
+        appPort            <- o .: "port"
 
-        appCopyright    <- o .: "copyright"
-        appAnalytics    <- o .:? "analytics"
+        appDetailedLogging <- return False -- o .:? "detailed-logging" .!= appDevelopment
+
+        appCopyright       <- o .: "copyright"
+        appAnalytics       <- o .:? "analytics"
 
         return AppSettings {..}
 
