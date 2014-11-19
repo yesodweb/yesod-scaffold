@@ -63,9 +63,12 @@ makeApplication settings = do
     -- Initialize the logging middleware
     logWare <- mkRequestLogger def
         { outputFormat =
-            if appDetailedRequestLogging $ appSettings foundation
+            if appDetailedRequestLogging settings
                 then Detailed True
-                else Apache FromSocket
+                else Apache
+                        (if appIpFromHeader settings
+                            then FromFallback
+                            else FromSocket)
         , destination = RequestLogger.Logger $ loggerSet $ appLogger foundation
         }
 

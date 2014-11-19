@@ -10,6 +10,9 @@ port:
 approot:
     env:   APPROOT
     value: "http://localhost:3000"
+ip-from-header:
+    env:   IP_FROM_HEADER
+    value: false
 
 # Optional values with the following production defaults.
 # In development, they default to the inverse.

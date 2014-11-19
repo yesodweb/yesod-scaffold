@@ -38,6 +38,9 @@ data AppSettings = AppSettings
     -- ^ Host/interface the server should bind to.
     , appPort :: Int
     -- ^ Port to listen on
+    , appIpFromHeader :: Bool
+    -- ^ Get the IP address from the header when logging. Useful when sitting
+    -- behind a reverse proxy.
 
     , appDetailedRequestLogging :: Bool
     -- ^ Use detailed request logging system
@@ -70,6 +73,7 @@ instance FromJSON AppSettings where
         appRoot                   <- o .: "approot"
         appHost                   <- fromString <$> o .: "host"
         appPort                   <- o .: "port"
+        appIpFromHeader           <- o .: "ip-from-header"
 
         appDetailedRequestLogging <- o .:? "detailed-logging" .!= defaultDev
         appShouldLogAll           <- o .:? "should-log-all"   .!= defaultDev
