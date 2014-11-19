@@ -1,18 +1,8 @@
-static-dir:
-    env:   STATIC_DIR
-    value: static
-host:
-    env:   HOST
-    value: "*4" # any IPv4 host
-port:
-    env:   PORT
-    value: 3000
-approot:
-    env:   APPROOT
-    value: "http://localhost:3000"
-ip-from-header:
-    env:   IP_FROM_HEADER
-    value: false
+static-dir: "_env:STATIC_DIR:static"
+host: "_env:HOST:*4" # any IPv4 host
+port: "_env:PORT:3000"
+approot: "_env:APPROOT:http://localhost:3000"
+ip-from-header: "_env:IP_FROM_HEADER:false"
 
 # Optional values with the following production defaults.
 # In development, they default to the inverse.
@@ -25,24 +15,12 @@ ip-from-header:
 # skip-combining: false
 
 database:
-  user:
-    env:   PGUSER
-    value: PROJECTNAME
-  password:
-    env:   PGPASS
-    value: PROJECTNAME
-  host:
-    env:   PGHOST
-    value: localhost
-  port:
-    env:   PGPORT
-    value: 5432
-  database:
-    env:   PGDATABASE
-    value: PROJECTNAME
-  poolsize:
-    env:   PGPOOLSIZE
-    value: 10
+  user: "_env:PGUSER:PROJECTNAME"
+  password: "_env:PGPASS:PROJECTNAME"
+  host: "_env:PGHOST:localhost"
+  port: "_env:PGPORT:5432"
+  database: "_env:PGDATABASE:PROJECTNAME"
+  poolsize: "_env:PGPOOLSIZE:10"
 
 copyright: Insert copyright statement here
 #analytics: UA-YOURCODE
