@@ -18,7 +18,6 @@ library
                      Model
                      Settings
                      Settings.StaticFiles
-                     Settings.Development
                      Handler.Common
                      Handler.Home
 

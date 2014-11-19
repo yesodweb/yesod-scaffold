@@ -60,7 +60,15 @@ makeApplication conf = do
 makeFoundation :: AppConfig DefaultEnv Extra -> IO App
 makeFoundation conf = do
     manager <- newManager
-    s <- staticSite
+    let settings' = AppSettings -- FIXME
+            { appDevelopment =
+#if DEVELOPMENT
+                True
+#else
+                False
+#endif
+            }
+    s <- staticSite settings'
     dbconf <- withYamlEnvironment "config/postgresql.yml" (appEnv conf)
               Database.Persist.loadConfig >>=
               Database.Persist.applyEnv
@@ -71,6 +79,7 @@ makeFoundation conf = do
     let logger = Yesod.Core.Types.Logger loggerSet' getter
         mkFoundation p = App
             { settings = conf
+            , appSettings = settings'
             , getStatic = s
             , connPool = p
             , httpManager = manager

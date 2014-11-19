@@ -8,11 +8,9 @@ import Yesod.Auth.BrowserId
 import Yesod.Default.Config
 import Yesod.Default.Util (addStaticContentExternal)
 import Network.HTTP.Client.Conduit (Manager, HasHttpManager (getHttpManager))
-import qualified Settings
-import Settings.Development (development)
+import Settings
 import Database.Persist.Postgresql (SqlBackend, ConnectionPool, runSqlPool)
 import Settings.StaticFiles
-import Settings (widgetFile, Extra (..))
 import Model
 import Text.Jasmine (minifym)
 import Text.Hamlet (hamletFile)
@@ -23,7 +21,8 @@ import Yesod.Core.Types (Logger)
 -- starts running, such as database connections. Every handler will have
 -- access to the data present here.
 data App = App
-    { settings :: AppConfig DefaultEnv Extra
+    { settings :: AppConfig DefaultEnv Extra -- FIXME remove
+    , appSettings :: AppSettings
     , getStatic :: Static -- ^ Settings for static file serving.
     , connPool :: ConnectionPool -- ^ Database connection pool.
     , httpManager :: Manager
@@ -76,7 +75,7 @@ instance Yesod App where
     -- This is done to provide an optimization for serving static files from
     -- a separate domain. Please see the staticRoot setting in Settings.hs
     urlRenderOverride y (StaticR s) =
-        Just $ uncurry (joinPath y (Settings.staticRoot $ settings y)) $ renderRoute s
+        Just $ uncurry (joinPath y (staticRoot $ settings y)) $ renderRoute s
     urlRenderOverride _ _ = Nothing
 
     -- The page to be redirected to when authentication is required.
@@ -94,20 +93,19 @@ instance Yesod App where
     -- expiration dates to be set far in the future without worry of
     -- users receiving stale content.
     addStaticContent =
-        addStaticContentExternal minifym genFileName Settings.staticDir (StaticR . flip StaticRoute [])
+        addStaticContentExternal minifym genFileName staticDir (StaticR . flip StaticRoute [])
       where
         -- Generate a unique filename based on the content itself
-        genFileName lbs
-            | development = "autogen-" ++ base64md5 lbs
-            | otherwise   = base64md5 lbs
+        genFileName lbs = "autogen-" ++ base64md5 lbs
 
     -- Place Javascript at bottom of the body tag so the rest of the page loads first
     jsLoader _ = BottomOfBody
 
     -- What messages should be logged. The following includes all messages when
     -- in development, and warnings and errors in production.
-    shouldLog _ _source level =
-        development || level == LevelWarn || level == LevelError
+    shouldLog app _source level =
+        -- FIXME should be a config option
+        appDevelopment (appSettings app) || level == LevelWarn || level == LevelError
 
     makeLogger = return . appLogger
 

@@ -13,15 +13,30 @@ import Yesod.Default.Util
 import Data.Text (Text)
 import Data.Yaml
 import Control.Applicative
-import Settings.Development
 import Data.Default (def)
 import Text.Hamlet
 
+-- | Runtime settings to configure this application. These settings can be
+-- loaded from various sources: defaults, environment variables, config files,
+-- theoretically even a database.
+data AppSettings = AppSettings
+    { appDevelopment :: !Bool
+    -- ^ Is this application running in development mode?
+    }
+
 -- Static setting below. Changing these requires a recompile
+
+development :: Bool -- FIXME from config?
+development =
+#if DEVELOPMENT
+  True
+#else
+  False
+#endif
 
 -- | The location of static files on your system. This is a file system
 -- path. The default value works properly with your scaffolded site.
-staticDir :: FilePath
+staticDir :: FilePath -- FIXME necessary for the staticFiles call, but otherwise should be config
 staticDir = "static"
 
 -- | The base URL for your static files. As you can see by the default
