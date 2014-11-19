@@ -11,9 +11,15 @@ approot:
     env:   APPROOT
     value: "http://localhost:3000"
 
-# Optional values with good default
+# Optional values with the following production defaults.
+# In development, they default to the inverse.
+#
 # development: false
 # detailed-logging: false
+# should-log-all: false
+# reload-templates: false
+# mutable-static: false
+# skip-combining: false
 
 database:
   user:

@@ -10,7 +10,7 @@ import Data.Default (def)
 -- | use this to create your static file serving site
 staticSite :: AppSettings -> IO Static.Static
 staticSite settings =
-    (if appDevelopment settings then Static.staticDevel else Static.static)
+    (if appMutableStatic settings then Static.staticDevel else Static.static)
     (appStaticDir settings)
 
 -- | This generates easy references to files in the static directory at compile time,
@@ -30,10 +30,10 @@ combineSettings = def
 
 combineStylesheets :: Name -> [Route Static] -> Q Exp
 combineStylesheets = combineStylesheets'
-    (appDevelopment compileTimeAppSettings)
+    (appSkipCombining compileTimeAppSettings)
     combineSettings
 
 combineScripts :: Name -> [Route Static] -> Q Exp
 combineScripts = combineScripts'
-    (appDevelopment compileTimeAppSettings)
+    (appSkipCombining compileTimeAppSettings)
     combineSettings

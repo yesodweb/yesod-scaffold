@@ -28,9 +28,7 @@ import SettingsLib (applyEnv)
 -- loaded from various sources: defaults, environment variables, config files,
 -- theoretically even a database.
 data AppSettings = AppSettings
-    { appDevelopment :: Bool -- FIXME this is a bad variable, isn't it? need something more fine-grained
-    -- ^ Is this application running in development mode?
-    , appStaticDir :: FilePath
+    { appStaticDir :: FilePath
     -- ^ Directory from which to serve static files.
     , appPostgresConf :: PostgresConf
     -- ^ Configuration settings for accessing the PostgreSQL database.
@@ -41,8 +39,16 @@ data AppSettings = AppSettings
     , appPort :: Int
     -- ^ Port to listen on
 
-    , appDetailedLogging :: Bool
-    -- ^ Use detailed logging system
+    , appDetailedRequestLogging :: Bool
+    -- ^ Use detailed request logging system
+    , appShouldLogAll :: Bool
+    -- ^ Should all log messages be displayed?
+    , appReloadTemplates :: Bool
+    -- ^ Use the reload version of templates
+    , appMutableStatic :: Bool
+    -- ^ Assume that files in the static dir may change after compilation
+    , appSkipCombining :: Bool
+    -- ^ Perform no stylesheet/script combining
 
     -- Example app-specific configuration values.
     , appCopyright :: Text
@@ -59,17 +65,20 @@ instance FromJSON AppSettings where
 #else
                 False
 #endif
-        appDevelopment     <- o .:? "development" .!= defaultDev
-        appStaticDir       <- o .: "static-dir"
-        appPostgresConf    <- o .: "database"
-        appRoot            <- o .: "approot"
-        appHost            <- fromString <$> o .: "host"
-        appPort            <- o .: "port"
+        appStaticDir              <- o .: "static-dir"
+        appPostgresConf           <- o .: "database"
+        appRoot                   <- o .: "approot"
+        appHost                   <- fromString <$> o .: "host"
+        appPort                   <- o .: "port"
 
-        appDetailedLogging <- return False -- o .:? "detailed-logging" .!= appDevelopment
+        appDetailedRequestLogging <- o .:? "detailed-logging" .!= defaultDev
+        appShouldLogAll           <- o .:? "should-log-all"   .!= defaultDev
+        appReloadTemplates        <- o .:? "reload-templates" .!= defaultDev
+        appMutableStatic          <- o .:? "mutable-static"   .!= defaultDev
+        appSkipCombining          <- o .:? "skip-combining"   .!= defaultDev
 
-        appCopyright       <- o .: "copyright"
-        appAnalytics       <- o .:? "analytics"
+        appCopyright              <- o .: "copyright"
+        appAnalytics              <- o .:? "analytics"
 
         return AppSettings {..}
 
@@ -122,7 +131,7 @@ widgetFileSettings = def
 -- user.
 
 widgetFile :: String -> Q Exp
-widgetFile = (if appDevelopment compileTimeAppSettings
+widgetFile = (if appReloadTemplates compileTimeAppSettings
                 then widgetFileReload
                 else widgetFileNoReload)
               widgetFileSettings

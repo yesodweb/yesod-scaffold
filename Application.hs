@@ -56,7 +56,7 @@ makeApplication settings = do
     -- Initialize the logging middleware
     logWare <- mkRequestLogger def
         { outputFormat =
-            if appDetailedLogging $ appSettings foundation
+            if appDetailedRequestLogging $ appSettings foundation
                 then Detailed True
                 else Apache FromSocket
         , destination = RequestLogger.Logger $ loggerSet $ appLogger foundation
