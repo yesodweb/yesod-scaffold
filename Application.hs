@@ -2,6 +2,7 @@
 module Application
     ( getApplicationDev
     , appMain
+    , develMain
     , makeFoundation
     , loadAppSettings
     ) where
@@ -34,6 +35,12 @@ import Data.Yaml (decodeEither', decodeFileEither)
 import Data.Aeson (fromJSON, Result (..))
 import SettingsLib
 import System.Directory (doesFileExist)
+import Control.Concurrent (forkIO, threadDelay)
+import System.Exit (exitSuccess)
+
+#ifndef mingw32_HOST_OS
+import System.Posix.Signals (installHandler, sigINT, Handler(Catch))
+#endif
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
@@ -148,6 +155,27 @@ getApplicationDev = do
     putStrLn $ "Devel application launched: http://localhost:" ++ show pdisplay
 
     return (p, app)
+
+-- | main function for use by yesod devel
+develMain :: IO ()
+develMain = do
+#ifndef mingw32_HOST_OS
+    _ <- installHandler sigINT (Catch $ return ()) Nothing
+#endif
+
+    putStrLn "Starting devel application"
+    (port, app) <- getApplicationDev
+    _ <- forkIO $ runSettings (setPort port defaultSettings) app
+    loop
+  where
+    loop :: IO ()
+    loop = do
+        threadDelay 100000
+        e <- doesFileExist "yesod-devel/devel-terminate"
+        if e then terminateDevel else loop
+
+    terminateDevel :: IO ()
+    terminateDevel = exitSuccess
 
 -- | The @main@ function for an executable running this site.
 appMain :: IO ()

@@ -50,10 +50,12 @@ applyEnv env =
         value <- H.lookup "value" o
         return (name, value)
 
+matchType :: Value -> Text -> Value
 matchType (Number _) t = tryWrap Number t
 matchType (Bool _) t = tryWrap Bool t
 matchType _ t = String t
 
+tryWrap :: FromJSON a => (a -> Value) -> Text -> Value
 tryWrap con t =
     case Y.decode $ encodeUtf8 t of
         Nothing -> String t
