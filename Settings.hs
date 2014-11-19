@@ -94,10 +94,6 @@ instance FromJSON AppSettings where
 -- https://github.com/yesodweb/yesod/wiki/Overriding-widgetFile
 widgetFileSettings :: WidgetFileSettings
 widgetFileSettings = def
-    { wfsHamletSettings = defaultHamletSettings
-        { hamletNewlines = AlwaysNewlines
-        }
-    }
 
 -- | How static files should be combined.
 combineSettings :: CombineSettings
