@@ -4,7 +4,6 @@ module Application
     , appMain
     , develMain
     , makeFoundation
-    , loadAppSettings
     ) where
 
 import Import hiding (applyEnv)
@@ -108,7 +107,7 @@ warpSettings foundation =
 -- | For yesod devel, return the Warp settings and WAI Application.
 getApplicationDev :: IO (Settings, Application)
 getApplicationDev = do
-    settings <- loadAppSettings [configSettingsYml] [] True
+    settings <- loadAppSettings [configSettingsYml] [] UseEnv
     foundation <- makeFoundation settings
     app <- makeApplication foundation
     wsettings <- getDevSettings $ warpSettings foundation
@@ -127,7 +126,7 @@ appMain = do
         [configSettingsYmlValue]
 
         -- allow environment variables to override
-        True
+        UseEnv
 
     -- Generate the foundation from the settings
     foundation <- makeFoundation settings

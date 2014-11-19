@@ -118,7 +118,7 @@ configSettingsYmlValue = either throw id $ decodeEither' configSettingsYmlBS
 -- | A version of @AppSettings@ parsed at compile time from @config/settings.yml@.
 compileTimeAppSettings :: AppSettings
 compileTimeAppSettings =
-    case fromJSON $ applyEnv mempty configSettingsYmlValue of
+    case fromJSON $ applyEnv False mempty configSettingsYmlValue of
         Error e -> error e
         Success settings -> settings
 

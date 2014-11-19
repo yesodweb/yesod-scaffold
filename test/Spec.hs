@@ -3,7 +3,8 @@ module Main where
 import Import
 import Yesod.Test
 import Test.Hspec (hspec)
-import Application (makeFoundation, loadAppSettings)
+import Application (makeFoundation)
+import Yesod.Default.Config2
 
 import qualified Handler.HomeSpec
 
@@ -12,7 +13,7 @@ main = do
     settings <- loadAppSettings
         ["config/test-settings.yml", "config/settings.yml"]
         []
-        False
+        IgnoreEnv
     foundation <- makeFoundation settings
     hspec $ do
         yesodSpec foundation $ do
