@@ -18,7 +18,6 @@ library
                      Model
                      Settings
                      Settings.StaticFiles
-                     SettingsLib
                      Handler.Common
                      Handler.Home
 
@@ -46,7 +45,7 @@ library
                 RecordWildCards
 
     build-depends: base                          >= 4          && < 5
-                 , yesod                         >= 1.4.0      && < 1.5
+                 , yesod                         >= 1.4.1      && < 1.5
                  , yesod-core                    >= 1.4.0      && < 1.5
                  , yesod-auth                    >= 1.4.0      && < 1.5
                  , yesod-static                  >= 1.4.0      && < 1.5

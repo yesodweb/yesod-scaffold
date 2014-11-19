@@ -33,7 +33,7 @@ import Control.Monad.Logger (liftLoc)
 import Language.Haskell.TH.Syntax (qLocation)
 import Data.Yaml (decodeEither', decodeFileEither)
 import Data.Aeson (fromJSON, Result (..))
-import SettingsLib
+import Yesod.Default.Config2
 import System.Directory (doesFileExist)
 import Control.Concurrent (forkIO, threadDelay)
 import System.Exit (exitSuccess)

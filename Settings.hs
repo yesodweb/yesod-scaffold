@@ -22,7 +22,7 @@ import Data.FileEmbed (embedFile)
 import Data.Yaml (decodeEither')
 import Data.ByteString (ByteString)
 import Data.Monoid (mempty)
-import SettingsLib (applyEnv)
+import Yesod.Default.Config2 (applyEnv)
 
 -- | Runtime settings to configure this application. These settings can be
 -- loaded from various sources: defaults, environment variables, config files,
