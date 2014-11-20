@@ -21,6 +21,9 @@ import Text.Hamlet
 -- | Which Persistent backend this site is using.
 type PersistConf = PostgresConf
 
+-- | Shorthand for AppConfig
+type AppConf = AppConfig DefaultEnv Extra
+
 -- Static setting below. Changing these requires a recompile
 
 -- | The location of static files on your system. This is a file system
@@ -41,7 +44,7 @@ staticDir = "static"
 -- have to make a corresponding change here.
 --
 -- To see how this value is used, see urlRenderOverride in Foundation.hs
-staticRoot :: AppConfig DefaultEnv x -> Text
+staticRoot :: AppConf -> Text
 staticRoot conf = [st|#{appRoot conf}/static|]
 
 -- | Settings for 'widgetFile', such as which template languages to support and
