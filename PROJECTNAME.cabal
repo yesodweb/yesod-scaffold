@@ -15,6 +15,8 @@ library
     exposed-modules: Application
                      Foundation
                      Import
+                     Import.NoFoundation
+                     Import.NoWarning
                      Model
                      Settings
                      Settings.StaticFiles
