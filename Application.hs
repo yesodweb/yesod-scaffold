@@ -37,7 +37,7 @@ mkYesodDispatch "App" resourcesApp
 -- performs initialization and creates a WAI application. This is also the
 -- place to put your migrate statements to have automatic database
 -- migrations handled by Yesod.
-makeApplication :: AppConfig DefaultEnv Extra -> IO (Application, LogFunc)
+makeApplication :: AppConf -> IO (Application, LogFunc)
 makeApplication conf = do
     foundation <- makeFoundation conf
 
@@ -57,7 +57,7 @@ makeApplication conf = do
 
 -- | Loads up any necessary settings, creates your foundation datatype, and
 -- performs some initialization.
-makeFoundation :: AppConfig DefaultEnv Extra -> IO App
+makeFoundation :: AppConf -> IO App
 makeFoundation conf = do
     manager <- newManager
     s <- staticSite
