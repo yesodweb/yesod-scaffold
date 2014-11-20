@@ -9,7 +9,7 @@ import Database.Persist.Sql (SqlPersistM, runSqlPersistMPool)
 import Control.Monad.IO.Class (liftIO)
 import Prelude as X
 import Application (makeFoundation)
-import Yesod.Default.Config2 (loadAppSettings, EnvUsage (IgnoreEnv))
+import Yesod.Default.Config2 (loadAppSettings, ignoreEnv)
 import Test.Hspec as X
 
 import Foundation as X
@@ -25,5 +25,5 @@ withApp = before $ do
     settings <- loadAppSettings
         ["config/test-settings.yml", "config/settings.yml"]
         []
-        IgnoreEnv
+        ignoreEnv
     makeFoundation settings
