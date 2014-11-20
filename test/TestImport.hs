@@ -1,25 +1,19 @@
 module TestImport
-    ( module Yesod.Test
-    , module Model
-    , module Foundation
-    , module Database.Persist
-    , module Prelude
-    , module Test.Hspec
-    , runDB
-    , withApp
+    ( module TestImport
+    , module X
     ) where
 
-import Yesod.Test
-import Database.Persist hiding (get)
+import Yesod.Test as X
+import Database.Persist as X hiding (get)
 import Database.Persist.Sql (SqlPersistM, runSqlPersistMPool)
 import Control.Monad.IO.Class (liftIO)
-import Prelude
+import Prelude as X
 import Application (makeFoundation)
 import Yesod.Default.Config2 (loadAppSettings, EnvUsage (IgnoreEnv))
-import Test.Hspec
+import Test.Hspec as X
 
-import Foundation
-import Model
+import Foundation as X
+import Model as X
 
 runDB :: SqlPersistM a -> YesodExample App a
 runDB query = do
