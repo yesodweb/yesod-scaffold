@@ -5,29 +5,22 @@
 -- declared in the Foundation.hs file.
 module Settings where
 
-import Prelude
+import ClassyPrelude.Yesod
 import Language.Haskell.TH.Syntax
-import Yesod.Default.Util
-import Control.Applicative
+import Yesod.Default.Util (WidgetFileSettings, widgetFileReload, widgetFileNoReload)
 import Control.Exception (throw)
 import Data.Aeson
-import Data.Text (Text)
-import Data.Default (def)
 import Database.Persist.Postgresql (PostgresConf)
 import Network.Wai.Handler.Warp (HostPreference)
-import Data.String (fromString)
 import Data.FileEmbed (embedFile)
 import Data.Yaml (decodeEither')
-import Data.ByteString (ByteString)
-import Data.Monoid (mempty)
-import Yesod.Default.Config2 (applyEnv, configSettingsYml)
-import Yesod.Static
+import Yesod.Default.Config2 (applyEnvValue, configSettingsYml)
 
 -- | Runtime settings to configure this application. These settings can be
 -- loaded from various sources: defaults, environment variables, config files,
 -- theoretically even a database.
 data AppSettings = AppSettings
-    { appStaticDir :: FilePath
+    { appStaticDir :: String
     -- ^ Directory from which to serve static files.
     , appPostgresConf :: PostgresConf
     -- ^ Configuration settings for accessing the PostgreSQL database.
@@ -118,7 +111,7 @@ configSettingsYmlValue = either throw id $ decodeEither' configSettingsYmlBS
 -- | A version of @AppSettings@ parsed at compile time from @config/settings.yml@.
 compileTimeAppSettings :: AppSettings
 compileTimeAppSettings =
-    case fromJSON $ applyEnv False mempty configSettingsYmlValue of
+    case fromJSON $ applyEnvValue False mempty configSettingsYmlValue of
         Error e -> error e
         Success settings -> settings
 

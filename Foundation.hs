@@ -1,14 +1,11 @@
 module Foundation where
 
-import Prelude
-import Yesod
-import Yesod.Static
+import ClassyPrelude.Yesod
 import Yesod.Auth
 import Yesod.Auth.BrowserId
 import Yesod.Default.Util (addStaticContentExternal)
-import Network.HTTP.Client.Conduit (Manager, HasHttpManager (getHttpManager))
 import Settings
-import Database.Persist.Postgresql (SqlBackend, ConnectionPool, runSqlPool)
+import Database.Persist.Postgresql (ConnectionPool, runSqlPool)
 import Settings.StaticFiles
 import Model
 import Text.Jasmine (minifym)

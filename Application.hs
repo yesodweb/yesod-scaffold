@@ -12,15 +12,12 @@ import Network.Wai.Middleware.RequestLogger
     ( mkRequestLogger, outputFormat, OutputFormat (..), IPAddrSource (..), destination
     )
 import qualified Network.Wai.Middleware.RequestLogger as RequestLogger
-import Database.Persist.Sql (runMigration, runSqlPool)
+import Database.Persist.Sql (runSqlPool)
 import Database.Persist.Postgresql (createPostgresqlPool, pgConnStr, pgPoolSize)
-import Network.HTTP.Client.Conduit (newManager)
 import Control.Monad.Logger (runLoggingT)
 import System.Log.FastLogger (newStdoutLoggerSet, defaultBufSize, toLogStr)
-import Data.Default (def)
 import Yesod.Core.Types (loggerSet)
 import Network.Wai.Handler.Warp (runSettings, defaultSettings, setPort, setHost, setOnException, defaultShouldDisplayException, Settings)
-import Control.Monad (when)
 import Control.Monad.Logger (liftLoc)
 import Language.Haskell.TH.Syntax (qLocation)
 import Yesod.Default.Config2

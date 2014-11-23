@@ -6,8 +6,7 @@ module TestImport
 import Yesod.Test as X
 import Database.Persist as X hiding (get)
 import Database.Persist.Sql (SqlPersistM, runSqlPersistMPool)
-import Control.Monad.IO.Class (liftIO)
-import Prelude as X
+import ClassyPrelude as X
 import Application (makeFoundation)
 import Yesod.Default.Config2 (loadAppSettings, ignoreEnv)
 import Test.Hspec as X
