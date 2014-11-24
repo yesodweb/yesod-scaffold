@@ -6,22 +6,21 @@ module Application
     , makeFoundation
     ) where
 
+import Control.Monad.Logger                 (liftLoc, runLoggingT)
+import Database.Persist.Sqlite              (createSqlitePool, runSqlPool,
+                                             sqlDatabase, sqlPoolSize)
 import Import
-import Yesod.Auth
-import Network.Wai.Middleware.RequestLogger
-    ( mkRequestLogger, outputFormat, OutputFormat (..), IPAddrSource (..), destination
-    )
-import qualified Network.Wai.Middleware.RequestLogger as RequestLogger
-import Database.Persist.Sql (runSqlPool)
-import Database.Persist.Sqlite (createSqlitePool, sqlDatabase, sqlPoolSize)
-import Control.Monad.Logger (runLoggingT)
-import System.Log.FastLogger (newStdoutLoggerSet, defaultBufSize, toLogStr)
-import Yesod.Core.Types (loggerSet)
-import Network.Wai.Handler.Warp (runSettings, defaultSettings, setPort, setHost, setOnException, defaultShouldDisplayException, Settings)
-import Control.Monad.Logger (liftLoc)
-import Language.Haskell.TH.Syntax (qLocation)
-import Yesod.Default.Config2
-import qualified Yesod.Static as Static
+import Language.Haskell.TH.Syntax           (qLocation)
+import Network.Wai.Handler.Warp             (Settings, defaultSettings,
+                                             defaultShouldDisplayException,
+                                             runSettings, setHost,
+                                             setOnException, setPort)
+import Network.Wai.Middleware.RequestLogger (Destination (Logger),
+                                             IPAddrSource (..),
+                                             OutputFormat (..), destination,
+                                             mkRequestLogger, outputFormat)
+import System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet,
+                                             toLogStr)
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
@@ -44,7 +43,7 @@ makeFoundation appSettings = do
     appHttpManager <- newManager
     appLogger <- newStdoutLoggerSet defaultBufSize >>= makeYesodLogger
     appStatic <-
-        (if appMutableStatic appSettings then Static.staticDevel else Static.static)
+        (if appMutableStatic appSettings then staticDevel else static)
         (appStaticDir appSettings)
 
     -- We need a log function to create a connection pool. We need a connection
@@ -79,7 +78,7 @@ makeApplication foundation = do
                         (if appIpFromHeader $ appSettings foundation
                             then FromFallback
                             else FromSocket)
-        , destination = RequestLogger.Logger $ loggerSet $ appLogger foundation
+        , destination = Logger $ loggerSet $ appLogger foundation
         }
 
     -- Create the WAI application and apply middlewares
