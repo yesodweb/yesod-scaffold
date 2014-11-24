@@ -3,6 +3,7 @@ module Handler.Fay where
 import Import
 import Yesod.Fay
 import Fay.Convert (readFromFay)
+import Prelude ((!!))
 
 fibs :: [Int]
 fibs = 0 : 1 : zipWith (+) fibs (drop 1 fibs)

@@ -19,8 +19,8 @@ library
                      Model
                      Settings
                      Settings.StaticFiles
-                     Settings.Development
                      SharedTypes
+                     Handler.Common
                      Handler.Fay
                      Handler.Home
 
@@ -46,19 +46,23 @@ library
                 DeriveDataTypeable
                 ViewPatterns
                 TupleSections
+                RecordWildCards
 
     build-depends: base                          >= 4          && < 5
-                 , yesod                         >= 1.4.0      && < 1.5
+                 , yesod                         >= 1.4.1      && < 1.5
                  , yesod-core                    >= 1.4.0      && < 1.5
                  , yesod-auth                    >= 1.4.0      && < 1.5
-                 , yesod-static                  >= 1.4.0      && < 1.5
+                 , yesod-static                  >= 1.4.0.3    && < 1.5
                  , yesod-form                    >= 1.4.0      && < 1.5
                  , yesod-fay                     >= 0.7        && < 0.8
                  , fay                           >= 0.21.2.1   && < 0.22
+                 , classy-prelude                >= 0.10.2
+                 , classy-prelude-conduit        >= 0.10.2
+                 , classy-prelude-yesod          >= 0.10.2
                  , bytestring                    >= 0.9        && < 0.11
                  , text                          >= 0.11       && < 2.0
                  , persistent                    >= 2.0        && < 2.2
-                 , persistent-postgresql         >= 2.0        && < 2.2
+                 , persistent-postgresql         >= 2.1.1      && < 2.2
                  , persistent-template           >= 2.0        && < 2.2
                  , template-haskell
                  , shakespeare                   >= 2.0        && < 2.1
@@ -74,10 +78,12 @@ library
                  , monad-logger                  >= 0.3        && < 0.4
                  , fast-logger                   >= 2.2        && < 2.3
                  , wai-logger                    >= 2.2        && < 2.3
-
-    -- see https://github.com/yesodweb/yesod/issues/814
-    if !os(windows)
-        build-depends: unix
+                 , file-embed
+                 , safe
+                 , unordered-containers
+                 , containers
+                 , vector
+                 , time
 
 executable         PROJECTNAME
     if flag(library-only)
@@ -85,9 +91,7 @@ executable         PROJECTNAME
 
     main-is:           main.hs
     hs-source-dirs:    app
-    build-depends:     base
-                     , PROJECTNAME
-                     , yesod
+    build-depends:     base, PROJECTNAME
 
     ghc-options:       -threaded -O2 -rtsopts -with-rtsopts=-N
 
@@ -115,7 +119,7 @@ test-suite test
 
     build-depends: base
                  , PROJECTNAME
-                 , yesod-test >= 1.4 && < 1.5
+                 , yesod-test >= 1.4.2 && < 1.5
                  , yesod-core
                  , yesod
                  , persistent
@@ -124,3 +128,5 @@ test-suite test
                  , monad-logger
                  , transformers
                  , hspec
+                 , classy-prelude
+                 , classy-prelude-yesod
