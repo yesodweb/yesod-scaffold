@@ -1,9 +1,8 @@
 module Handler.Home where
 
 import Import
-import Language.Haskell.TH ( Exp(..) )
-import Yesod.Form.Bootstrap3
-    ( BootstrapFormLayout (..), renderBootstrap3, withSmallInput )
+import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3,
+                              withSmallInput)
 
 -- This is a handler function for the GET request method on the HomeR
 -- resource pattern. All of your resource patterns are defined in
@@ -21,7 +20,7 @@ getHomeR = do
         aDomId <- newIdent
         setTitle "Welcome To Yesod!"
         $(widgetFile "homepage")
-        $(fayFile' (ConE 'StaticR) "Home")
+        $(fayFile "Home")
 
 postHomeR :: Handler Html
 postHomeR = do

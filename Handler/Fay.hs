@@ -1,9 +1,9 @@
 module Handler.Fay where
 
-import Import
-import Yesod.Fay
 import Fay.Convert (readFromFay)
-import Prelude ((!!))
+import Import
+import Prelude     ((!!))
+import Yesod.Fay
 
 fibs :: [Int]
 fibs = 0 : 1 : zipWith (+) fibs (drop 1 fibs)

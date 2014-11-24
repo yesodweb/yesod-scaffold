@@ -6,50 +6,52 @@
 module Settings where
 
 import ClassyPrelude.Yesod
-import Language.Haskell.TH.Syntax
-import Yesod.Default.Util (WidgetFileSettings, widgetFileReload, widgetFileNoReload)
-import Control.Exception (throw)
-import Data.Aeson
+import Control.Exception           (throw)
+import Data.Aeson                  (Result (..), fromJSON, withObject, (.!=),
+                                    (.:?))
+import Data.FileEmbed              (embedFile)
+import Data.Yaml                   (decodeEither')
 import Database.Persist.Postgresql (PostgresConf)
+import Language.Haskell.TH.Syntax  (Exp, Name, Q)
+import Network.Wai.Handler.Warp    (HostPreference)
+import Yesod.Default.Config2       (applyEnvValue, configSettingsYml)
+import Yesod.Default.Util          (WidgetFileSettings, widgetFileNoReload,
+                                    widgetFileReload)
 import Yesod.Fay
-import Network.Wai.Handler.Warp (HostPreference)
-import Data.FileEmbed (embedFile)
-import Data.Yaml (decodeEither')
-import Yesod.Default.Config2 (applyEnvValue, configSettingsYml)
 
 -- | Runtime settings to configure this application. These settings can be
 -- loaded from various sources: defaults, environment variables, config files,
 -- theoretically even a database.
 data AppSettings = AppSettings
-    { appStaticDir :: String
+    { appStaticDir              :: String
     -- ^ Directory from which to serve static files.
-    , appDatabaseConf :: PostgresConf
+    , appDatabaseConf           :: PostgresConf
     -- ^ Configuration settings for accessing the database.
-    , appRoot :: Text
+    , appRoot                   :: Text
     -- ^ Base for all generated URLs.
-    , appHost :: HostPreference
+    , appHost                   :: HostPreference
     -- ^ Host/interface the server should bind to.
-    , appPort :: Int
+    , appPort                   :: Int
     -- ^ Port to listen on
-    , appIpFromHeader :: Bool
+    , appIpFromHeader           :: Bool
     -- ^ Get the IP address from the header when logging. Useful when sitting
     -- behind a reverse proxy.
 
     , appDetailedRequestLogging :: Bool
     -- ^ Use detailed request logging system
-    , appShouldLogAll :: Bool
+    , appShouldLogAll           :: Bool
     -- ^ Should all log messages be displayed?
-    , appReloadTemplates :: Bool
+    , appReloadTemplates        :: Bool
     -- ^ Use the reload version of templates
-    , appMutableStatic :: Bool
+    , appMutableStatic          :: Bool
     -- ^ Assume that files in the static dir may change after compilation
-    , appSkipCombining :: Bool
+    , appSkipCombining          :: Bool
     -- ^ Perform no stylesheet/script combining
 
     -- Example app-specific configuration values.
-    , appCopyright :: Text
+    , appCopyright              :: Text
     -- ^ Copyright text to appear in the footer of the page
-    , appAnalytics :: Maybe Text
+    , appAnalytics              :: Maybe Text
     -- ^ Google Analytics code
     }
 
