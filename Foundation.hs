@@ -5,7 +5,7 @@ import Yesod.Auth
 import Yesod.Auth.BrowserId
 import Yesod.Default.Util (addStaticContentExternal)
 import Settings
-import Database.Persist.Postgresql (ConnectionPool, runSqlPool)
+import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Settings.StaticFiles
 import Model
 import Text.Jasmine (minifym)

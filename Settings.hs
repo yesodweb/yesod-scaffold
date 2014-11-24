@@ -22,8 +22,8 @@ import Yesod.Default.Config2 (applyEnvValue, configSettingsYml)
 data AppSettings = AppSettings
     { appStaticDir :: String
     -- ^ Directory from which to serve static files.
-    , appPostgresConf :: PostgresConf
-    -- ^ Configuration settings for accessing the PostgreSQL database.
+    , appDatabaseConf :: PostgresConf
+    -- ^ Configuration settings for accessing the database.
     , appRoot :: Text
     -- ^ Base for all generated URLs.
     , appHost :: HostPreference
@@ -61,7 +61,7 @@ instance FromJSON AppSettings where
                 False
 #endif
         appStaticDir              <- o .: "static-dir"
-        appPostgresConf           <- o .: "database"
+        appDatabaseConf           <- o .: "database"
         appRoot                   <- o .: "approot"
         appHost                   <- fromString <$> o .: "host"
         appPort                   <- o .: "port"
