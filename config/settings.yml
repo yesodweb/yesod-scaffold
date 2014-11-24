@@ -1,19 +1,25 @@
-Default: &defaults
-  host: "*4" # any IPv4 host
-  port: 3000
-  approot: "http://localhost:3000"
-  copyright: Insert copyright statement here
-  #analytics: UA-YOURCODE
+static-dir:     "_env:STATIC_DIR:static"
+host:           "_env:HOST:*4" # any IPv4 host
+port:           "_env:PORT:3000"
+approot:        "_env:APPROOT:http://localhost:3000"
+ip-from-header: "_env:IP_FROM_HEADER:false"
 
-Development:
-  <<: *defaults
+# Optional values with the following production defaults.
+# In development, they default to the inverse.
+#
+# development: false
+# detailed-logging: false
+# should-log-all: false
+# reload-templates: false
+# mutable-static: false
+# skip-combining: false
 
-Testing:
-  <<: *defaults
+database:
+  user:        "PROJECTNAME"
+  password:    "PROJECTNAME"
+  host:        "localhost"
+  database:    "PROJECTNAME"
+  connections: 10
 
-Staging:
-  <<: *defaults
-
-Production:
-  #approot: "http://www.example.com"
-  <<: *defaults
+copyright: Insert copyright statement here
+#analytics: UA-YOURCODE

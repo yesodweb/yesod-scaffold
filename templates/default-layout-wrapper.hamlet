@@ -28,9 +28,9 @@ $newline never
             <div id="main" role="main">
               ^{pageBody pc}
             <footer>
-                #{extraCopyright $ appExtra $ settings master}
+                #{appCopyright $ appSettings master}
 
-        $maybe analytics <- extraAnalytics $ appExtra $ settings master
+        $maybe analytics <- appAnalytics $ appSettings master
             <script>
               if(!window.location.href.match(/localhost/)){
                 window._gaq = [['_setAccount','#{analytics}'],['_trackPageview'],['_trackPageLoadTime']];

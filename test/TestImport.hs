@@ -1,29 +1,32 @@
 module TestImport
-    ( module Yesod.Test
-    , module Model
-    , module Foundation
-    , module Database.Persist
-    , module Prelude
-    , runDB
-    , Spec
-    , Example
+    ( module TestImport
+    , module X
     ) where
 
-import Yesod.Test
-import Database.Persist hiding (get)
+import Yesod.Test as X
+import Database.Persist as X hiding (get)
 import Database.Persist.MongoDB hiding (master)
-import Control.Monad.Trans.Resource (ResourceT, runResourceT)
-import Control.Monad.Logger (NoLoggingT, runNoLoggingT)
-import Control.Monad.IO.Class (liftIO)
-import Prelude
+import ClassyPrelude as X
+import Application (makeFoundation)
+import Yesod.Default.Config2 (loadAppSettings, ignoreEnv)
+import Test.Hspec as X
+import Settings
 
-import Foundation
-import Model
+import Foundation as X
+import Model as X
 
-type Spec = YesodSpec App
-type Example = YesodExample App
+runDB :: Action IO a -> YesodExample App a
+runDB action = do
+    master <- getTestYesod
+    liftIO $ runMongoDBPool
+        (mgAccessMode $ appDatabaseConf $ appSettings master)
+        action
+        (appConnPool master)
 
-runDB :: Action (NoLoggingT (ResourceT IO)) a -> YesodExample App a
-runDB query = do
-    pool <- fmap connPool getTestYesod
-    liftIO $ runResourceT $ runNoLoggingT $ runMongoDBPoolDef query pool
+withApp :: SpecWith App -> Spec
+withApp = before $ do
+    settings <- loadAppSettings
+        ["config/test-settings.yml", "config/settings.yml"]
+        []
+        ignoreEnv
+    makeFoundation settings
