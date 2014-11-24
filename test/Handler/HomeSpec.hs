@@ -1,7 +1,6 @@
 module Handler.HomeSpec (spec) where
 
 import TestImport
-import qualified Data.List as L
 
 spec :: Spec
 spec = withApp $ do
@@ -30,4 +29,4 @@ spec = withApp $ do
         get HomeR
         statusIs 200
         users <- runDB $ selectList ([] :: [Filter User]) []
-        assertEqual "user table empty" 0 $ L.length users
+        assertEqual "user table empty" 0 $ length users
