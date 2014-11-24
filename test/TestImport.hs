@@ -1,14 +1,20 @@
 module TestImport
-    ( module Yesod.Test
-    , module Foundation
-    , module Prelude
-    , Spec
-    , Example
+    ( module TestImport
+    , module X
     ) where
 
-import Yesod.Test
-import Prelude
-import Foundation
+import Yesod.Test as X
+import ClassyPrelude as X
+import Application (makeFoundation)
+import Yesod.Default.Config2 (loadAppSettings, ignoreEnv)
+import Test.Hspec as X
 
-type Spec = YesodSpec App
-type Example = YesodExample App
+import Foundation as X
+
+withApp :: SpecWith App -> Spec
+withApp = before $ do
+    settings <- loadAppSettings
+        ["config/test-settings.yml", "config/settings.yml"]
+        []
+        ignoreEnv
+    makeFoundation settings
