@@ -22,7 +22,7 @@ import Yesod.Default.Config2 (applyEnvValue, configSettingsYml)
 data AppSettings = AppSettings
     { appStaticDir :: String
     -- ^ Directory from which to serve static files.
-    , appDatabaseConf :: PostgresConf
+    , appDatabaseConf :: SqliteConf
     -- ^ Configuration settings for accessing the database.
     , appRoot :: Text
     -- ^ Base for all generated URLs.
