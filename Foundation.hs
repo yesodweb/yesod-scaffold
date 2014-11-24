@@ -1,16 +1,16 @@
 module Foundation where
 
 import ClassyPrelude.Yesod
-import Yesod.Auth
-import Yesod.Auth.BrowserId
-import Yesod.Default.Util (addStaticContentExternal)
-import Settings
 import Database.Persist.MongoDB hiding (master)
-import Settings.StaticFiles
 import Model
-import Text.Jasmine (minifym)
-import Text.Hamlet (hamletFile)
-import Yesod.Core.Types (Logger)
+import Settings
+import Settings.StaticFiles
+import Text.Hamlet              (hamletFile)
+import Text.Jasmine             (minifym)
+import Yesod.Auth
+import Yesod.Auth.BrowserId     (authBrowserId)
+import Yesod.Core.Types         (Logger)
+import Yesod.Default.Util       (addStaticContentExternal)
 
 -- | The foundation datatype for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application

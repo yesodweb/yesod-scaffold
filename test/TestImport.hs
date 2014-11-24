@@ -3,17 +3,15 @@ module TestImport
     , module X
     ) where
 
-import Yesod.Test as X
-import Database.Persist as X hiding (get)
+import Application              (makeFoundation)
+import ClassyPrelude            as X
+import Database.Persist         as X hiding (get)
 import Database.Persist.MongoDB hiding (master)
-import ClassyPrelude as X
-import Application (makeFoundation)
-import Yesod.Default.Config2 (loadAppSettings, ignoreEnv)
-import Test.Hspec as X
-import Settings
-
-import Foundation as X
-import Model as X
+import Foundation               as X
+import Model                    as X
+import Test.Hspec               as X
+import Yesod.Default.Config2    (ignoreEnv, loadAppSettings)
+import Yesod.Test               as X
 
 runDB :: Action IO a -> YesodExample App a
 runDB action = do
