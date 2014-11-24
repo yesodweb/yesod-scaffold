@@ -6,7 +6,7 @@ module Application
     , makeFoundation
     ) where
 
-import Import hiding (applyEnv)
+import Import
 import Yesod.Auth
 import Network.Wai.Middleware.RequestLogger
     ( mkRequestLogger, outputFormat, OutputFormat (..), IPAddrSource (..), destination
