@@ -9,6 +9,7 @@ import Database.Persist         as X hiding (get)
 import Database.Persist.MongoDB hiding (master)
 import Foundation               as X
 import Model                    as X
+import Settings                 (appDatabaseConf)
 import Test.Hspec               as X
 import Yesod.Default.Config2    (ignoreEnv, loadAppSettings)
 import Yesod.Test               as X
