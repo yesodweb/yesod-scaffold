@@ -1,10 +1,15 @@
--- | Development version to be run inside GHCi.
+-- | Running your app inside GHCi.
 --
--- start this up with:
+-- To start up GHCi for usage with Yesod, first make sure you are in dev mode:
 --
--- cabal repl --ghc-options="-O0 -fobject-code"
+-- > cabal configure -fdev
 --
--- run with:
+-- Note that @yesod devel@ automatically sets the dev flag.
+-- Now launch the repl:
+--
+-- > cabal repl --ghc-options="-O0 -fobject-code"
+--
+-- To start your app, run:
 --
 -- > :l DevelMain
 -- > DevelMain.update
@@ -12,7 +17,7 @@
 -- You can also call @DevelMain.shutdown@ to stop the app
 --
 -- You will need to add the foreign-store package to your .cabal file.
--- It is very light-weight
+-- It is very light-weight.
 --
 -- If you don't use cabal repl, you will need
 -- to run the following in GHCi or to add it to
