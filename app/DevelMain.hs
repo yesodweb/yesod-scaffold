@@ -74,6 +74,9 @@ update = do
     start done = do
         (port, site, app) <- getApplicationRepl
         forkIO (finally (runSettings (setPort port defaultSettings) app)
+                        -- Note that this implies concurrency
+                        -- between shutdownApp and the next app that is starting.
+                        -- Normally this should be fine
                         (putMVar done () >> shutdownApp site))
 
 -- | kill the server
@@ -94,4 +97,3 @@ modifyStoredIORef :: Store (IORef a) -> (a -> IO a) -> IO ()
 modifyStoredIORef store f = withStore store $ \ref -> do
     v <- readIORef ref
     f v >>= writeIORef ref
-
