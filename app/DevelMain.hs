@@ -55,16 +55,17 @@ update = do
           _ <- storeAction (Store tidStoreNum) (newIORef tid)
           return ()
       -- server is already running
-      Just tidStore -> shutdownThread tidStore
+      Just tidStore -> restartAppInNewThread tidStore
   where
     doneStore :: Store (MVar ())
     doneStore = Store 0
 
     -- shut the server down with killThread and wait for the done signal
-    shutdownThread :: Store (IORef ThreadId) -> IO ()
-    shutdownThread tidStore = modifyStoredIORef tidStore $ \tid -> do
+    restartAppInNewThread :: Store (IORef ThreadId) -> IO ()
+    restartAppInNewThread tidStore = modifyStoredIORef tidStore $ \tid -> do
         killThread tid
-        withStore doneStore takeMVar >> readStore doneStore >>= start
+        withStore doneStore takeMVar
+        readStore doneStore >>= start
 
 
     -- | Start the server in a separate thread.
