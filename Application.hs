@@ -21,6 +21,9 @@ import Network.Wai.Middleware.RequestLogger (Destination (Logger),
                                              mkRequestLogger, outputFormat)
 import System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet,
                                              toLogStr)
+import GHC.Conc.Sync                        (setUncaughtExceptionHandler,
+                                             getUncaughtExceptionHandler)
+
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
@@ -38,6 +41,13 @@ mkYesodDispatch "App" resourcesApp
 -- migrations handled by Yesod.
 makeFoundation :: AppSettings -> IO App
 makeFoundation appSettings = do
+    -- A relatively unkown GHC feature
+    -- This can be particularly useful for reporting initialization errors
+    origHandler <- getUncaughtExceptionHandler
+    setUncaughtExceptionHandler $ \ex -> do
+        putStrLn $ "[crash] " <> tshow ex
+        origHandler ex
+
     -- Some basic initializations: HTTP connection manager, logger, and static
     -- subsite.
     appHttpManager <- newManager
