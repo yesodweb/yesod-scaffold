@@ -3,8 +3,8 @@ module Foundation where
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Import.NoFoundation
 import Text.Hamlet          (hamletFile)
-import Yesod.Auth
 import Yesod.Auth.BrowserId (authBrowserId)
+import Yesod.Core.Types     (Logger)
 import Yesod.Default.Util   (addStaticContentExternal)
 import Yesod.Fay
 
