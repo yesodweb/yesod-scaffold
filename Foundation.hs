@@ -1,14 +1,10 @@
 module Foundation where
 
-import ClassyPrelude.Yesod
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
-import Model
-import Settings
-import Settings.StaticFiles
+import Import.NoFoundation
 import Text.Hamlet          (hamletFile)
 import Yesod.Auth
 import Yesod.Auth.BrowserId (authBrowserId)
-import Yesod.Core.Types     (Logger)
 import Yesod.Default.Util   (addStaticContentExternal)
 import Yesod.Fay
 
