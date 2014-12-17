@@ -1,13 +1,9 @@
 module Foundation where
 
-import ClassyPrelude.Yesod
 import Database.Persist.MongoDB hiding (master)
-import Model
-import Settings
-import Settings.StaticFiles
+import Import.NoFoundation
 import Text.Hamlet              (hamletFile)
 import Text.Jasmine             (minifym)
-import Yesod.Auth
 import Yesod.Auth.BrowserId     (authBrowserId)
 import Yesod.Core.Types         (Logger)
 import Yesod.Default.Util       (addStaticContentExternal)
