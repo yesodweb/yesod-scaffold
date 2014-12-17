@@ -3,6 +3,7 @@ module Foundation where
 import Import.NoFoundation
 import Text.Hamlet         (hamletFile)
 import Text.Jasmine        (minifym)
+import Yesod.Core.Types    (Logger)
 import Yesod.Default.Util  (addStaticContentExternal)
 
 -- | The foundation datatype for your application. This can be a good place to
