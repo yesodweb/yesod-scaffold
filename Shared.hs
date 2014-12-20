@@ -8,7 +8,9 @@ import Text.ProjectTemplate (createTemplate)
 import Filesystem (createTree)
 
 branches :: [Text]
-branches = ["postgres", "sqlite", "mysql", "mongo", "simple", "postgres-fay"]
+branches = [ "postgres", "sqlite", "mysql", "mongo", "simple", "postgres-fay"
+           , "minimal"
+           ]
 
 master :: Text
 master = "postgres"
