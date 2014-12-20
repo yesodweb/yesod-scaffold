@@ -1,0 +1,20 @@
+name:               PROJECTNAME
+version:            0.0.0
+cabal-version:      >= 1.8
+build-type:         Simple
+extra-source-files: routes
+
+executable          PROJECTNAME
+  main-is:          Main.hs
+  other-modules:    Application
+                    Foundation
+
+                    Add
+                    Home
+
+  ghc-options:      -Wall -fwarn-tabs -O2
+
+  build-depends:  base
+                , yesod
+
+  ghc-options:    -threaded -O2 -rtsopts -with-rtsopts=-N
