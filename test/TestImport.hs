@@ -6,7 +6,7 @@ module TestImport
 import Application           (makeFoundation)
 import ClassyPrelude         as X
 import Database.Persist      as X hiding (get)
-import Database.Persist.Sql  (SqlPersistM, runSqlPersistMPool)
+import Database.Persist.Sql  (SqlPersistM, SqlBackend, runSqlPersistMPool, rawExecute, rawSql, unSingle)
 import Foundation            as X
 import Model                 as X
 import Test.Hspec            as X
@@ -24,4 +24,21 @@ withApp = before $ do
         ["config/test-settings.yml", "config/settings.yml"]
         []
         ignoreEnv
-    makeFoundation settings
+    foundation <- makeFoundation settings
+    wipeDB foundation
+    return foundation
+
+wipeDB :: App -> IO ()
+wipeDB foundation = do
+    let pool = appConnPool foundation
+    flip runSqlPersistMPool pool $ do
+        tables <- getTables
+        let quotedTables = map (\s -> "\"" ++ s ++ "\"") tables
+            query = "TRUNCATE TABLE " ++ (intercalate ", " quotedTables)
+        rawExecute query []
+    return ()
+
+getTables :: MonadIO m => ReaderT SqlBackend m [Text]
+getTables = do
+    tables <- rawSql "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';" []
+    return $ map unSingle tables
