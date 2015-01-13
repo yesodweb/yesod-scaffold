@@ -13,6 +13,10 @@ import Settings                 (appDatabaseConf)
 import Test.Hspec               as X
 import Yesod.Default.Config2    (ignoreEnv, loadAppSettings)
 import Yesod.Test               as X
+-- Wiping the test database
+import Database.MongoDB.Query (allCollections)
+import Database.MongoDB.Admin (dropCollection)
+import Control.Monad.Trans.Control (MonadBaseControl)
 
 runDB :: Action IO a -> YesodExample App a
 runDB action = do
@@ -28,4 +32,19 @@ withApp = before $ do
         ["config/test-settings.yml", "config/settings.yml"]
         []
         ignoreEnv
-    makeFoundation settings
+    app <- makeFoundation settings
+    wipeDB app
+    return app
+
+wipeDB :: App -> IO ()
+wipeDB app = do
+    void $ runMongoDBPool
+        (mgAccessMode $ appDatabaseConf $ appSettings app)
+        (dropAllCollections)
+        (appConnPool app)
+
+dropAllCollections :: (MonadIO m, MonadBaseControl IO m) => Action m [Bool]
+dropAllCollections = allCollections >>= return . filter (not . isSystemCollection) >>= mapM dropCollection
+      where
+        isSystemCollection = isPrefixOf "system."
+
