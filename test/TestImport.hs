@@ -15,8 +15,12 @@ import Yesod.Test            as X
 
 runDB :: SqlPersistM a -> YesodExample App a
 runDB query = do
-    pool <- fmap appConnPool getTestYesod
-    liftIO $ runSqlPersistMPool query pool
+    app <- getTestYesod
+    liftIO $ runDBWithApp app query
+
+runDBWithApp :: App -> SqlPersistM a -> IO a
+runDBWithApp app query = runSqlPersistMPool query (appConnPool app)
+
 
 withApp :: SpecWith App -> Spec
 withApp = before $ do
@@ -28,12 +32,14 @@ withApp = before $ do
     wipeDB foundation
     return foundation
 
+-- This function will truncate all of the tables in your database.
+-- 'withApp' calls it before each test, creating a clean environment for each
+-- spec to run in.
 wipeDB :: App -> IO ()
-wipeDB foundation = do
-    let pool = appConnPool foundation
-    flip runSqlPersistMPool pool $ do
+wipeDB app = do
+    runDBWithApp app $ do
         tables <- getTables
-        let quotedTables = map (\s -> "\"" ++ s ++ "\"") tables
+        let quotedTables = map (\s -> "\"" ++ s ++ "\"") tables -- Words like 'user' are reserved words Postgres, so a query like `TRUNCATE TABLE user` needs to be written as `TRUNCATE TABLE "user"`.
             query = "TRUNCATE TABLE " ++ (intercalate ", " quotedTables)
         rawExecute query []
     return ()
