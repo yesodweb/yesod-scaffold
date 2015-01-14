@@ -6,7 +6,7 @@ module TestImport
 import Application           (makeFoundation)
 import ClassyPrelude         as X
 import Database.Persist      as X hiding (get)
-import Database.Persist.Sql  (SqlPersistM, SqlBackend, runSqlPersistMPool, rawExecute, rawSql, unSingle)
+import Database.Persist.Sql  (SqlPersistM, SqlBackend, runSqlPersistMPool, rawExecute, rawSql, unSingle, connEscapeName)
 import Foundation            as X
 import Model                 as X
 import Test.Hspec            as X
@@ -38,7 +38,8 @@ wipeDB :: App -> IO ()
 wipeDB app = do
     runDBWithApp app $ do
         tables <- getTables
-        let queries = map ("TRUNCATE TABLE " ++ ) tables
+        sqlBackend <- ask
+        let queries = map (\t -> "TRUNCATE TABLE " ++ (connEscapeName sqlBackend $ DBName t)) tables
 
         -- In MySQL, a table cannot be truncated if another table references it via foreign key.
         -- Since we're wiping both the parent and child tables, though, it's safe
