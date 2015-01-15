@@ -6,7 +6,7 @@ module TestImport
 import Application           (makeFoundation)
 import ClassyPrelude         as X
 import Database.Persist      as X hiding (get)
-import Database.Persist.Sql  (SqlPersistM, SqlBackend, runSqlPersistMPool, rawExecute, rawSql, unSingle)
+import Database.Persist.Sql  (SqlPersistM, SqlBackend, runSqlPersistMPool, rawExecute, rawSql, unSingle, connEscapeName)
 import Foundation            as X
 import Model                 as X
 import Test.Hspec            as X
@@ -39,10 +39,11 @@ wipeDB :: App -> IO ()
 wipeDB app = do
     runDBWithApp app $ do
         tables <- getTables
-        let quotedTables = map (\s -> "\"" ++ s ++ "\"") tables -- Words like 'user' are reserved words Postgres, so a query like `TRUNCATE TABLE user` needs to be written as `TRUNCATE TABLE "user"`.
-            query = "TRUNCATE TABLE " ++ (intercalate ", " quotedTables)
+        sqlBackend <- ask
+
+        let escapedTables = map (connEscapeName sqlBackend . DBName) tables
+            query = "TRUNCATE TABLE " ++ (intercalate ", " escapedTables)
         rawExecute query []
-    return ()
 
 getTables :: MonadIO m => ReaderT SqlBackend m [Text]
 getTables = do
