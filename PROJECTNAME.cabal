@@ -127,3 +127,5 @@ test-suite test
                  , hspec
                  , classy-prelude
                  , classy-prelude-yesod
+                 , mongoDB
+                 , monad-control
