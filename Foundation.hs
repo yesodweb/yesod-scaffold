@@ -1,11 +1,12 @@
 module Foundation where
 
-import Database.Persist.Sql (ConnectionPool, runSqlPool)
+import Database.Persist.Sql        (ConnectionPool, runSqlPool)
 import Import.NoFoundation
-import Text.Hamlet          (hamletFile)
-import Yesod.Auth.BrowserId (authBrowserId)
-import Yesod.Core.Types     (Logger)
-import Yesod.Default.Util   (addStaticContentExternal)
+import Text.Hamlet                 (hamletFile)
+import Yesod.Auth.BrowserId        (authBrowserId)
+import qualified Yesod.Core.Unsafe as Unsafe
+import Yesod.Core.Types            (Logger)
+import Yesod.Default.Util          (addStaticContentExternal)
 import Yesod.Fay
 
 -- | The foundation datatype for your application. This can be a good place to
@@ -151,6 +152,9 @@ instance YesodAuthPersist App
 -- achieve customized and internationalized form validation messages.
 instance RenderMessage App FormMessage where
     renderMessage _ _ = defaultFormMessage
+
+unsafeHandler :: App -> Handler a -> IO a
+unsafeHandler = Unsafe.fakeHandlerGetLogger appLogger
 
 -- Note: Some functionality previously present in the scaffolding has been
 -- moved to documentation in the Wiki. Following are some hopefully helpful

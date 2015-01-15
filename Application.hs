@@ -4,6 +4,12 @@ module Application
     , appMain
     , develMain
     , makeFoundation
+    -- * for DevelMain
+    , getApplicationRepl
+    , shutdownApp
+    -- * for GHCI
+    , handler
+    , db
     ) where
 
 import Control.Monad.Logger                 (liftLoc, runLoggingT)
@@ -14,7 +20,7 @@ import Language.Haskell.TH.Syntax           (qLocation)
 import Network.Wai.Handler.Warp             (Settings, defaultSettings,
                                              defaultShouldDisplayException,
                                              runSettings, setHost,
-                                             setOnException, setPort)
+                                             setOnException, setPort, getPort)
 import Network.Wai.Middleware.RequestLogger (Destination (Logger),
                                              IPAddrSource (..),
                                              OutputFormat (..), destination,
@@ -106,11 +112,14 @@ warpSettings foundation =
 -- | For yesod devel, return the Warp settings and WAI Application.
 getApplicationDev :: IO (Settings, Application)
 getApplicationDev = do
-    settings <- loadAppSettings [configSettingsYml] [] useEnv
+    settings <- getAppSettings
     foundation <- makeFoundation settings
-    app <- makeApplication foundation
     wsettings <- getDevSettings $ warpSettings foundation
+    app <- makeApplication foundation
     return (wsettings, app)
+
+getAppSettings :: IO AppSettings
+getAppSettings = loadAppSettings [configSettingsYml] [] useEnv
 
 -- | main function for use by yesod devel
 develMain :: IO ()
@@ -135,3 +144,31 @@ appMain = do
 
     -- Run the application with Warp
     runSettings (warpSettings foundation) app
+
+
+--------------------------------------------------------------
+-- Functions for DevelMain.hs (a way to run the app from GHCi)
+--------------------------------------------------------------
+getApplicationRepl :: IO (Int, App, Application)
+getApplicationRepl = do
+    settings <- getAppSettings
+    foundation <- makeFoundation settings
+    wsettings <- getDevSettings $ warpSettings foundation
+    app1 <- makeApplication foundation
+    return (getPort wsettings, foundation, app1)
+
+shutdownApp :: App -> IO ()
+shutdownApp _ = return ()
+
+
+---------------------------------------------
+-- Functions for use in development with GHCi
+---------------------------------------------
+
+-- | Run a handler
+handler :: Handler a -> IO a
+handler h = getAppSettings >>= makeFoundation >>= flip unsafeHandler h
+
+-- | Run DB queries
+db :: ReaderT SqlBackend (HandlerT App IO) a -> IO a
+db = handler . runDB
