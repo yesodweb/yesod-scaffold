@@ -43,7 +43,7 @@ wipeDB app = do
     -- In order to wipe the database, we need to temporarily disable foreign key checks.
     -- Unfortunately, disabling FK checks in a transaction is a noop in SQLite.
     -- Normal Persistent functions will wrap your SQL in a transaction,
-    -- so we create a raw SQLite connection, disable foreign keys, and wipe it.
+    -- so we create a raw SQLite connection to disable foreign keys.
     -- Foreign key checks are per-connection, so this won't effect queries outside this function.
 
     -- Aside: SQLite by default *does not enable foreign key checks*
