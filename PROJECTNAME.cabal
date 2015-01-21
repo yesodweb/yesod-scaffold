@@ -114,6 +114,6 @@ test-suite test
                  , yesod-test >= 1.4.2 && < 1.5
                  , yesod-core
                  , yesod
-                 , hspec
+                 , hspec >= 2.0.0
                  , classy-prelude
                  , classy-prelude-yesod
