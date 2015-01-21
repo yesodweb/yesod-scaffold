@@ -124,6 +124,6 @@ test-suite test
                  , resourcet
                  , monad-logger
                  , transformers
-                 , hspec
+                 , hspec >= 2.0.0
                  , classy-prelude
                  , classy-prelude-yesod
