@@ -12,7 +12,7 @@ spec = withApp $ do
         request $ do
             setMethod "POST"
             setUrl HomeR
-            addNonce
+            addToken
             fileByLabel "Choose a file" "test/Spec.hs" "text/plain" -- talk about self-reference
             byLabel "What's on the file?" "Some Content"
 
