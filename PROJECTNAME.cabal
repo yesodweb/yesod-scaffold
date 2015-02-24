@@ -15,6 +15,6 @@ executable          PROJECTNAME
   ghc-options:      -Wall -fwarn-tabs -O2
 
   build-depends:  base
-                , yesod
+                , yesod-core
 
   ghc-options:    -threaded -O2 -rtsopts -with-rtsopts=-N

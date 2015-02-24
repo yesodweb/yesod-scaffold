@@ -3,7 +3,7 @@
 module Add where
 
 import Foundation
-import Yesod
+import Yesod.Core
 
 getAddR :: Int -> Int -> Handler TypedContent
 getAddR x y = selectRep $ do
