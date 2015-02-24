@@ -4,7 +4,7 @@
 {-# LANGUAGE ViewPatterns      #-}
 module Foundation where
 
-import Yesod
+import Yesod.Core
 
 data App = App
 

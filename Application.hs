@@ -4,7 +4,7 @@
 module Application where
 
 import Foundation
-import Yesod
+import Yesod.Core
 
 import Add
 import Home

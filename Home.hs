@@ -3,7 +3,7 @@
 module Home where
 
 import Foundation
-import Yesod
+import Yesod.Core
 
 getHomeR :: Handler Html
 getHomeR = defaultLayout $ do
