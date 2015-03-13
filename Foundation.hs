@@ -1,7 +1,6 @@
 module Foundation where
 
 import Import.NoFoundation
-import Control.Applicative  ((<$>))
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Text.Hamlet          (hamletFile)
 import Text.Jasmine         (minifym)
