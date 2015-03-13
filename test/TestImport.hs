@@ -36,14 +36,13 @@ withApp = before $ do
 -- 'withApp' calls it before each test, creating a clean environment for each
 -- spec to run in.
 wipeDB :: App -> IO ()
-wipeDB app = do
-    runDBWithApp app $ do
-        tables <- getTables
-        sqlBackend <- ask
+wipeDB app = runDBWithApp app $ do
+    tables <- getTables
+    sqlBackend <- ask
 
-        let escapedTables = map (connEscapeName sqlBackend . DBName) tables
-            query = "TRUNCATE TABLE " ++ (intercalate ", " escapedTables)
-        rawExecute query []
+    let escapedTables = map (connEscapeName sqlBackend . DBName) tables
+        query = "TRUNCATE TABLE " ++ intercalate ", " escapedTables
+    rawExecute query []
 
 getTables :: MonadIO m => ReaderT SqlBackend m [Text]
 getTables = do
