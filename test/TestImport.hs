@@ -9,8 +9,8 @@ import Database.Persist      as X hiding (get)
 import Database.Persist.Sql  (SqlPersistM, SqlBackend, runSqlPersistMPool, rawExecute, rawSql, unSingle, connEscapeName)
 import Foundation            as X
 import Model                 as X
-import Text.Shakespeare.Text (st)
 import Test.Hspec            as X
+import Text.Shakespeare.Text (st)
 import Yesod.Default.Config2 (ignoreEnv, loadAppSettings)
 import Yesod.Test            as X
 
