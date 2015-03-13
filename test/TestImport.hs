@@ -9,6 +9,7 @@ import Database.Persist      as X hiding (get)
 import Database.Persist.Sql  (SqlPersistM, SqlBackend, runSqlPersistMPool, rawExecute, rawSql, unSingle, connEscapeName)
 import Foundation            as X
 import Model                 as X
+import Text.Shakespeare.Text (st)
 import Test.Hspec            as X
 import Yesod.Default.Config2 (ignoreEnv, loadAppSettings)
 import Yesod.Test            as X
@@ -46,5 +47,10 @@ wipeDB app = runDBWithApp app $ do
 
 getTables :: MonadIO m => ReaderT SqlBackend m [Text]
 getTables = do
-    tables <- rawSql "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';" []
+    tables <- rawSql [st|
+        SELECT table_name
+        FROM information_schema.tables
+        WHERE table_schema = 'public';
+    |] []
+
     return $ map unSingle tables
