@@ -11,7 +11,7 @@ spec = withApp $ do
         it "has correct User-agent" $ do
             get RobotsR
             bodyContains "User-agent: *"
-    describe "favicon.ico" $
+    describe "favicon.ico" $ do
         it "gives a 200" $ do
             get FaviconR
             statusIs 200
