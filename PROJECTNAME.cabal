@@ -123,6 +123,7 @@ test-suite test
                  , persistent-postgresql
                  , resourcet
                  , monad-logger
+                 , shakespeare
                  , transformers
                  , hspec >= 2.0.0
                  , classy-prelude
