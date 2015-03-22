@@ -7,7 +7,6 @@ import Application           (makeFoundation)
 import ClassyPrelude         as X
 import Foundation            as X
 import Test.Hspec            as X
-import Text.Shakespeare.Text (st)
 import Yesod.Default.Config2 (ignoreEnv, loadAppSettings)
 import Yesod.Test            as X
 
