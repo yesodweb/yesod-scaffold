@@ -10,6 +10,7 @@ import Database.Persist.Sql  (SqlPersistM, SqlBackend, runSqlPersistMPool, rawEx
 import Foundation            as X
 import Model                 as X
 import Test.Hspec            as X
+import Text.Shakespeare.Text (st)
 import Yesod.Default.Config2 (ignoreEnv, loadAppSettings)
 import Yesod.Test            as X
 
@@ -36,16 +37,20 @@ withApp = before $ do
 -- 'withApp' calls it before each test, creating a clean environment for each
 -- spec to run in.
 wipeDB :: App -> IO ()
-wipeDB app = do
-    runDBWithApp app $ do
-        tables <- getTables
-        sqlBackend <- ask
+wipeDB app = runDBWithApp app $ do
+    tables <- getTables
+    sqlBackend <- ask
 
-        let escapedTables = map (connEscapeName sqlBackend . DBName) tables
-            query = "TRUNCATE TABLE " ++ (intercalate ", " escapedTables)
-        rawExecute query []
+    let escapedTables = map (connEscapeName sqlBackend . DBName) tables
+        query = "TRUNCATE TABLE " ++ intercalate ", " escapedTables
+    rawExecute query []
 
 getTables :: MonadIO m => ReaderT SqlBackend m [Text]
 getTables = do
-    tables <- rawSql "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';" []
+    tables <- rawSql [st|
+        SELECT table_name
+        FROM information_schema.tables
+        WHERE table_schema = 'public';
+    |] []
+
     return $ map unSingle tables

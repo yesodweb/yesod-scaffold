@@ -22,6 +22,7 @@
 
   <li ##{aDomId}>If you had javascript enabled then you wouldn't be seeing this.
 
+  <hr />
   <li #form>
     This is an example trivial Form. Read the #
     \<a href="http://www.yesodweb.com/book/forms">Forms chapter<span class="glyphicon glyphicon-bookmark"></span></a> #
@@ -33,6 +34,7 @@
       ^{formWidget}
       <button .btn .btn-primary type="submit">
          Send it! <span class="glyphicon glyphicon-upload"></span>
+  <hr />
 
   <li> And last but not least, Testing. In <em>tests/main.hs</em> you will find a #
     test suite that performs tests on this page. #
