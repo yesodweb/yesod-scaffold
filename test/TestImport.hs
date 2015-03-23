@@ -35,19 +35,17 @@ withApp = before $ do
 -- 'withApp' calls it before each test, creating a clean environment for each
 -- spec to run in.
 wipeDB :: App -> IO ()
-wipeDB app = do
-    runDBWithApp app $ do
-        tables <- getTables
-        sqlBackend <- ask
-        let queries = map (\t -> "TRUNCATE TABLE " ++ (connEscapeName sqlBackend $ DBName t)) tables
+wipeDB app = runDBWithApp app $ do
+    tables <- getTables
+    sqlBackend <- ask
+    let queries = map (\t -> "TRUNCATE TABLE " ++ connEscapeName sqlBackend (DBName t)) tables
 
-        -- In MySQL, a table cannot be truncated if another table references it via foreign key.
-        -- Since we're wiping both the parent and child tables, though, it's safe
-        -- to temporarily disable this check.
-        rawExecute "SET foreign_key_checks = 0;" []
-        forM_ queries (\q -> rawExecute q [])
-        rawExecute "SET foreign_key_checks = 1;" []
-    return ()
+    -- In MySQL, a table cannot be truncated if another table references it via foreign key.
+    -- Since we're wiping both the parent and child tables, though, it's safe
+    -- to temporarily disable this check.
+    rawExecute "SET foreign_key_checks = 0;" []
+    forM_ queries (\q -> rawExecute q [])
+    rawExecute "SET foreign_key_checks = 1;" []
 
 getTables :: MonadIO m => ReaderT SqlBackend m [Text]
 getTables = do
