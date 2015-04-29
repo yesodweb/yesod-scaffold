@@ -1,2 +1,2 @@
 database:
-  database: PROJECTNAME_test
+  database: PROJECTNAME_LOWER_test
