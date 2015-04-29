@@ -3,8 +3,8 @@
 sudo apt-get install postgresql mysql-server -y
 
 sudo -u postgres psql <<EOF
-CREATE USER "PROJECTNAME" password 'PROJECTNAME';
-CREATE DATABASE "PROJECTNAME_test" OWNER "PROJECTNAME";
+CREATE USER "PROJECTNAME_LOWER" password 'PROJECTNAME';
+CREATE DATABASE "PROJECTNAME_LOWER_test" OWNER "PROJECTNAME";
 EOF
 
 sudo mysql -u root -p <<EOF
