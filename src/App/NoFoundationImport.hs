@@ -1,4 +1,4 @@
-module Import.NoFoundation
+module App.NoFoundationImport
     ( module Import
     ) where
 
