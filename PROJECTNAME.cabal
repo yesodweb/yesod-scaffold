@@ -20,6 +20,7 @@ library
                    , App.Handler
                    , App.NoFoundationImport
                    , App.Route.Common.Handler
+                   , App.Route.Home.Form
                    , App.Route.Home.Handler
                    , Application
                    , Foundation
@@ -43,6 +44,7 @@ library
               , NoMonomorphismRestriction
               , OverloadedStrings
               , QuasiQuotes
+              , RankNTypes
               , RecordWildCards
               , TemplateHaskell
               , TupleSections
