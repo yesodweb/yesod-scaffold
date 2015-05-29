@@ -1,6 +1,6 @@
 module Foundation where
 
-import Import.NoFoundation
+import App.NoFoundationImport
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Text.Hamlet          (hamletFile)
 import Text.Jasmine         (minifym)
@@ -32,9 +32,6 @@ instance HasHttpManager App where
 -- generates the rest of the code. Please see the linked documentation for an
 -- explanation for this split.
 mkYesodData "App" $(parseRoutesFile "config/routes")
-
--- | A convenient synonym for creating forms.
-type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
 
 -- Please see the documentation for the Yesod typeclass. There are a number
 -- of settings which can be configured by overriding methods here.
