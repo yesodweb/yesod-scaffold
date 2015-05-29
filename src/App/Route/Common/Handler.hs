@@ -1,5 +1,5 @@
 -- | Common handler functions.
-module Handler.Common where
+module App.Route.Common.Handler where
 
 import App.FoundationImport
 import Data.FileEmbed (embedFile)

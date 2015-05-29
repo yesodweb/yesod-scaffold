@@ -1,4 +1,4 @@
-module Model where
+module App.DB.Model where
 
 import ClassyPrelude.Yesod
 import Database.Persist.Quasi

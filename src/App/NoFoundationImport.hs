@@ -3,7 +3,8 @@ module App.NoFoundationImport
     ) where
 
 import ClassyPrelude.Yesod   as Import
-import Model                 as Import
+
+import App.DB.Model          as Import
 import Settings              as Import
 import Settings.StaticFiles  as Import
 import Yesod.Auth            as Import

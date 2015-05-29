@@ -1,4 +1,4 @@
-module Handler.Home where
+module App.Route.Home.Handler where
 
 import App.FoundationImport
 import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3,

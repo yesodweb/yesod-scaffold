@@ -15,13 +15,14 @@ library
     hs-source-dirs: app
                   , src
 
-    exposed-modules: App.FoundationImport
+    exposed-modules: App.DB.Model
+                   , App.FoundationImport
+                   , App.Handler
                    , App.NoFoundationImport
+                   , App.Route.Common.Handler
+                   , App.Route.Home.Handler
                    , Application
                    , Foundation
-                   , Handler.Common
-                   , Handler.Home
-                   , Model
                    , Settings
                    , Settings.StaticFiles
 
