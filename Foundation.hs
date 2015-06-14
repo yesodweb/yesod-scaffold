@@ -4,6 +4,7 @@ import Database.Persist.Sql        (ConnectionPool, runSqlPool)
 import Import.NoFoundation
 import Text.Hamlet                 (hamletFile)
 import Yesod.Auth.BrowserId        (authBrowserId)
+import Yesod.Auth.Message          (AuthMessage (InvalidLogin))
 import qualified Yesod.Core.Unsafe as Unsafe
 import Yesod.Core.Types            (Logger)
 import Yesod.Default.Util          (addStaticContentExternal)
