@@ -5,6 +5,7 @@ import Import.NoFoundation
 import Text.Hamlet                 (hamletFile)
 import Text.Jasmine                (minifym)
 import Yesod.Auth.BrowserId        (authBrowserId)
+import Yesod.Auth.Message          (AuthMessage (InvalidLogin))
 import Yesod.Core.Types            (Logger)
 import Yesod.Default.Util          (addStaticContentExternal)
 import qualified Yesod.Core.Unsafe as Unsafe
