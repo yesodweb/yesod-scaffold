@@ -76,7 +76,7 @@ makeFoundation appSettings = do
     return $ mkFoundation pool
 
 -- | Convert our foundation to a WAI Application by calling @toWaiAppPlain@ and
--- applyng some additional middlewares.
+-- applying some additional middlewares.
 makeApplication :: App -> IO Application
 makeApplication foundation = do
     logWare <- mkRequestLogger def
