@@ -39,7 +39,7 @@ import Handler.Home
 mkYesodDispatch "App" resourcesApp
 
 -- | This function allocates resources (such as a database connection pool),
--- performs initialization and return a foundation datatype value. This is also
+-- performs initialization and returns a foundation datatype value. This is also
 -- the place to put your migrate statements to have automatic database
 -- migrations handled by Yesod.
 makeFoundation :: AppSettings -> IO App
