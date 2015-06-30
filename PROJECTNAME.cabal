@@ -39,6 +39,7 @@ library
                 GADTs
                 GeneralizedNewtypeDeriving
                 FlexibleContexts
+                FlexibleInstances
                 EmptyDataDecls
                 NoMonomorphismRestriction
                 DeriveDataTypeable
@@ -108,6 +109,7 @@ test-suite test
                 GADTs
                 GeneralizedNewtypeDeriving
                 FlexibleContexts
+                FlexibleInstances
                 EmptyDataDecls
                 NoMonomorphismRestriction
                 DeriveDataTypeable
