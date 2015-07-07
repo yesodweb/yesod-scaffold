@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+if [ "$#" -ne 1 ]
+then
+  echo "Please give the lowercase project name (without spaces) as the argument."
+  exit 1
+fi
+
+NAME="$1"
+echo "Project is named: $1"
+
+echo "Renaming the cabal file"
+mv switchfoo.cabal "${NAME}.cabal"
+
+echo "Replacing occurrences of switchfoo and switchfoo"
+find ./ -type f -exec sed -i -e "s/switchfoo/$NAME/g" {} \;
+find ./ -type f -exec sed -i -e "s/switchfoo/$NAME/g" {} \;
+

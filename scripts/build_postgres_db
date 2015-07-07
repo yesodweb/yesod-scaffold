@@ -1,0 +1,35 @@
+#!/bin/bash
+set -e
+
+if [ "$#" -ne 1 ]
+then
+  echo "Please give the lowercase project name (without spaces) as the argument."
+  exit 1
+fi
+
+NAME="$1"
+echo "Project is named: $1"
+
+echo "Creating database"
+sudo -u postgres psql -U postgres -c " \
+	CREATE DATABASE $NAME;"
+
+echo "Creating user and setting permissions"
+sudo -u postgres psql -U postgres -d $NAME -c " \
+	CREATE USER $NAME WITH PASSWORD '$NAME' ;\
+	CREATE SCHEMA $NAME; \
+	ALTER SCHEMA $NAME OWNER TO $NAME; \
+	ALTER DATABASE $NAME OWNER TO $NAME; \
+        "
+echo "==============="
+echo "Complete. Yeah!"
+echo "==============="
+echo "Now, you must edit pg_hba.conf and add this line to the right place."
+echo "This script won't do it for you because I don't want to mess up"
+echo "anyone's postgres install."
+echo ""
+echo "host    all             $NAME        127.0.0.1/32            md5"
+echo ""
+echo "If you cannot find the file, please run the following:"
+echo "  find /etc/postgresql -name pg_hba.conf"
+
