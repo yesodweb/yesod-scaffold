@@ -34,6 +34,6 @@ started:
     mv postgres-no-compile-time-settings-no-devel appalot
     cd appalot
     ./scripts/name_project appalot
-    ./scripts/build_postgres_db appalot
+    sudo ./scripts/build_postgres_db appalot
 
 This will create you postgres database, schema, and user as well.
