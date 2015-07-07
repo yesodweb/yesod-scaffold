@@ -1,13 +1,17 @@
 module Foundation where
 
 import Import.NoFoundation
-import Database.Persist.Sql (ConnectionPool, runSqlPool)
-import Text.Hamlet          (hamletFile)
-import Text.Jasmine         (minifym)
-import Yesod.Auth.BrowserId (authBrowserId)
-import Yesod.Auth.Message   (AuthMessage (InvalidLogin))
-import Yesod.Default.Util   (addStaticContentExternal)
-import Yesod.Core.Types     (Logger)
+import Database.Persist.Sql        (ConnectionPool, runSqlPool)
+import Text.Hamlet                 (hamletFile)
+import Text.Jasmine                (minifym)
+import Yesod.Auth.BrowserId        (authBrowserId)
+import Yesod.Auth.Message          (AuthMessage (InvalidLogin))
+import Yesod.Default.Util          (addStaticContentExternal)
+import Yesod.Core.Types            (Logger)
+import Network.HTTP.Client.Conduit (HasHttpManager(..))
+import Network.HTTP.Client         (Manager)
+import Yesod.Static                (base64md5)
+import Data.Default                (def)
 import qualified Yesod.Core.Unsafe as Unsafe
 
 -- | The foundation datatype for your application. This can be a good place to
@@ -40,6 +44,19 @@ mkYesodData "App" $(parseRoutesFile "config/routes")
 
 -- | A convenient synonym for creating forms.
 type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
+type DB x = (MonadIO m, Functor m) => ReaderT SqlBackend m x
+
+defaultLayoutWrapper :: PageContent (Route App) -> Handler Html
+defaultLayoutWrapper pc = do
+  master <- getYesod
+  withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
+
+addBootstrap :: Widget
+addBootstrap = do
+  addStylesheet $ StaticR css_bootstrap_css
+  addStylesheet $ StaticR css_bootstrap_theme_css
+  addScript $ StaticR js_jquery_2_1_4_js
+  addScript $ StaticR js_bootstrap_js
 
 -- Please see the documentation for the Yesod typeclass. There are a number
 -- of settings which can be configured by overriding methods here.
@@ -55,7 +72,6 @@ instance Yesod App where
         "config/client_session_key.aes"
 
     defaultLayout widget = do
-        master <- getYesod
         mmsg <- getMessage
 
         -- We break up the default layout into two components:
@@ -65,9 +81,9 @@ instance Yesod App where
         -- you to use normal widget features in default-layout.
 
         pc <- widgetToPageContent $ do
-            addStylesheet $ StaticR css_bootstrap_css
+            addBootstrap
             $(widgetFile "default-layout")
-        withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
+        defaultLayoutWrapper pc
 
     -- The page to be redirected to when authentication is required.
     authRoute _ = Just $ AuthR LoginR
@@ -84,8 +100,7 @@ instance Yesod App where
     -- expiration dates to be set far in the future without worry of
     -- users receiving stale content.
     addStaticContent ext mime content = do
-        master <- getYesod
-        let staticDir = appStaticDir $ appSettings master
+        _master <- getYesod
         addStaticContentExternal
             minifym
             genFileName

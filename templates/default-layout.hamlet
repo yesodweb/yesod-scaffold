@@ -1,3 +1,5 @@
+<h1>Default Layout
+<hr>
 $maybe msg <- mmsg
   <div #message>#{msg}
 ^{widget}

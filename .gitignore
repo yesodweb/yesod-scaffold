@@ -15,3 +15,5 @@ cabal.sandbox.config
 .DS_Store
 *.swp
 *.keter
+stack.yaml
+.stack-work/
