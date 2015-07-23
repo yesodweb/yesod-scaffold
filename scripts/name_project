@@ -11,9 +11,9 @@ NAME="$1"
 echo "Project is named: $1"
 
 echo "Renaming the cabal file"
-mv switchfoo.cabal "${NAME}.cabal"
+mv PROJECTNAME.cabal "${NAME}.cabal"
 
-echo "Replacing occurrences of switchfoo and switchfoo"
-find ./ -type f -exec sed -i -e "s/switchfoo/$NAME/g" {} \;
-find ./ -type f -exec sed -i -e "s/switchfoo/$NAME/g" {} \;
+echo "Replacing occurrences of PROJECTNAME"
+find ./ -type f -exec sed -i -e "s/PROJECTNAME/$NAME/g" {} \;
+# find ./ -type f -exec sed -i -e "s/PROJECTNAME/$NAME/g" {} \;
 
