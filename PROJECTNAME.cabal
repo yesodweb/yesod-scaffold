@@ -4,7 +4,7 @@ cabal-version:     >= 1.8
 build-type:        Simple
 
 library
-    hs-source-dirs: ., app
+    hs-source-dirs: src
     exposed-modules: Application
                      Foundation
                      Import
