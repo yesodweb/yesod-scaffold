@@ -38,6 +38,7 @@ library
                 GADTs
                 GeneralizedNewtypeDeriving
                 FlexibleContexts
+                FlexibleInstances
                 EmptyDataDecls
                 NoMonomorphismRestriction
                 DeriveDataTypeable
@@ -48,7 +49,7 @@ library
     build-depends: base                          >= 4          && < 5
                  , yesod                         >= 1.4.1      && < 1.5
                  , yesod-core                    >= 1.4.6      && < 1.5
-                 , yesod-static                  >= 1.4.0.3    && < 1.5
+                 , yesod-static                  >= 1.4.0.3    && < 1.6
                  , yesod-form                    >= 1.4.0      && < 1.5
                  , classy-prelude                >= 0.10.2
                  , classy-prelude-conduit        >= 0.10.2
@@ -103,6 +104,7 @@ test-suite test
                 GADTs
                 GeneralizedNewtypeDeriving
                 FlexibleContexts
+                FlexibleInstances
                 EmptyDataDecls
                 NoMonomorphismRestriction
                 DeriveDataTypeable
