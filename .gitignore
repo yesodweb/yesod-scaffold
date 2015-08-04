@@ -10,8 +10,10 @@ config/client_session_key.aes
 fay/Fay/Yesod.hs
 .hsenv*
 cabal-dev/
+.stack-work/
 yesod-devel/
 .cabal-sandbox
 cabal.sandbox.config
 .DS_Store
 *.swp
+*.keter
