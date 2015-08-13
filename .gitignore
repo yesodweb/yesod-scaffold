@@ -4,3 +4,4 @@
 hsfiles/
 yesod-scaffold/
 dist/
+/.stack-work/
