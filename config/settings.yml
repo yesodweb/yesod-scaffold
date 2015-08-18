@@ -14,11 +14,11 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 # should-log-all: false
 
 database:
-  user:     "_env:PGUSER:PROJECTNAME_LOWER"
+  user:     "_env:PGUSER:PROJECTNAME"
   password: "_env:PGPASS:PROJECTNAME"
   host:     "_env:PGHOST:localhost"
   port:     "_env:PGPORT:5432"
-  database: "_env:PGDATABASE:PROJECTNAME_LOWER"
+  database: "_env:PGDATABASE:PROJECTNAME"
   poolsize: "_env:PGPOOLSIZE:10"
 
 copyright: Insert copyright statement here

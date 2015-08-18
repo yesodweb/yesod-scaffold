@@ -15,5 +15,4 @@ mv PROJECTNAME.cabal "${NAME}.cabal"
 
 echo "Replacing occurrences of PROJECTNAME"
 find ./ -type f -exec sed -i -e "s/PROJECTNAME/$NAME/g" {} \;
-# find ./ -type f -exec sed -i -e "s/PROJECTNAME/$NAME/g" {} \;
 
