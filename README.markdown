@@ -22,6 +22,10 @@ project. These changes are as follows:
   should be what gets called when errors occur, but `layout` (or
   `adminLayout` or whatever you want to put in there) should be
   used in all your handlers
+* Add a `Task` type synonym and a `Task` module, which provide
+  facilities for running things outside of a `Handler` that 
+  still need access to things in `App` (like logging and database
+  stuff).
 
 I'm not sure that this can or should ever work with with `yesod init`,
 so I've provided two script to help set this up. Let's say that you 
