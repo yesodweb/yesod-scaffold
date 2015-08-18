@@ -26,6 +26,8 @@ project. These changes are as follows:
   facilities for running things outside of a `Handler` that 
   still need access to things in `App` (like logging and database
   stuff).
+* Add `Task.Cron`, which uses Michael Xavier's `cron` package to
+  schedule repeated jobs. 
 
 I'm not sure that this can or should ever work with with `yesod init`,
 so I've provided two script to help set this up. Let's say that you 

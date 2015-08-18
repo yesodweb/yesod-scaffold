@@ -31,6 +31,7 @@ import Network.Wai.Middleware.RequestLogger (Destination (Logger),
 import System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet,
                                              toLogStr)
 import Network.HTTP.Client                  (newManager, defaultManagerSettings)
+import Task.Cron                            (scheduleAllJobs)
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
@@ -135,6 +136,9 @@ appMain = do
 
     -- Generate the foundation from the settings
     foundation <- makeFoundation settings
+
+    -- Schedule all of the repeated jobs
+    scheduleAllJobs foundation
 
     -- Generate a WAI Application from the foundation
     app <- makeApplication foundation

@@ -18,6 +18,7 @@ library
                      Handler.Home
                      Misc
                      Task
+                     Task.Cron
 
     ghc-options: -Wall -fwarn-tabs -O0
 
@@ -75,6 +76,8 @@ library
                  , contravariant
                  , transformers
                  , http-client
+                 , exceptions
+                 , cron                          >= 0.3.0
 
 executable         PROJECTNAME
     main-is:           main.hs
