@@ -17,6 +17,7 @@ library
                      Handler.Common
                      Handler.Home
                      Misc
+                     Task
 
     ghc-options: -Wall -fwarn-tabs -O0
 

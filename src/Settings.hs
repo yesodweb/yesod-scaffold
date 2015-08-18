@@ -5,13 +5,10 @@
 -- declared in the Foundation.hs file.
 module Settings where
 
-import Prelude
-import Control.Applicative
+import Import.Base
 import Data.Aeson                  
 import Data.Default                (def)
-import Data.Text                   (Text)
 import Data.String                 (fromString)
-import Yesod
 import Yesod.Static
 import Database.Persist.Postgresql (PostgresConf)
 import Language.Haskell.TH.Syntax  (Exp, Name, Q)

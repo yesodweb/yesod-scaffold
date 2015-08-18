@@ -14,7 +14,6 @@ import Data.ByteString            as Import (ByteString)
 -- yesod/shakespeare/persistent
 import Yesod                      as Import
 import Yesod.Static               as Import (Static(..), Route(..)) -- exports StaticRoute
-import Database.Persist           as Import
 import Database.Persist.Sql       as Import (SqlBackend, SqlPersistT)
 import Text.Julius                as Import (rawJS)
 

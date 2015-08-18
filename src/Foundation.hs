@@ -44,7 +44,8 @@ mkYesodData "App" $(parseRoutesFile "config/routes")
 
 -- | A convenient synonym for creating forms.
 type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
-type DB x = (MonadIO m, Functor m) => ReaderT SqlBackend m x
+type DB x = forall m. (MonadIO m, Functor m) => ReaderT SqlBackend m x
+type Task x = ReaderT App IO x
 
 defaultLayoutWrapper :: PageContent (Route App) -> Handler Html
 defaultLayoutWrapper pc = do
