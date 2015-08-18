@@ -37,7 +37,7 @@ started:
     wget https://github.com/yesodweb/yesod-scaffold/archive/postgres-no-compile-time-settings-no-devel.zip
     unzip postgres-no-compile-time-settings-no-devel.zip
     rm postgres-no-compile-time-settings-no-devel.zip
-    mv postgres-no-compile-time-settings-no-devel appalot
+    mv yesod-scaffold-postgres-no-compile-time-settings-no-devel appalot
     cd appalot
     ./scripts/name_project appalot
     sudo ./scripts/build_postgres_db appalot
