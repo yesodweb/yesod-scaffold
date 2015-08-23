@@ -11,12 +11,13 @@ import Data.Aeson                 (Result (..), fromJSON, withObject, (.!=),
                                    (.:?))
 import Data.FileEmbed             (embedFile)
 import Data.Yaml                  (decodeEither')
-import Database.Persist.MySQL     (MySQLConf)
+import Database.Persist.MySQL     (MySQLConf (..))
 import Language.Haskell.TH.Syntax (Exp, Name, Q)
 import Network.Wai.Handler.Warp   (HostPreference)
 import Yesod.Default.Config2      (applyEnvValue, configSettingsYml)
 import Yesod.Default.Util         (WidgetFileSettings, widgetFileNoReload,
                                    widgetFileReload)
+import qualified Database.MySQL.Base as MySQL
 
 -- | Runtime settings to configure this application. These settings can be
 -- loaded from various sources: defaults, environment variables, config files,
@@ -63,7 +64,7 @@ instance FromJSON AppSettings where
                 False
 #endif
         appStaticDir              <- o .: "static-dir"
-        appDatabaseConf           <- o .: "database"
+        fromYamlAppDatabaseConf   <- o .: "database"
         appRoot                   <- o .: "approot"
         appHost                   <- fromString <$> o .: "host"
         appPort                   <- o .: "port"
@@ -77,6 +78,16 @@ instance FromJSON AppSettings where
 
         appCopyright              <- o .: "copyright"
         appAnalytics              <- o .:? "analytics"
+
+        -- This code enables MySQL's strict mode, without which MySQL will truncate data.
+        -- See https://github.com/yesodweb/persistent/wiki/Database-Configuration#strict-mode for details
+        -- If you choose to keep strict mode enabled, it's recommended that you enable it in your my.cnf file so that it's also enabled for your MySQL console sessions.
+        -- (If you enable it in your my.cnf file, you can delete this code).
+        let appDatabaseConf = fromYamlAppDatabaseConf { myConnInfo = (myConnInfo fromYamlAppDatabaseConf) {
+                MySQL.connectOptions =
+                  ( MySQL.connectOptions (myConnInfo fromYamlAppDatabaseConf)) ++ [MySQL.InitCommand "SET SESSION sql_mode = 'STRICT_ALL_TABLES';\0"]
+              }
+            }
 
         return AppSettings {..}
 
