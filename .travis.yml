@@ -16,7 +16,7 @@ before_install:
 
 script:
   - travis_retry curl -L https://raw.githubusercontent.com/yesodweb/yesod-scaffold/master/stack/postgres.yaml > stack.yaml
-  - stack build --test --no-run-tests
+  - stack build --test --no-run-tests --install-ghc
 
 cache:
   directories:
