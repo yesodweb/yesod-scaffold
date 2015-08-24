@@ -1,0 +1,6 @@
+flags: {}
+packages:
+  - '.'
+resolver: nightly-2015-08-21
+extra-deps:
+  - yesod-test-1.5
