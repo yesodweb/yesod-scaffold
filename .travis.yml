@@ -1,0 +1,23 @@
+sudo: false
+ghc: 7.8
+
+addons:
+  postgresql: "9.3"
+  apt:
+   packages:
+   - libgmp-dev
+
+before_install:
+  # stack
+  - mkdir -p ~/.local/bin
+  - export PATH=$HOME/.local/bin:/opt/ghc/7.10.2/bin:$PATH
+  - travis_retry curl -L https://github.com/commercialhaskell/stack/releases/download/v0.1.3.1/stack-0.1.3.1-x86_64-linux.gz | gunzip > ~/.local/bin/stack
+  - chmod a+x ~/.local/bin/stack
+
+script:
+  - travis_retry curl -L https://raw.githubusercontent.com/yesodweb/yesod-scaffold/master/stack/postgres.yaml > stack.yaml
+  - stack build --test --no-run-tests --install-ghc
+
+cache:
+  directories:
+    - $HOME/.stack
