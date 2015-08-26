@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleInstances #-}
+
 module Model where
 
 import ClassyPrelude.Yesod
