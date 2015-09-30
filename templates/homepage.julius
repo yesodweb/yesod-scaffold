@@ -20,7 +20,9 @@ $(function() {
         message: message,
       }),
       success: function (data) {
-        $("##{rawJS commentListId}").append("<li>" + data.message + "</li>");
+        var newNode = $("<li></li>");
+        newNode.text(data.message);
+        $("##{rawJS commentListId}").append(newNode);
       },
       error: function (data) {
         console.log("Error creating comment: " + data);

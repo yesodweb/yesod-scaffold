@@ -1,5 +1,5 @@
-<.jumbotron>
-   <h1>Welcome to Yesod!
+<h1.jumbotron>
+  Welcome to Yesod!
 
 <.page-header><h2>Starting
 
