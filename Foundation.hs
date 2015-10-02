@@ -29,8 +29,9 @@ data App = App
 -- http://www.yesodweb.com/book/routing-and-handlers
 --
 -- Note that this is really half the story; in Application.hs, mkYesodDispatch
--- generates the rest of the code. Please see the linked documentation for an
--- explanation for this split.
+-- generates the rest of the code. Please see the following documentation
+-- for an explanation for this split:
+-- http://www.yesodweb.com/book/scaffolding-and-the-site-template#scaffolding-and-the-site-template_foundation_and_application_modules
 --
 -- This function also generates the following type synonyms:
 -- type Handler = HandlerT App IO
