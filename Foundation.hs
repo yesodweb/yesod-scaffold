@@ -24,9 +24,6 @@ data App = App
     , appLogger      :: Logger
     }
 
-instance HasHttpManager App where
-    getHttpManager = appHttpManager
-
 -- This is where we define all of the routes in our application. For a full
 -- explanation of the syntax, please see:
 -- http://www.yesodweb.com/book/routing-and-handlers
@@ -153,6 +150,12 @@ instance YesodAuthPersist App
 -- achieve customized and internationalized form validation messages.
 instance RenderMessage App FormMessage where
     renderMessage _ _ = defaultFormMessage
+
+-- Useful when writing code that is re-usable outside of the Handler context.
+-- An example is background jobs that send email.
+-- This can also be useful for writing code that works across multiple Yesod applications.
+instance HasHttpManager App where
+    getHttpManager = appHttpManager
 
 unsafeHandler :: App -> Handler a -> IO a
 unsafeHandler = Unsafe.fakeHandlerGetLogger appLogger
