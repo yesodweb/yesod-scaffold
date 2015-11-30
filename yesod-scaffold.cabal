@@ -17,8 +17,8 @@ executable yesod-scaffold-build
                      , classy-prelude-conduit >= 0.4
                      , shelly >= 0.14
                      , project-template >= 0.1
-                     , system-fileio >= 0.3
-                     , system-filepath >= 0.4
+                     , directory
+                     , filepath
                      , conduit
 
 executable yesod-scaffold-make-template
@@ -28,8 +28,8 @@ executable yesod-scaffold-make-template
                      , classy-prelude-conduit >= 0.4
                      , shelly >= 0.14
                      , project-template >= 0.1
-                     , system-fileio >= 0.3
-                     , system-filepath >= 0.4
+                     , directory
+                     , filepath
 
 executable yesod-scaffold-merge
   main-is:             merge.hs
@@ -38,5 +38,5 @@ executable yesod-scaffold-merge
                      , classy-prelude-conduit >= 0.4
                      , shelly >= 0.14
                      , project-template >= 0.1
-                     , system-fileio >= 0.3
-                     , system-filepath >= 0.4
+                     , directory
+                     , filepath

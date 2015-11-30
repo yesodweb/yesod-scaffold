@@ -3,11 +3,11 @@
 module Main (main) where
 
 import ClassyPrelude.Conduit
-import Shelly (shellyNoDir, run_)
+import Shelly (shelly, run_)
 import Shared
 
 main :: IO ()
-main = shellyNoDir $ do
+main = shelly $ do
     forM_ branches $ \branch -> do
         run_ "git" ["checkout", branch]
         unless (branch == master) $ run_ "git" ["merge", master]

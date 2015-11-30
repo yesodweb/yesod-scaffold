@@ -4,16 +4,15 @@ module Main (main) where
 
 import ClassyPrelude.Conduit
 import Shared
-import Shelly (shellyNoDir, cd)
-import Filesystem.Path.CurrentOS (fromText)
+import Shelly (shelly, cd)
 
 main :: IO ()
 main = do
     args <- getArgs
     (root, dest) <-
         case args of
-            [x, y] -> return (fromText x, fromText y)
+            [x, y] -> return (unpack x, unpack y)
             _ -> error "Usage: make-template <repo location> <destination file>"
-    shellyNoDir $ do
-        cd root
+    shelly $ do
+        cd $ fromString root
         createHsFiles root "HEAD" dest

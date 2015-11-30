@@ -3,11 +3,11 @@
 module Main (main) where
 
 import ClassyPrelude.Conduit
-import Shelly (shellyNoDir, rm_rf, run_, fromText, cd)
+import Shelly (shelly, rm_rf, run_, cd)
 import Shared
 
 main :: IO ()
-main = shellyNoDir $ do
+main = shelly $ do
     rm_rf "yesod-scaffold"
     run_ "git" ["clone", ".", "yesod-scaffold"]
     cd "yesod-scaffold"
@@ -18,4 +18,4 @@ main = shellyNoDir $ do
         run_ "cabal" ["install", "--only-dependencies", "--force-reinstalls", "--enable-tests", "--reorder-goals", "--max-backjumps=-1"]
         run_ "yesod" ["test"]
         run_ "git" ["clean", "-fxd"]
-        createHsFiles "yesod-scaffold" branch $ "hsfiles" </> fromText branch <.> "hsfiles"
+        createHsFiles "yesod-scaffold" branch $ "hsfiles" </> unpack branch <.> "hsfiles"

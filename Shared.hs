@@ -3,9 +3,10 @@
 module Shared where
 
 import ClassyPrelude.Conduit
-import Shelly (Sh, run, fromText)
+import Shelly (Sh, run)
 import Text.ProjectTemplate (createTemplate)
-import Filesystem (createTree)
+import System.Directory
+import System.FilePath
 
 branches :: [Text]
 branches = [ "postgres", "sqlite", "mysql", "mongo", "simple", "postgres-fay"
@@ -23,11 +24,12 @@ createHsFiles :: FilePath -- ^ root
               -> Sh ()
 createHsFiles root branch fp = do
     files <- run "git" ["ls-tree", "-r", branch, "--name-only"]
-    liftIO $ createTree $ directory fp
+    liftIO $ createDirectoryIfMissing True $ takeDirectory fp
     liftIO
         $ runResourceT
-        $ mapM_ (yield . toPair . fromText) (lines files)
+        $ mapM_ (yield . toPair. unpack) (lines (files :: Text))
        $$ createTemplate
        =$ sinkFile fp
   where
+    toPair :: FilePath -> (FilePath, ResourceT IO ByteString)
     toPair fp' = (fp', readFile $ root </> fp')
