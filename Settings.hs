@@ -27,8 +27,9 @@ data AppSettings = AppSettings
     -- ^ Directory from which to serve static files.
     , appDatabaseConf           :: PostgresConf
     -- ^ Configuration settings for accessing the database.
-    , appRoot                   :: Text
-    -- ^ Base for all generated URLs.
+    , appRoot                   :: Maybe Text
+    -- ^ Base for all generated URLs. If @Nothing@, determined
+    -- from the request headers.
     , appHost                   :: HostPreference
     -- ^ Host/interface the server should bind to.
     , appPort                   :: Int
@@ -65,7 +66,7 @@ instance FromJSON AppSettings where
 #endif
         appStaticDir              <- o .: "static-dir"
         appDatabaseConf           <- o .: "database"
-        appRoot                   <- o .: "approot"
+        appRoot                   <- o .:? "approot"
         appHost                   <- fromString <$> o .: "host"
         appPort                   <- o .: "port"
         appIpFromHeader           <- o .: "ip-from-header"
