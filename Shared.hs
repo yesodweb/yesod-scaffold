@@ -7,6 +7,7 @@ import Shelly (Sh, run)
 import Text.ProjectTemplate (createTemplate)
 import System.Directory
 import System.FilePath
+import qualified Data.Text as T
 
 branches :: [Text]
 branches = [ "postgres", "sqlite", "mysql", "mongo", "simple", "postgres-fay"
@@ -28,8 +29,22 @@ createHsFiles root branch fp = do
     liftIO
         $ runResourceT
         $ mapM_ (yield . toPair. unpack) (lines (files :: Text))
-       $$ createTemplate
+       $$ filterC (not . isTravis)
+       =$ createTemplate
+       =$ mapC replaceProjectName
        =$ sinkFile fp
   where
     toPair :: FilePath -> (FilePath, ResourceT IO ByteString)
     toPair fp' = (fp', readFile $ root </> fp')
+
+    -- We don't want to include the .travis.yml files, since these are specific
+    -- to the yesod-scaffold repo somewhat
+    isTravis (".travis.yml", _) = True
+    isTravis _ = False
+
+    -- Replace the PROJECTNAME and PROJECTNAME_LOWER syntax for something Stack
+    -- supports
+    replaceProjectName = encodeUtf8
+                       . T.replace "PROJECTNAME_LOWER" "{{name}}"
+                       . T.replace "PROJECTNAME" "{{name}}"
+                       . decodeUtf8

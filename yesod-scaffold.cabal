@@ -20,6 +20,7 @@ executable yesod-scaffold-build
                      , directory
                      , filepath
                      , conduit
+                     , text
 
 executable yesod-scaffold-make-template
   main-is:             make-template.hs
@@ -30,6 +31,7 @@ executable yesod-scaffold-make-template
                      , project-template >= 0.1
                      , directory
                      , filepath
+                     , text
 
 executable yesod-scaffold-merge
   main-is:             merge.hs
@@ -40,3 +42,4 @@ executable yesod-scaffold-merge
                      , project-template >= 0.1
                      , directory
                      , filepath
+                     , text
