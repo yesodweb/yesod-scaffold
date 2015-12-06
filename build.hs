@@ -15,7 +15,8 @@ main = shelly $ do
         run_ "git" ["checkout", branch]
         unless (branch == master) $ run_ "git" ["merge", master]
         run_ "git" ["diff", "--exit-code"]
-        run_ "cabal" ["install", "--only-dependencies", "--force-reinstalls", "--enable-tests", "--reorder-goals", "--max-backjumps=-1"]
-        run_ "yesod" ["test"]
+        run_ "stack" ["init"]
+        run_ "stack" ["test"] -- sometimes useful, e.g. no local database: "--no-run-tests"
+        run_ "packdeps" ["PROJECTNAME.cabal"]
         run_ "git" ["clean", "-fxd"]
-        createHsFiles "yesod-scaffold" branch $ "hsfiles" </> unpack branch <.> "hsfiles"
+        createHsFiles "yesod-scaffold" branch $ "hsfiles" </> unpack ("yesod-" ++ branch) <.> "hsfiles"
