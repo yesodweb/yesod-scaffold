@@ -1,3 +1,4 @@
+{-# Language CPP #-}
 -- | Settings are centralized, as much as possible, into this file. This
 -- includes database connection settings, static file locations, etc.
 -- In addition, you can configure a number of different aspects of Yesod
@@ -23,8 +24,9 @@ import Yesod.Default.Util          (WidgetFileSettings, widgetFileNoReload,
 data AppSettings = AppSettings
     { appStaticDir              :: String
     -- ^ Directory from which to serve static files.
-    , appRoot                   :: Text
-    -- ^ Base for all generated URLs.
+    , appRoot                   :: Maybe Text
+    -- ^ Base for all generated URLs. If @Nothing@, determined
+    -- from the request headers.
     , appHost                   :: HostPreference
     -- ^ Host/interface the server should bind to.
     , appPort                   :: Int
@@ -60,7 +62,7 @@ instance FromJSON AppSettings where
                 False
 #endif
         appStaticDir              <- o .: "static-dir"
-        appRoot                   <- o .: "approot"
+        appRoot                   <- o .:? "approot"
         appHost                   <- fromString <$> o .: "host"
         appPort                   <- o .: "port"
         appIpFromHeader           <- o .: "ip-from-header"
