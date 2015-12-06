@@ -3,7 +3,7 @@ module TestImport
     , module X
     ) where
 
-import Application              (makeFoundation)
+import Application              (makeFoundation, makeLogWare)
 import ClassyPrelude            as X
 import Database.Persist         as X hiding (get)
 import Database.Persist.MongoDB hiding (master)
