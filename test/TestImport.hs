@@ -19,26 +19,27 @@ import Database.MongoDB.Admin (dropCollection)
 import Control.Monad.Trans.Control (MonadBaseControl)
 
 runDB :: Action IO a -> YesodExample App a
-runDB action = do
-    master <- getTestYesod
-    liftIO $ runDBWithApp master action
+runDB query = do
+    app <- getTestYesod
+    liftIO $ runDBWithApp app query
 
 runDBWithApp :: App -> Action IO a -> IO a
-runDBWithApp app action = do
+runDBWithApp app query = do
     liftIO $ runMongoDBPool
         (mgAccessMode $ appDatabaseConf $ appSettings app)
-        action
+        query
         (appConnPool app)
 
-withApp :: SpecWith App -> Spec
+withApp :: SpecWith (TestApp App) -> Spec
 withApp = before $ do
     settings <- loadAppSettings
         ["config/test-settings.yml", "config/settings.yml"]
         []
         ignoreEnv
-    app <- makeFoundation settings
-    wipeDB app
-    return app
+    foundation <- makeFoundation settings
+    wipeDB foundation
+    logWare <- liftIO $ makeLogWare foundation
+    return (foundation, logWare)
 
 -- This function will wipe your database.
 -- 'withApp' calls it before each test, creating a clean environment for each
