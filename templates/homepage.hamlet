@@ -71,4 +71,4 @@
   <p>
     And last but not least, Testing. In <tt>test/Spec.hs</tt> you will find a #
     test suite that performs tests on this page. #
-    You can run your tests by doing: <pre>yesod test</pre>
+    You can run your tests by doing: <pre>stack test</pre>
