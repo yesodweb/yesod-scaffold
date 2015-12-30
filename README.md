@@ -28,11 +28,11 @@ The basic workflow for this repository is as follows:
    executables.
 
 3. Merge the changes from `postgres` to all other branches by running
-   `yesod-scaffold-merge`. Note that there will often be merge conflicts, which
+   `stack exec yesod-scaffold-merge`. Note that there will often be merge conflicts, which
    will need to be resolved and then the command rerun until all branches merge
    successfully.
 
-4. Run `yesod-scaffold-build` to compile and run tests in all branches. You
+4. Run `stack exec yesod-scaffold-build` to compile and run tests in all branches. You
    will need some system libraries and to set up some databases for testing.
    (NOTE: We should consider automating this process and/or using a Docker image
    for all of this.) After this completes successfully, the `hsfiles` directory
