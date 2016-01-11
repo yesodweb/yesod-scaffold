@@ -107,7 +107,7 @@ instance Yesod App where
             content
       where
         -- Generate a unique filename based on the content itself
-        genFileName lbs = "autogen-" ++ base64md5 lbs
+        genFileName = base64md5
 
     -- What messages should be logged. The following includes all messages when
     -- in development, and warnings and errors in production.
