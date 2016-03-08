@@ -27,6 +27,7 @@ database:
   user:        "PROJECTNAME"
   password:    "PROJECTNAME"
   host:        "localhost"
+  # See config/test-settings.yml for an override during tests
   database:    "PROJECTNAME"
   connections: 10
 
