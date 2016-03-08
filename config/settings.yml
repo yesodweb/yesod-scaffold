@@ -24,6 +24,7 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 # See https://github.com/yesodweb/yesod/wiki/Configuration#parsing-numeric-values-as-strings
 
 database:
+  # See config/test-settings.yml for an override during tests
   database: "_env:SQLITE_DATABASE:PROJECTNAME.sqlite3"
   poolsize: "_env:SQLITE_POOLSIZE:10"
 
