@@ -28,6 +28,7 @@ database:
   password: "_env:MYSQL_PASSWORD:PROJECTNAME"
   host:     "_env:MYSQL_HOST:localhost"
   port:     "_env:MYSQL_PORT:5432"
+  # See config/test-settings.yml for an override during tests
   database: "_env:MYSQL_DATABASE:PROJECTNAME"
   poolsize: "_env:MYSQL_POOLSIZE:10"
 
