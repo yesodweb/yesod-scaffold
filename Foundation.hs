@@ -3,8 +3,7 @@ module Foundation where
 import Database.Persist.Sql        (ConnectionPool, runSqlPool)
 import Import.NoFoundation
 import Text.Hamlet                 (hamletFile)
-import Yesod.Auth.BrowserId        (authBrowserId)
-import Yesod.Auth.Message          (AuthMessage (InvalidLogin))
+import Yesod.Auth.OpenId           (authOpenId, IdentifierType (Claimed))
 import qualified Yesod.Core.Unsafe as Unsafe
 import Yesod.Core.Types            (Logger)
 import Yesod.Default.Util          (addStaticContentExternal)
@@ -156,8 +155,8 @@ instance YesodAuth App where
                 , userPassword = Nothing
                 }
 
-    -- You can add other plugins like BrowserID, email or OAuth here
-    authPlugins _ = [authBrowserId def]
+    -- You can add other plugins like Google Email, email or OAuth here
+    authPlugins _ = [authOpenId Claimed []]
 
     authHttpManager = getHttpManager
 
