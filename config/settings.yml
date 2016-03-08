@@ -28,6 +28,7 @@ database:
   password: "_env:PGPASS:PROJECTNAME"
   host:     "_env:PGHOST:localhost"
   port:     "_env:PGPORT:5432"
+  # See config/test-settings.yml for an override during tests
   database: "_env:PGDATABASE:PROJECTNAME_LOWER"
   poolsize: "_env:PGPOOLSIZE:10"
 
