@@ -10,7 +10,6 @@ import Database.Persist.Sql  (SqlPersistM, SqlBackend, runSqlPersistMPool, rawEx
 import Foundation            as X
 import Model                 as X
 import Test.Hspec            as X
-import Text.Shakespeare.Text (st)
 import Yesod.Default.Config2 (ignoreEnv, loadYamlSettings)
 import Yesod.Test            as X
 
@@ -50,8 +49,8 @@ wipeDB app = do
 
     -- Aside: SQLite by default *does not enable foreign key checks*
     -- (disabling foreign keys is only necessary for those who specifically enable them).
-    let settings = appSettings app   
-    sqliteConn <- rawConnection (sqlDatabase $ appDatabaseConf settings)    
+    let settings = appSettings app
+    sqliteConn <- rawConnection (sqlDatabase $ appDatabaseConf settings)
     disableForeignKeys sqliteConn
 
     let logFunc = messageLoggerSource app (appLogger app)
