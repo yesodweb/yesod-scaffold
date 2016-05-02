@@ -11,7 +11,7 @@ import Foundation               as X
 import Model                    as X
 import Settings                 (appDatabaseConf)
 import Test.Hspec               as X
-import Yesod.Default.Config2    (ignoreEnv, loadAppSettings)
+import Yesod.Default.Config2    (ignoreEnv, loadYamlSettings)
 import Yesod.Test               as X
 -- Wiping the test database
 import Database.MongoDB.Query (allCollections)
@@ -32,7 +32,7 @@ runDBWithApp app query = do
 
 withApp :: SpecWith (TestApp App) -> Spec
 withApp = before $ do
-    settings <- loadAppSettings
+    settings <- loadYamlSettings
         ["config/test-settings.yml", "config/settings.yml"]
         []
         ignoreEnv
