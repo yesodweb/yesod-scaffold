@@ -7,12 +7,12 @@ import Application           (makeFoundation, makeLogWare)
 import ClassyPrelude         as X
 import Foundation            as X
 import Test.Hspec            as X
-import Yesod.Default.Config2 (ignoreEnv, loadAppSettings)
+import Yesod.Default.Config2 (ignoreEnv, loadYamlSettings)
 import Yesod.Test            as X
 
 withApp :: SpecWith (TestApp App) -> Spec
 withApp = before $ do
-    settings <- loadAppSettings
+    settings <- loadYamlSettings
         ["config/test-settings.yml", "config/settings.yml"]
         []
         ignoreEnv
