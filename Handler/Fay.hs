@@ -11,5 +11,5 @@ fibs = 0 : 1 : zipWith (+) fibs (drop 1 fibs)
 onCommand :: CommandHandler App
 onCommand render command =
     case readFromFay command of
-      Just (GetFib index r) -> render r $ fibs !! index
-      Nothing               -> invalidArgs ["Invalid command"]
+      Just (GetFib idx r) -> render r $ fibs !! idx
+      Nothing             -> invalidArgs ["Invalid command"]
