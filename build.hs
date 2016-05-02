@@ -11,8 +11,8 @@ main = shelly $ do
     args <- getArgs
     let noRunTests = "--no-run-tests" `elem` args
         testArgs
-            | noRunTests = ["test", "--no-run-tests"]
-            | otherwise = ["test"]
+            | noRunTests = ["test", "--pedantic", "--no-run-tests"]
+            | otherwise = ["test", "--pedantic"]
     rm_rf "yesod-scaffold"
     run_ "git" ["clone", ".", "yesod-scaffold"]
     cd "yesod-scaffold"
