@@ -8,5 +8,5 @@ do
         # This next one is a hack...
         sed s@PROJECTNAME_LOWER@{{name}}@g | \
         sed s@PROJECTNAME@{{name}}@g > \
-        ../stack-templates/yesod-$(basename $f)
+        ../stack-templates/$(basename $f)
 done
