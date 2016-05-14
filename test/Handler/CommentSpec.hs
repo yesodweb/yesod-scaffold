@@ -19,11 +19,10 @@ spec = withApp $ do
                 setUrl CommentR
                 setRequestBody encoded
                 addRequestHeader ("Content-Type", "application/json")
-                addTokenFromCookie
             
             statusIs 200
 
-            [Entity _id comment] <- runDB $ selectList [CommentMessage ==. message] []
+            (Entity _id comment:_) <- runDB $ selectList [CommentMessage ==. message] []
             assertEqual "Should have " comment (Comment message Nothing)
 
     describe "invalid requests" $ do
@@ -36,6 +35,5 @@ spec = withApp $ do
                 setUrl CommentR
                 setRequestBody $ encode body
                 addRequestHeader ("Content-Type", "application/json")
-                addTokenFromCookie
             statusIs 400
 
