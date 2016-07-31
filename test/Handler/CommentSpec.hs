@@ -19,7 +19,7 @@ spec = withApp $ do
                 setUrl CommentR
                 setRequestBody encoded
                 addRequestHeader ("Content-Type", "application/json")
-            
+
             statusIs 200
 
             (Entity _id comment:_) <- runDB $ selectList [CommentMessage ==. message] []
@@ -30,10 +30,12 @@ spec = withApp $ do
             get HomeR
 
             let body = object [ "foo" .= ("My message" :: Value) ]
+
             request $ do
                 setMethod "POST"
                 setUrl CommentR
                 setRequestBody $ encode body
                 addRequestHeader ("Content-Type", "application/json")
+
             statusIs 400
 
