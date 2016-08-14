@@ -11,7 +11,7 @@ import Foundation            as X
 import Model                 as X
 import Test.Hspec            as X
 import Text.Shakespeare.Text (st)
-import Yesod.Default.Config2 (ignoreEnv, loadYamlSettings)
+import Yesod.Default.Config2 (useEnv, loadYamlSettings)
 import Yesod.Test            as X
 
 runDB :: SqlPersistM a -> YesodExample App a
@@ -28,7 +28,7 @@ withApp = before $ do
     settings <- loadYamlSettings
         ["config/test-settings.yml", "config/settings.yml"]
         []
-        ignoreEnv
+        useEnv
     foundation <- makeFoundation settings
     wipeDB foundation
     logWare <- liftIO $ makeLogWare foundation
