@@ -153,8 +153,8 @@ instance YesodAuth App where
 
     -- You can add other plugins like Google Email, email or OAuth here
     authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
-      -- Enable authDummy login when in development mode.
-      where extraAuthPlugins = [authDummy | appDevelopment $ appSettings app]
+        -- Enable authDummy login when in development mode.
+        where extraAuthPlugins = [authDummy | appDevelopment $ appSettings app]
 
 
 
@@ -163,8 +163,8 @@ instance YesodAuth App where
 -- | Access function to determine if a user is logged in.
 isAuthenticated :: Handler AuthResult
 isAuthenticated = do
-    mu <- maybeAuthId
-    return $ case mu of
+    mAuthId <- maybeAuthId
+    return $ case mAuthId of
         Nothing -> Unauthorized "You must login to access this page"
         Just _ -> Authorized
 

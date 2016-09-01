@@ -57,8 +57,8 @@ getTables = do
 
     return $ map unSingle tables
 
--- | Authenticate as a user. This uses the fact that in test-settings.yaml we
--- set the "development" to True, this the auth dummy is enabled.
+-- | Authenticate as a user. This relies on the `development: true` flag being set in test-settings.yaml,
+-- which enables dummy authentication in Foundation.hs
 authenticateAs :: Entity User -> YesodExample App ()
 authenticateAs (Entity _ u) = do
     request $ do
@@ -69,7 +69,7 @@ authenticateAs (Entity _ u) = do
 -- | Create a user.
 createUser :: Text -> YesodExample App (Entity User)
 createUser ident = do
-  runDB $ insertEntity User
-    { userIdent = ident
-    , userPassword = Nothing
-    }
+    runDB $ insertEntity User
+        { userIdent = ident
+        , userPassword = Nothing
+        }
