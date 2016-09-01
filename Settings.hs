@@ -54,6 +54,9 @@ data AppSettings = AppSettings
     -- ^ Copyright text to appear in the footer of the page
     , appAnalytics              :: Maybe Text
     -- ^ Google Analytics code
+
+    , appDevelopment            :: Bool
+    -- ^ Indicate if we are in development mode
     }
 
 instance FromJSON AppSettings where
@@ -80,6 +83,7 @@ instance FromJSON AppSettings where
         appCopyright              <- o .: "copyright"
         appAnalytics              <- o .:? "analytics"
 
+        appDevelopment            <- o .:? "development"      .!= defaultDev
         return AppSettings {..}
 
 -- | Settings for 'widgetFile', such as which template languages to support and

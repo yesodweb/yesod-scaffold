@@ -1,0 +1,6 @@
+<h1>
+  You got access!
+
+<p>
+  This page is protected and access is allowed only for anonymous users.
+  You data is protected with us <span class="username">#{userIdent user}</span>!

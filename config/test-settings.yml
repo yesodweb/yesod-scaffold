@@ -7,3 +7,5 @@ database:
   #
   #   database: "_env:PGDATABASE:PROJECTNAME_LOWER_test"
   database: PROJECTNAME_LOWER_test
+
+development: true
