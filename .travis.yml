@@ -17,12 +17,6 @@ matrix:
     compiler: ": #newest nightly"
   - env: ARGS="--resolver lts-6"
     compiler: ": #newest lts 6"
-  - env: ARGS="--resolver lts-5"
-    compiler: ": #newest lts 5"
-  - env: ARGS="--resolver lts-4"
-    compiler: ": #newest lts 4"
-  - env: ARGS="--resolver lts-3"
-    compiler: ": #newest lts 3"
 
 before_install:
   # Using compiler above sets CC to an invalid value, so unset it
