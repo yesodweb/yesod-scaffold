@@ -29,9 +29,16 @@ before_install:
   - export PATH=$HOME/.local/bin:$PATH
   - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 
+before_script:
+  - |
+    psql <<EOF
+    CREATE USER "PROJECTNAME_LOWER" password 'PROJECTNAME';
+    CREATE DATABASE "PROJECTNAME_LOWER_test" OWNER "PROJECTNAME";
+    EOF
+
 script:
   - stack init $ARGS
-  - stack build --test --no-run-tests --install-ghc
+  - stack build --test --install-ghc
 
 cache:
   directories:
