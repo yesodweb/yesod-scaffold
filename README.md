@@ -1,6 +1,15 @@
 yesod-scaffold
 ==============
 
+* master: [![Build Status](https://travis-ci.org/yesodweb/yesod-scaffold.svg?branch=master)](https://travis-ci.org/yesodweb/yesod-scaffold)
+* postgres: [![Build Status](https://travis-ci.org/yesodweb/yesod-scaffold.svg?branch=postgres)](https://travis-ci.org/yesodweb/yesod-scaffold)
+* mysql: [![Build Status](https://travis-ci.org/yesodweb/yesod-scaffold.svg?branch=mysql)](https://travis-ci.org/yesodweb/yesod-scaffold)
+* sqlite: [![Build Status](https://travis-ci.org/yesodweb/yesod-scaffold.svg?branch=sqlite)](https://travis-ci.org/yesodweb/yesod-scaffold)
+* simple: [![Build Status](https://travis-ci.org/yesodweb/yesod-scaffold.svg?branch=simple)](https://travis-ci.org/yesodweb/yesod-scaffold)
+* mongo: [![Build Status](https://travis-ci.org/yesodweb/yesod-scaffold.svg?branch=mongo)](https://travis-ci.org/yesodweb/yesod-scaffold)
+* minimal: [![Build Status](https://travis-ci.org/yesodweb/yesod-scaffold.svg?branch=minimal)](https://travis-ci.org/yesodweb/yesod-scaffold)
+* postgres-fay: [![Build Status](https://travis-ci.org/yesodweb/yesod-scaffold.svg?branch=postgres-fay)](https://travis-ci.org/yesodweb/yesod-scaffold)
+
 The Yesod scaffolding, with branches for different versions.
 
 If you want to send a pull request affecting all the different flavors, please send it as a pull request against the `postgres` branch. The scripts we use for building the scaffoldings automatically merge changes from `postgres` to all other branches.
