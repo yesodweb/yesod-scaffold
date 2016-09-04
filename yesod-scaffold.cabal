@@ -43,3 +43,14 @@ executable yesod-scaffold-merge
                      , directory
                      , filepath
                      , text
+
+executable yesod-scaffold-push
+  main-is:             push.hs
+  other-modules:       Shared
+  build-depends:       base >= 4 && < 5
+                     , classy-prelude-conduit >= 0.4
+                     , shelly >= 0.14
+                     , project-template >= 0.1
+                     , directory
+                     , filepath
+                     , text
