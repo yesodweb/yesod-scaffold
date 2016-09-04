@@ -11,7 +11,7 @@ import Foundation               as X
 import Model                    as X
 import Settings                 (appDatabaseConf)
 import Test.Hspec               as X
-import Yesod.Default.Config2    (ignoreEnv, loadYamlSettings)
+import Yesod.Default.Config2    (useEnv, loadYamlSettings)
 import Yesod.Test               as X
 -- Wiping the test database
 import Database.MongoDB.Query (allCollections)
@@ -35,7 +35,7 @@ withApp = before $ do
     settings <- loadYamlSettings
         ["config/test-settings.yml", "config/settings.yml"]
         []
-        ignoreEnv
+        useEnv
     foundation <- makeFoundation settings
     wipeDB foundation
     logWare <- liftIO $ makeLogWare foundation
