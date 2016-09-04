@@ -7,7 +7,7 @@
 module Settings where
 
 import ClassyPrelude.Yesod
-import Control.Exception          (throw)
+import qualified Control.Exception as Exception
 import Data.Aeson                 (Result (..), fromJSON, withObject, (.!=),
                                    (.:?))
 import Data.FileEmbed             (embedFile)
