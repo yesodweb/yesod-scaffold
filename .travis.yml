@@ -17,12 +17,6 @@ matrix:
     compiler: ": #newest nightly"
   - env: ARGS="--resolver lts-6"
     compiler: ": #newest lts 6"
-  - env: ARGS="--resolver lts-5"
-    compiler: ": #newest lts 5"
-  - env: ARGS="--resolver lts-4"
-    compiler: ": #newest lts 4"
-  - env: ARGS="--resolver lts-3"
-    compiler: ": #newest lts 3"
 
 before_install:
   # Using compiler above sets CC to an invalid value, so unset it
@@ -37,8 +31,7 @@ before_script:
   - |
     psql <<EOF
     CREATE USER "PROJECTNAME_LOWER" password 'PROJECTNAME';
-    CREATE DATABASE "PROJECTNAME_LOWER_test" OWNER "PROJECTNAME";
-    EOF
+    CREATE DATABASE "PROJECTNAME_LOWER_test" OWNER "PROJECTNAME_LOWER";
 
 script:
   - stack init $ARGS
