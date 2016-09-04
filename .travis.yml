@@ -11,8 +11,9 @@ matrix:
   include:
   - env: ARGS="--resolver lts"
     compiler: ": #newest LTS"
-  - env: ARGS="--resolver nightly"
-    compiler: ": #newest nightly"
+  # GHC 8 bug? https://twitter.com/snoyberg/status/772465852780273664
+  #- env: ARGS="--resolver nightly"
+  #  compiler: ": #newest nightly"
   - env: ARGS="--resolver lts-6"
     compiler: ": #newest lts 6"
 
