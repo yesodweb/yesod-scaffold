@@ -34,7 +34,6 @@ before_script:
     CREATE DATABASE PROJECTNAME_test;
     GRANT USAGE ON *.* TO PROJECTNAME@localhost IDENTIFIED BY 'PROJECTNAME';
     GRANT ALL PRIVILEGES ON PROJECTNAME_test.* TO PROJECTNAME@localhost;
-    EOF
 
 script:
   - stack init $ARGS
