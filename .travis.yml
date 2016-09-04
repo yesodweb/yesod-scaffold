@@ -25,6 +25,9 @@ matrix:
     compiler: ": #newest lts 3"
 
 before_install:
+  # Using compiler above sets CC to an invalid value, so unset it
+  - unset CC
+
   # stack
   - mkdir -p ~/.local/bin
   - export PATH=$HOME/.local/bin:$PATH
