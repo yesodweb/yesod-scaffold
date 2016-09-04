@@ -8,6 +8,21 @@ addons:
    packages:
    - libgmp-dev
 
+matrix:
+  include:
+  - env: ARGS="--resolver lts"
+    compiler: ": #newest LTS"
+  - env: ARGS="--resolver nightly"
+    compiler: ": #newest nightly"
+  - env: ARGS="--resolver lts-6"
+    compiler: ": #newest lts 6"
+  - env: ARGS="--resolver lts-5"
+    compiler: ": #newest lts 5"
+  - env: ARGS="--resolver lts-4"
+    compiler: ": #newest lts 4"
+  - env: ARGS="--resolver lts-3"
+    compiler: ": #newest lts 3"
+
 before_install:
   # stack
   - mkdir -p ~/.local/bin
@@ -15,7 +30,7 @@ before_install:
   - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 
 script:
-  - stack init
+  - stack init $ARGS
   - stack build --test --no-run-tests --install-ghc
 
 cache:
