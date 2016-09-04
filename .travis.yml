@@ -3,11 +3,12 @@ sudo: false
 language: c
 
 addons:
-  postgresql: "9.3"
   apt:
    packages:
    - libgmp-dev
-   - build-essential
+
+services:
+  - mysql
 
 matrix:
   include:
@@ -35,9 +36,10 @@ before_install:
 
 before_script:
   - |
-    psql <<EOF
-    CREATE USER "PROJECTNAME_LOWER" password 'PROJECTNAME';
-    CREATE DATABASE "PROJECTNAME_LOWER_test" OWNER "PROJECTNAME";
+    mysql <<EOF
+    CREATE DATABASE PROJECTNAME_test;
+    GRANT USAGE ON *.* TO PROJECTNAME@localhost IDENTIFIED BY 'PROJECTNAME';
+    GRANT ALL PRIVILEGES ON PROJECTNAME_test.* TO PROJECTNAME@localhost;
     EOF
 
 script:
