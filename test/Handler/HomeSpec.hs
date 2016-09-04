@@ -31,4 +31,4 @@ spec = withApp $ do
           get HomeR
           statusIs 200
           users <- runDB $ selectList ([] :: [Filter User]) []
-          assertEqual "user table empty" 0 $ length users
+          assertEq "user table empty" 0 $ length users

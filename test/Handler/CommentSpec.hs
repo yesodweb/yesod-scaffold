@@ -23,7 +23,7 @@ spec = withApp $ do
             statusIs 200
 
             (Entity _id comment:_) <- runDB $ selectList [CommentMessage ==. message] []
-            assertEqual "Should have " comment (Comment message Nothing)
+            assertEq "Should have " comment (Comment message Nothing)
 
     describe "invalid requests" $ do
         it "400s when the JSON body is invalid" $ do
