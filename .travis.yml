@@ -32,7 +32,6 @@ before_script:
     psql <<EOF
     CREATE USER "PROJECTNAME_LOWER" password 'PROJECTNAME';
     CREATE DATABASE "PROJECTNAME_LOWER_test" OWNER "PROJECTNAME_LOWER";
-    EOF
 
 script:
   - stack init $ARGS
