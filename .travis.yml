@@ -3,12 +3,11 @@ sudo: false
 language: c
 
 addons:
+  postgresql: "9.3"
   apt:
    packages:
    - libgmp-dev
-
-services:
-  - postgresql
+   - build-essential
 
 matrix:
   include:
