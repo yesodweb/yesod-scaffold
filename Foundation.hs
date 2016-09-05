@@ -163,8 +163,8 @@ instance YesodAuth App where
 -- | Access function to determine if a user is logged in.
 isAuthenticated :: Handler AuthResult
 isAuthenticated = do
-    mAuthId <- maybeAuthId
-    return $ case mAuthId of
+    muid <- maybeAuthId
+    return $ case muid of
         Nothing -> Unauthorized "You must login to access this page"
         Just _ -> Authorized
 
