@@ -7,7 +7,6 @@ addons:
   apt:
    packages:
    - libgmp-dev
-   - build-essential
 
 matrix:
   include:
