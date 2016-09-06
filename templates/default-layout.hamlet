@@ -1,3 +1,59 @@
-$maybe msg <- mmsg
-  <div #message>#{msg}
-^{widget}
+<!-- Following Menu -->
+<div class="ui large top fixed hidden menu">
+  <div class="ui container">
+    $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
+      <a class="item" :Just route == mcurrentRoute:.active href="@{route}">#{label}
+
+    <div class="right menu">
+      <div class="item">
+        $forall MenuItem label route _ <- navbarRightFilteredMenuItems
+          <a class="ui button" :Just route == mcurrentRoute:.active href="@{route}">#{label}
+
+<!-- Sidebar Menu -->
+<div class="ui vertical inverted sidebar menu">
+  $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
+    <a class="item" :Just route == mcurrentRoute:.active href="@{route}">#{label}
+
+<!-- Page Contents -->
+<div class="pusher">
+
+  <div class="ui inverted vertical center aligned segment">
+    <div.ui.container>
+      <div class="ui large secondary inverted pointing menu">
+        <a class="toc item">
+          <i class="sidebar icon"></i>
+
+        $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
+          <a class="item" :Just route == mcurrentRoute:.active href="@{route}">#{label}
+
+        <div class="right item">
+          $forall MenuItem label route _ <- navbarRightFilteredMenuItems
+            <a class="ui inverted button" :Just route == mcurrentRoute:.active href="@{route}">#{label}
+
+  <div class="ui container">
+
+    $if not $ Just HomeR == mcurrentRoute
+        <div.ui.breadcrumb>
+          $forall bc <- parents
+            <a.section href=@{fst bc}>#{snd bc}
+            <div.divider> /
+
+          <div.active.section>
+            #{title}
+
+    $maybe msg <- mmsg
+      <div.ui.message #message>#{msg}
+
+  ^{widget}
+
+  <!-- Footer -->
+  <div class="ui inverted vertical footer segment">
+    <div class="ui container">
+      <div class="ui stackable inverted divided equal height stackable grid">
+        <div class="six wide column">
+          <h4 class="ui inverted header">About
+          <div class="ui inverted link list">
+            <a href="#" class="item">Contact Us
+
+        <div class="seven wide column">
+          <p>#{appCopyright $ appSettings master}
