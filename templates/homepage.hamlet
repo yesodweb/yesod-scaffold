@@ -10,7 +10,8 @@
 
 
 <div class="ui container">
-    <h2>Starting
+    <h2>
+        <a name="start">Starting
 
     <div class="ui vertical segment">
         Now that you have a working project you should use the
@@ -65,39 +66,42 @@
                         Upload it!
 
         <div class="column">
-            <div class="ui segment">
-                $maybe (FileForm info con) <- submission
-                    <div .message .alert .alert-success>
-                        Your file's type was <em>#{fileContentType info}</em>. You say it has: <em>#{con}</em>
+            $maybe (FileForm info con) <- submission
+                <div class="ui segment teal">
+                    Your file's type was <em>#{fileContentType info}</em>. You say it has: <em>#{con}</em>
 
-                $nothing
+            $nothing
+                <div class="ui segment">
                     File upload result will be here...
 
 
     <div class="ui divider">
 
-    <section.page-header>
-      <h2>JSON
+    <h2>
+        <a name="json">JSON
 
-      <p>
+    <p>
         Yesod has JSON support baked-in.
         The form below makes an AJAX request with Javascript,
         then updates the page with your submission.
         (see <tt>Handler/Comment.hs</tt>, <tt>templates/homepage.julius</tt>,
         and <tt>Handler/Home.hs</tt> for the implementation).
-        <form .ui.form ##{commentFormId}>
-          <.form-group>
-            <textarea ##{commentTextareaId} placeholder="Your comment here..." required></textarea>
 
-          <button .ui .button type="submit">
-            Create comment
+    <form .ui.form ##{commentFormId}>
+        <div class="field">
+            <textarea rows="2" ##{commentTextareaId} placeholder="Your comment here..." required></textarea>
 
-        <ul ##{commentListId}>
+        <button .ui .button type="submit">
+           Create comment
 
-    <section.page-header>
-      <h2>Testing
+    <ul ##{commentListId}>
 
-      <p>
-        And last but not least, Testing. In <tt>test/Spec.hs</tt> you will find a #
-        test suite that performs tests on this pag
-        You can run your tests by doing: <code>stack test</code>
+    <div class="ui divider">
+
+        <h2>
+            <a name="test">Testing
+
+        <p>
+            And last but not least, Testing. In <tt>test/Spec.hs</tt> you will find a #
+            test suite that performs tests on this pag
+            You can run your tests by doing: <code>stack test</code>
