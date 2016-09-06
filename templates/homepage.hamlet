@@ -96,16 +96,17 @@
 
                     <button .ui .button type="submit">
                        Create comment
+
        <div class="column">
            <div class="ui segment teal">
                <ul ##{commentListId}>
 
     <div class="ui divider">
 
-        <h2>
-            <a name="test">Testing
+    <h2>
+        <a name="test">Testing
 
-        <p>
-            And last but not least, Testing. In <tt>test/Spec.hs</tt> you will find a #
-            test suite that performs tests on this pag
-            You can run your tests by doing: <code>stack test</code>
+    <p>
+        And last but not least, Testing. In <tt>test/Spec.hs</tt> you will find a #
+        test suite that performs tests on this pag
+        You can run your tests by doing: <code>stack test</code>
