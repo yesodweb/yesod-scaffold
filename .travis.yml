@@ -8,15 +8,36 @@ addons:
    packages:
    - libgmp-dev
 
+matrix:
+  include:
+  - env: ARGS="--resolver lts"
+    compiler: ": #newest LTS"
+  - env: ARGS="--resolver nightly"
+    compiler: ": #newest nightly"
+  - env: ARGS="--resolver lts-6"
+    compiler: ": #newest lts 6"
+  allow_failures:
+  # GHC 8 bug? https://twitter.com/snoyberg/status/772465852780273664
+  - env: ARGS="--resolver nightly"
+
 before_install:
+  # Using compiler above sets CC to an invalid value, so unset it
+  - unset CC
+
   # stack
   - mkdir -p ~/.local/bin
   - export PATH=$HOME/.local/bin:$PATH
   - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 
+before_script:
+  - |
+    psql <<EOF
+    CREATE USER "PROJECTNAME_LOWER" password 'PROJECTNAME';
+    CREATE DATABASE "PROJECTNAME_LOWER_test" OWNER "PROJECTNAME_LOWER";
+
 script:
-  - stack init
-  - stack build --test --no-run-tests --install-ghc
+  - stack init $ARGS
+  - stack build --test --install-ghc
 
 cache:
   directories:
