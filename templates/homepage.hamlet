@@ -87,14 +87,18 @@
         (see <tt>Handler/Comment.hs</tt>, <tt>templates/homepage.julius</tt>,
         and <tt>Handler/Home.hs</tt> for the implementation).
 
-    <form .ui.form ##{commentFormId}>
-        <div class="field">
-            <textarea rows="2" ##{commentTextareaId} placeholder="Your comment here..." required></textarea>
+    <div class="ui two column grid">
+        <div class="column">
+            <div class="ui segment">
+                <form .ui.form ##{commentFormId}>
+                    <div class="field">
+                        <textarea rows="2" ##{commentTextareaId} placeholder="Your comment here..." required></textarea>
 
-        <button .ui .button type="submit">
-           Create comment
-
-    <ul ##{commentListId}>
+                    <button .ui .button type="submit">
+                       Create comment
+       <div class="column">
+           <div class="ui segment teal">
+               <ul ##{commentListId}>
 
     <div class="ui divider">
 
