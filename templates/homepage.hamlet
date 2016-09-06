@@ -48,21 +48,31 @@
 
     <div class="ui divider">
 
-    <h2>Forms
+    <h2>
+        <a name="form">Forms
 
-    <div>
+    <p>
         This is an example trivial Form. Read the
         <a href="http://www.yesodweb.com/book/forms">Forms chapter</a> #
         on the yesod book to learn more about them.
 
-        $maybe (info,con) <- submission
-            <div .message .alert .alert-success>
-                Your file's type was <em>#{fileContentType info}</em>. You say it has: <em>#{con}</em>
+    <div class="ui two column grid">
+        <div class="column">
+            <div class="ui segment">
+                <form .ui.form method=post action=@{HomeR}#form enctype=#{formEnctype}>
+                    ^{formWidget}
+                    <button .ui .primary .button type="submit">
+                        Upload it!
 
-        <form method=post action=@{HomeR}#form enctype=#{formEnctype}>
-            ^{formWidget}
-            <button .btn .btn-primary type="submit">
-                Send it!
+        <div class="column">
+            <div class="ui segment">
+                $maybe (FileForm info con) <- submission
+                    <div .message .alert .alert-success>
+                        Your file's type was <em>#{fileContentType info}</em>. You say it has: <em>#{con}</em>
+
+                $nothing
+                    File upload result will be here...
+
 
     <div class="ui divider">
 
