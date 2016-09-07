@@ -7,3 +7,5 @@ database:
   #
   #   database: "_env:SQLITE_DATABASE:PROJECTNAME_test.sqlite3"
   database: PROJECTNAME_test.sqlite3
+
+auth-dummy-login: true

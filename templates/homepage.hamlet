@@ -21,6 +21,12 @@
     <tt>config/routes
 
   <span .list-group-item>
+    We can link to other handlers, like the <a href="@{ProfileR}">Profile</a>. Try it out as an anonymous user and see
+    the access denied. Then, try to <a href="@{AuthR LoginR}">login</a> with the dummy authentication added
+    while in development.
+
+
+  <span .list-group-item>
     The HTML you are seeing now is actually composed by a number of <em>widgets</em>, #
     most of them are brought together by the <tt>defaultLayout</tt> function which #
     is defined in the <tt>Foundation.hs</tt> module, and used by <tt>#{handlerName}</tt>. #
