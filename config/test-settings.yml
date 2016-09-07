@@ -7,3 +7,5 @@ database:
   #
   #   database: "_env:MYSQL_DATABASE:PROJECTNAME_test"
   database: PROJECTNAME_test
+
+auth-dummy-login: true
