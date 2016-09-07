@@ -156,8 +156,6 @@ instance YesodAuth App where
         -- Enable authDummy login if enabled.
         where extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
 
-
-
     authHttpManager = getHttpManager
 
 -- | Access function to determine if a user is logged in.
