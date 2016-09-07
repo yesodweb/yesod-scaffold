@@ -4,8 +4,10 @@ import Import.NoFoundation
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Text.Hamlet          (hamletFile)
 import Text.Jasmine         (minifym)
+
+-- Used only when in "auth-dummy-login" setting is enabled.
 import Yesod.Auth.Dummy
--- ^ Used only when in "auth-dummy-login" setting is enabled.
+
 import Yesod.Auth.OpenId    (authOpenId, IdentifierType (Claimed))
 import Yesod.Default.Util   (addStaticContentExternal)
 import Yesod.Core.Types     (Logger)
