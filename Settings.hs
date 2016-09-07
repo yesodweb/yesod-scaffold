@@ -51,9 +51,6 @@ data AppSettings = AppSettings
     -- ^ Copyright text to appear in the footer of the page
     , appAnalytics              :: Maybe Text
     -- ^ Google Analytics code
-
-    , appAuthDummyLogin         :: Bool
-    -- ^ Indicate if auth dummy login should be enabled.
     }
 
 instance FromJSON AppSettings where
@@ -76,10 +73,8 @@ instance FromJSON AppSettings where
         appMutableStatic          <- o .:? "mutable-static"   .!= defaultDev
         appSkipCombining          <- o .:? "skip-combining"   .!= defaultDev
 
-        appCopyright              <- o .:  "copyright"
+        appCopyright              <- o .: "copyright"
         appAnalytics              <- o .:? "analytics"
-
-        appAuthDummyLogin         <- o .:? "auth-dummy-login"      .!= defaultDev
 
         return AppSettings {..}
 

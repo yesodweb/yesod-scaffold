@@ -13,12 +13,12 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 # Optional values with the following production defaults.
 # In development, they default to the inverse.
 #
+# development: false
 # detailed-logging: false
 # should-log-all: false
 # reload-templates: false
 # mutable-static: false
 # skip-combining: false
-# auth-dummy-login : false
 
 copyright: Insert copyright statement here
 #analytics: UA-YOURCODE

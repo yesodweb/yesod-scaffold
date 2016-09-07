@@ -8,7 +8,6 @@ import ClassyPrelude         as X
 import Foundation            as X
 import Test.Hspec            as X
 import Yesod.Default.Config2 (useEnv, loadYamlSettings)
-import Yesod.Auth            as X
 import Yesod.Test            as X
 
 withApp :: SpecWith (TestApp App) -> Spec
