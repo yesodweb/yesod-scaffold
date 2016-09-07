@@ -23,6 +23,7 @@ library
                      Handler.Common
                      Handler.Home
                      Handler.Comment
+                     Handler.Profile
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
@@ -106,6 +107,7 @@ test-suite test
     other-modules:     Handler.CommentSpec
                        Handler.CommonSpec
                        Handler.HomeSpec
+                       Handler.ProfileSpec
                        TestImport
     hs-source-dirs:    test
     ghc-options:       -Wall
@@ -129,6 +131,7 @@ test-suite test
 
     build-depends: base
                  , PROJECTNAME
+                 , yesod-auth
                  , yesod-test >= 1.5.2 && < 1.6
                  , yesod-core
                  , yesod
