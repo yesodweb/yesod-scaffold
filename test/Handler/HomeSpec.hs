@@ -6,7 +6,7 @@ spec :: Spec
 spec = withApp $ do
 
     describe "Homepage" $ do
-      it "loads the index and checks it looks right" $ do
+        it "loads the index and checks it looks right" $ do
           get HomeR
           statusIs 200
           htmlAllContain "h1" "Welcome to Yesod"
@@ -24,10 +24,10 @@ spec = withApp $ do
           htmlAllContain ".message" "Some Content"
           htmlAllContain ".message" "text/plain"
 
-      -- This is a simple example of using a database access in a test.  The
-      -- test will succeed for a fresh scaffolded site with an empty database,
-      -- but will fail on an existing database with a non-empty user table.
-      it "leaves the user table empty" $ do
+        -- This is a simple example of using a database access in a test.  The
+        -- test will succeed for a fresh scaffolded site with an empty database,
+        -- but will fail on an existing database with a non-empty user table.
+        it "leaves the user table empty" $ do
           get HomeR
           statusIs 200
           users <- runDB $ selectList ([] :: [Filter User]) []
