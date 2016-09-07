@@ -153,8 +153,8 @@ instance YesodAuth App where
 
     -- You can add other plugins like Google Email, email or OAuth here
     authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
-        -- Enable authDummy login when in development mode.
-        where extraAuthPlugins = [authDummy | appDevelopment $ appSettings app]
+        -- Enable authDummy login if enabled.
+        where extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
 
 
 

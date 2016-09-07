@@ -55,8 +55,8 @@ data AppSettings = AppSettings
     , appAnalytics              :: Maybe Text
     -- ^ Google Analytics code
 
-    , appDevelopment            :: Bool
-    -- ^ Indicate if we are in development mode
+    , appAuthDummyLogin         :: Bool
+    -- ^ Indicate if auth dummy login should be enabled.
     }
 
 instance FromJSON AppSettings where
@@ -80,10 +80,11 @@ instance FromJSON AppSettings where
         appMutableStatic          <- o .:? "mutable-static"   .!= defaultDev
         appSkipCombining          <- o .:? "skip-combining"   .!= defaultDev
 
-        appCopyright              <- o .: "copyright"
+        appCopyright              <- o .:  "copyright"
         appAnalytics              <- o .:? "analytics"
 
-        appDevelopment            <- o .:? "development"      .!= defaultDev
+        appAuthDummyLogin         <- o .:? "auth-dummy-login"      .!= defaultDev
+
         return AppSettings {..}
 
 -- | Settings for 'widgetFile', such as which template languages to support and
