@@ -1,2 +1,4 @@
 database:
   database: PROJECTNAME_test
+
+auth-dummy-login: true

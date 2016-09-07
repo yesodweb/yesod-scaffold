@@ -33,7 +33,7 @@ before_install:
 
 script:
   - stack init $ARGS
-  - stack build --test --install-ghc
+  - stack build --test --bench --install-ghc --haddock --no-haddock-deps
 
 cache:
   directories:

@@ -12,6 +12,7 @@ import Model                    as X
 import Settings                 (appDatabaseConf)
 import Test.Hspec               as X
 import Yesod.Default.Config2    (useEnv, loadYamlSettings)
+import Yesod.Auth               as X
 import Yesod.Test               as X
 -- Wiping the test database
 import Database.MongoDB.Query (allCollections)
@@ -52,3 +53,20 @@ dropAllCollections = allCollections >>= return . filter (not . isSystemCollectio
       where
         isSystemCollection = isPrefixOf "system."
 
+-- | Authenticate as a user. This relies on the `auth-dummy-login: true` flag
+-- being set in test-settings.yaml, which enables dummy authentication in
+-- Foundation.hs
+authenticateAs :: Entity User -> YesodExample App ()
+authenticateAs (Entity _ u) = do
+    request $ do
+        setMethod "POST"
+        addPostParam "ident" $ userIdent u
+        setUrl $ AuthR $ PluginR "dummy" []
+
+-- | Create a user.
+createUser :: Text -> YesodExample App (Entity User)
+createUser ident = do
+    runDB $ insertEntity User
+        { userIdent = ident
+        , userPassword = Nothing
+        }

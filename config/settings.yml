@@ -13,12 +13,12 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 # Optional values with the following production defaults.
 # In development, they default to the inverse.
 #
-# development: false
 # detailed-logging: false
 # should-log-all: false
 # reload-templates: false
 # mutable-static: false
 # skip-combining: false
+# auth-dummy-login : false
 
 # NB: If you need a numeric value (e.g. 123) to parse as a String, wrap it in single quotes (e.g. "_env:PGPASS:'123'")
 # See https://github.com/yesodweb/yesod/wiki/Configuration#parsing-numeric-values-as-strings
