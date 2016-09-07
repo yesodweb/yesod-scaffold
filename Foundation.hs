@@ -4,8 +4,10 @@ import Import.NoFoundation
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Text.Hamlet          (hamletFile)
 import Text.Jasmine         (minifym)
+
+-- Used only when in "auth-dummy-login" setting is enabled.
 import Yesod.Auth.Dummy
--- ^ Used only when in development mode.
+
 import Yesod.Auth.OpenId    (authOpenId, IdentifierType (Claimed))
 import Yesod.Default.Util   (addStaticContentExternal)
 import Yesod.Core.Types     (Logger)
@@ -212,18 +214,16 @@ instance YesodAuth App where
 
     -- You can add other plugins like Google Email, email or OAuth here
     authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
-        -- Enable authDummy login when in development mode.
-        where extraAuthPlugins = [authDummy | appDevelopment $ appSettings app]
-
-
+        -- Enable authDummy login if enabled.
+        where extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
 
     authHttpManager = getHttpManager
 
 -- | Access function to determine if a user is logged in.
 isAuthenticated :: Handler AuthResult
 isAuthenticated = do
-    mAuthId <- maybeAuthId
-    return $ case mAuthId of
+    muid <- maybeAuthId
+    return $ case muid of
         Nothing -> Unauthorized "You must login to access this page"
         Just _ -> Authorized
 
