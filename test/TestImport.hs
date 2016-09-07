@@ -57,8 +57,9 @@ getTables = do
 
     return $ map unSingle tables
 
--- | Authenticate as a user. This relies on the `development: true` flag being set in test-settings.yaml,
--- which enables dummy authentication in Foundation.hs
+-- | Authenticate as a user. This relies on the `auth-dummy-login: true` flag
+-- being set in test-settings.yaml, which enables dummy authentication in
+-- Foundation.hs
 authenticateAs :: Entity User -> YesodExample App ()
 authenticateAs (Entity _ u) = do
     request $ do
