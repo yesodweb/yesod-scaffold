@@ -1,60 +1,44 @@
-<!-- Following Menu -->
-<div class="ui large top fixed hidden menu">
-  <div class="ui container">
-    $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
-      <a class="item" :Just route == mcurrentRoute:.active href="@{route}">#{label}
 
-    <div class="right menu">
-      <div class="item">
-        $forall MenuItem label route _ <- navbarRightFilteredMenuItems
-          <a class="ui button" :Just route == mcurrentRoute:.active href="@{route}">#{label}
+<!-- Static navbar -->
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
 
-<!-- Sidebar Menu -->
-<div class="ui vertical inverted sidebar menu">
-  $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
-    <a class="item" :Just route == mcurrentRoute:.active href="@{route}">#{label}
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
+                    <li :Just route == mcurrentRoute:.active>
+                        <a href="@{route}">#{label}
+
+            <ul class="nav navbar-nav navbar-right">
+                $forall MenuItem label route _ <- navbarRightFilteredMenuItems
+                    <li :Just route == mcurrentRoute:.active>
+                        <a href="@{route}">#{label}
 
 <!-- Page Contents -->
-<div class="pusher">
 
-  <div class="ui inverted vertical center aligned segment">
-    <div.ui.container>
-      <div class="ui large secondary inverted pointing menu">
-        <a class="toc item">
-          <i class="sidebar icon"></i>
-
-        $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
-          <a class="item" :Just route == mcurrentRoute:.active href="@{route}">#{label}
-
-        <div class="right item">
-          $forall MenuItem label route _ <- navbarRightFilteredMenuItems
-            <a class="ui inverted button" :Just route == mcurrentRoute:.active href="@{route}">#{label}
-
-  <div class="ui container">
+<div class="container">
 
     $if not $ Just HomeR == mcurrentRoute
-        <div.ui.breadcrumb>
-          $forall bc <- parents
-            <a.section href=@{fst bc}>#{snd bc}
-            <div.divider> /
+        <ul class="breadcrumb">
+            $forall bc <- parents
+                <li>
+                    <a href="@{fst bc}">#{snd bc}
 
-          <div.active.section>
-            #{title}
+            <li class="active">#{title}
 
     $maybe msg <- mmsg
-      <div.ui.message #message>#{msg}
+      <div.alert.alert-info #message>#{msg}
 
-  ^{widget}
+^{widget}
 
-  <!-- Footer -->
-  <div class="ui inverted vertical footer segment">
-    <div class="ui container">
-      <div class="ui stackable inverted divided equal height stackable grid">
-        <div class="six wide column">
-          <h4 class="ui inverted header">About
-          <div class="ui inverted link list">
-            <a href="#" class="item">Sitemap
-            <a href="#" class="item">Contact Us
-
-        <div class="seven wide column">
-          <p>#{appCopyright $ appSettings master}
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">
+            #{appCopyright $ appSettings master}

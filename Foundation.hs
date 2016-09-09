@@ -126,12 +126,7 @@ instance Yesod App where
         -- you to use normal widget features in default-layout.
 
         pc <- widgetToPageContent $ do
-            -- Semantic UI
-            addStylesheet $ StaticR semantic_semantic_min_css
-            addScript $ StaticR semantic_sidebar_min_js
-            addScript $ StaticR semantic_transition_min_js
-            addScript $ StaticR semantic_visibility_min_js
-
+            addStylesheet $ StaticR css_bootstrap_css
             $(widgetFile "default-layout")
         withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 

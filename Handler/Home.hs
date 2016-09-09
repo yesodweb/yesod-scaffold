@@ -1,6 +1,7 @@
 module Handler.Home where
 
 import Import
+import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3)
 import Text.Julius (RawJS (..))
 
 -- Define our data that will be used for creating the form.
@@ -42,37 +43,20 @@ postHomeR = do
         $(widgetFile "homepage")
 
 sampleForm :: Form FileForm
-sampleForm = renderSematnicUiDivs $ FileForm
+sampleForm = renderBootstrap3 BootstrapBasicForm $ FileForm
     <$> fileAFormReq "Choose a file"
-    <*> areq textField "What's on the file?" Nothing
+    <*> areq textField textSettings Nothing
+    -- Add attributes like the placeholder and CSS classes.
+    where textSettings = FieldSettings
+            { fsLabel = "What's on the file?"
+            , fsTooltip = Nothing
+            , fsId = Nothing
+            , fsName = Nothing
+            , fsAttrs =
+                [ ("class", "form-control")
+                , ("placeholder", "File description")
+                ]
+            }
 
 commentIds :: (Text, Text, Text)
 commentIds = ("js-commentForm", "js-createCommentTextarea", "js-commentList")
-
-
-
--- @todo: Move to own yesod-sematnic-ui package?
-
--- Adaptation of renderDivs.
-renderSematnicUiDivs :: Monad m => FormRender m a
-renderSematnicUiDivs = renderSematnicUiDivsMaybeLabels True
-
--- Only difference here is that we add a ".field" class on the wrapper div.
-renderSematnicUiDivsMaybeLabels :: Monad m => Bool -> FormRender m a
-renderSematnicUiDivsMaybeLabels withLabels aform fragment = do
-  (res, views') <- aFormToForm aform
-  let views = views' []
-  let widget = [whamlet|
-$newline never
-\#{fragment}
-$forall view <- views
-  <div.field :fvRequired view:.required :not $ fvRequired view:.optional>
-      $if withLabels
-              <label for=#{fvId view}>#{fvLabel view}
-      $maybe tt <- fvTooltip view
-          <div .tooltip>#{tt}
-      ^{fvInput view}
-      $maybe err <- fvErrors view
-          <div .errors>#{err}
-|]
-  return (res, widget)
