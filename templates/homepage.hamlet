@@ -2,9 +2,9 @@
     <div class="container">
         <div class="row">
             <h1 class="header">
-                Yesod; A modern framework for blazing fast websites
+                Yesod—a modern framework for blazing fast websites
             <h2>
-                Fast, Stable & Spiced With Great Community
+                Fast, stable & spiced with great community
             <a href="http://www.yesodweb.com/book/" class="btn btn-info btn-lg">
                 Read the Book
 
