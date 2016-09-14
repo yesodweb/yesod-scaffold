@@ -1,44 +1,43 @@
 
 <!-- Static navbar -->
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+<nav .navbar.navbar-default.navbar-static-top>
+    <div .container>
+        <div .navbar-header>
+            <button type="button" .navbar-toggle.collapsed data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
 
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
+        <div #navbar .collapse navbar-collapse>
+            <ul .nav navbar-nav>
                 $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
                     <li :Just route == mcurrentRoute:.active>
                         <a href="@{route}">#{label}
 
-            <ul class="nav navbar-nav navbar-right">
+            <ul .nav.navbar-nav.navbar-right>
                 $forall MenuItem label route _ <- navbarRightFilteredMenuItems
                     <li :Just route == mcurrentRoute:.active>
                         <a href="@{route}">#{label}
 
 <!-- Page Contents -->
 
-<div class="container">
-
+<div .container>
     $if not $ Just HomeR == mcurrentRoute
-        <ul class="breadcrumb">
+        <ul .breadcrumb>
             $forall bc <- parents
                 <li>
                     <a href="@{fst bc}">#{snd bc}
 
-            <li class="active">#{title}
+            <li .active>#{title}
 
     $maybe msg <- mmsg
-      <div.alert.alert-info #message>#{msg}
+      <div .alert.alert-info #message>#{msg}
 
 ^{widget}
 
 <!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <p class="text-muted">
+<footer .footer>
+    <div .container>
+        <p .text-muted>
             #{appCopyright $ appSettings master}
