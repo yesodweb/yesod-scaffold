@@ -9,8 +9,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
 
-        <div #navbar .collapse navbar-collapse>
-            <ul .nav navbar-nav>
+        <div #navbar .collapse.navbar-collapse>
+            <ul .nav.navbar-nav>
                 $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
                     <li :Just route == mcurrentRoute:.active>
                         <a href="@{route}">#{label}
