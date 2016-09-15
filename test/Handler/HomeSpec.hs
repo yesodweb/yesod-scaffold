@@ -20,8 +20,8 @@ spec = withApp $ do
 
           statusIs 200
           -- more debugging printBody
-          htmlAllContain ".upload-response" "Some Content"
           htmlAllContain ".upload-response" "text/plain"
+          htmlAllContain ".upload-response" "Some Content"
 
         -- This is a simple example of using a database access in a test.  The
         -- test will succeed for a fresh scaffolded site with an empty database,
