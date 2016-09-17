@@ -16,9 +16,13 @@ matrix:
     compiler: ": #newest nightly"
   - env: ARGS="--resolver lts-6"
     compiler: ": #newest lts 6"
+  - env: ARGS="--resolver lts-7"
+    compiler: ": #newest lts 7"
   allow_failures:
-  # GHC 8 bug? https://twitter.com/snoyberg/status/772465852780273664
+  # GHC 8 bug: https://twitter.com/snoyberg/status/772465852780273664
   - env: ARGS="--resolver nightly"
+  - env: ARGS="--resolver lts"
+  - env: ARGS="--resolver lts-7"
 
 before_install:
   # Using compiler above sets CC to an invalid value, so unset it
