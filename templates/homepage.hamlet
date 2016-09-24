@@ -134,6 +134,6 @@
 
                    <p>
                        And last but not least, Testing. In <tt>test/Spec.hs</tt> you will find a #
-                       test suite that performs tests on this pag
+                       test suite that performs tests on this page.
                    <p>
                        You can run your tests by doing: <code>stack test</code>
