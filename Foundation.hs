@@ -28,6 +28,16 @@ data App = App
     , appFayCommandHandler :: CommandHandler App
     }
 
+data MenuItem = MenuItem
+    { menuItemLabel :: Text
+    , menuItemRoute :: Route App
+    , menuItemAccessCallback :: Bool
+    }
+
+data MenuTypes
+    = NavbarLeft MenuItem
+    | NavbarRight MenuItem
+
 -- This is where we define all of the routes in our application. For a full
 -- explanation of the syntax, please see:
 -- http://www.yesodweb.com/book/routing-and-handlers
@@ -73,6 +83,42 @@ instance Yesod App where
     defaultLayout widget = do
         master <- getYesod
         mmsg <- getMessage
+
+        muser <- maybeAuthPair
+        mcurrentRoute <- getCurrentRoute
+
+        -- Get the breadcrumbs, as defined in the YesodBreadcrumbs instance.
+        (title, parents) <- breadcrumbs
+
+        -- Define the menu items of the header.
+        let menuItems =
+                [ NavbarLeft $ MenuItem
+                    { menuItemLabel = "Home"
+                    , menuItemRoute = HomeR
+                    , menuItemAccessCallback = True
+                    }
+                , NavbarLeft $ MenuItem
+                    { menuItemLabel = "Profile"
+                    , menuItemRoute = ProfileR
+                    , menuItemAccessCallback = isJust muser
+                    }
+                , NavbarRight $ MenuItem
+                    { menuItemLabel = "Login"
+                    , menuItemRoute = AuthR LoginR
+                    , menuItemAccessCallback = isNothing muser
+                    }
+                , NavbarRight $ MenuItem
+                    { menuItemLabel = "Logout"
+                    , menuItemRoute = AuthR LogoutR
+                    , menuItemAccessCallback = isJust muser
+                    }
+                ]
+
+        let navbarLeftMenuItems = [x | NavbarLeft x <- menuItems]
+        let navbarRightMenuItems = [x | NavbarRight x <- menuItems]
+
+        let navbarLeftFilteredMenuItems = [x | x <- navbarLeftMenuItems, menuItemAccessCallback x]
+        let navbarRightFilteredMenuItems = [x | x <- navbarRightMenuItems, menuItemAccessCallback x]
 
         -- We break up the default layout into two components:
         -- default-layout is the contents of the body tag, and
@@ -135,6 +181,13 @@ instance YesodFay App where
     yesodFayCommand render command = do
         master <- getYesod
         appFayCommandHandler master render command
+
+-- Define breadcrumbs.
+instance YesodBreadcrumbs App where
+  breadcrumb HomeR = return ("Home", Nothing)
+  breadcrumb (AuthR _) = return ("Login", Just HomeR)
+  breadcrumb ProfileR = return ("Profile", Just HomeR)
+  breadcrumb  _ = return ("home", Nothing)
 
 -- How to run database actions.
 instance YesodPersist App where
