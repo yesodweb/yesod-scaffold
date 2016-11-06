@@ -66,7 +66,7 @@ library
                  , text                          >= 0.11       && < 2.0
                  , persistent                    >= 2.0        && < 2.7
                  , persistent-mysql              >= 2.1.2      && < 2.7
-                 , mysql
+                 , mysql                         >= 0.1.4
                  , persistent-template           >= 2.0        && < 2.7
                  , template-haskell
                  , shakespeare                   >= 2.0        && < 2.1
