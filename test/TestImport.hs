@@ -4,7 +4,7 @@ module TestImport
     ) where
 
 import Application              (makeFoundation, makeLogWare)
-import ClassyPrelude            as X hiding (delete, deleteBy)
+import ClassyPrelude            as X hiding (delete, deleteBy, Handler)
 import Database.Persist         as X hiding (get)
 import Database.Persist.MongoDB hiding (master)
 import Foundation               as X
