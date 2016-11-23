@@ -4,7 +4,7 @@ module TestImport
     ) where
 
 import Application           (makeFoundation, makeLogWare)
-import ClassyPrelude         as X
+import ClassyPrelude         as X hiding (Handler)
 import Foundation            as X
 import Test.Hspec            as X
 import Yesod.Default.Config2 (useEnv, loadYamlSettings)
