@@ -47,6 +47,7 @@ library
                 ViewPatterns
                 TupleSections
                 RecordWildCards
+                CPP
 
     build-depends:
                    -- Due to a bug in GHC 8.0.1, we block its usage
@@ -102,6 +103,24 @@ executable         PROJECTNAME
 
     ghc-options:       -threaded -rtsopts -with-rtsopts=-N
 
+    extensions: TemplateHaskell
+                QuasiQuotes
+                OverloadedStrings
+                NoImplicitPrelude
+                MultiParamTypeClasses
+                TypeFamilies
+                GADTs
+                GeneralizedNewtypeDeriving
+                FlexibleContexts
+                FlexibleInstances
+                EmptyDataDecls
+                NoMonomorphismRestriction
+                DeriveDataTypeable
+                ViewPatterns
+                TupleSections
+                RecordWildCards
+                CPP
+
 test-suite test
     type:              exitcode-stdio-1.0
     main-is:           Spec.hs
@@ -117,7 +136,6 @@ test-suite test
                 QuasiQuotes
                 OverloadedStrings
                 NoImplicitPrelude
-                CPP
                 MultiParamTypeClasses
                 TypeFamilies
                 GADTs
@@ -129,6 +147,8 @@ test-suite test
                 DeriveDataTypeable
                 ViewPatterns
                 TupleSections
+                RecordWildCards
+                CPP
 
     build-depends: base
                  , PROJECTNAME
