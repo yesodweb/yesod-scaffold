@@ -31,24 +31,6 @@ library
     else
         ghc-options:   -Wall -fwarn-tabs -O2
 
-    extensions: TemplateHaskell
-                QuasiQuotes
-                OverloadedStrings
-                NoImplicitPrelude
-                MultiParamTypeClasses
-                TypeFamilies
-                GADTs
-                GeneralizedNewtypeDeriving
-                FlexibleContexts
-                FlexibleInstances
-                EmptyDataDecls
-                NoMonomorphismRestriction
-                DeriveDataTypeable
-                ViewPatterns
-                TupleSections
-                RecordWildCards
-                CPP
-
     build-depends:
                    -- Due to a bug in GHC 8.0.1, we block its usage
                    -- See: https://ghc.haskell.org/trac/ghc/ticket/12130
@@ -104,24 +86,6 @@ executable         PROJECTNAME
 
     ghc-options:       -threaded -rtsopts -with-rtsopts=-N
 
-    extensions: TemplateHaskell
-                QuasiQuotes
-                OverloadedStrings
-                NoImplicitPrelude
-                MultiParamTypeClasses
-                TypeFamilies
-                GADTs
-                GeneralizedNewtypeDeriving
-                FlexibleContexts
-                FlexibleInstances
-                EmptyDataDecls
-                NoMonomorphismRestriction
-                DeriveDataTypeable
-                ViewPatterns
-                TupleSections
-                RecordWildCards
-                CPP
-
 test-suite test
     type:              exitcode-stdio-1.0
     main-is:           Spec.hs
@@ -132,24 +96,6 @@ test-suite test
                        TestImport
     hs-source-dirs:    test
     ghc-options:       -Wall
-
-    extensions: TemplateHaskell
-                QuasiQuotes
-                OverloadedStrings
-                NoImplicitPrelude
-                MultiParamTypeClasses
-                TypeFamilies
-                GADTs
-                GeneralizedNewtypeDeriving
-                FlexibleContexts
-                FlexibleInstances
-                EmptyDataDecls
-                NoMonomorphismRestriction
-                DeriveDataTypeable
-                ViewPatterns
-                TupleSections
-                RecordWildCards
-                CPP
 
     build-depends: base
                  , PROJECTNAME
