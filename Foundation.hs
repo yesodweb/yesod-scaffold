@@ -171,6 +171,9 @@ instance Yesod App where
 
     makeLogger = return . appLogger
 
+    -- Provide proper Bootstrap styling for default displays, like
+    -- error pages
+    defaultMessageWidget title body = $(widgetFile "default-message-widget")
 
 -- Define breadcrumbs.
 instance YesodBreadcrumbs App where
