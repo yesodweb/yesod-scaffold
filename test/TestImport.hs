@@ -17,6 +17,7 @@ import Test.Hspec            as X
 import Yesod.Default.Config2 (useEnv, loadYamlSettings)
 import Yesod.Auth            as X
 import Yesod.Test            as X
+import Yesod.Core.Unsafe     (fakeHandlerGetLogger)
 
 runDB :: SqlPersistM a -> YesodExample App a
 runDB query = do
@@ -25,6 +26,11 @@ runDB query = do
 
 runDBWithApp :: App -> SqlPersistM a -> IO a
 runDBWithApp app query = runSqlPersistMPool query (appConnPool app)
+
+runHandler :: Handler a -> YesodExample App a
+runHandler handler = do
+    app <- getTestYesod
+    fakeHandlerGetLogger appLogger app handler
 
 withApp :: SpecWith (TestApp App) -> Spec
 withApp = before $ do
