@@ -23,6 +23,8 @@ import Database.MongoDB.Query (allCollections)
 import Database.MongoDB.Admin (dropCollection)
 import Control.Monad.Trans.Control (MonadBaseControl)
 
+import Yesod.Core.Unsafe     (fakeHandlerGetLogger)
+
 runDB :: Action IO a -> YesodExample App a
 runDB query = do
     app <- getTestYesod
@@ -34,6 +36,11 @@ runDBWithApp app query = do
         (mgAccessMode $ appDatabaseConf $ appSettings app)
         query
         (appConnPool app)
+
+runHandler :: Handler a -> YesodExample App a
+runHandler handler = do
+    app <- getTestYesod
+    fakeHandlerGetLogger appLogger app handler
 
 withApp :: SpecWith (TestApp App) -> Spec
 withApp = before $ do
