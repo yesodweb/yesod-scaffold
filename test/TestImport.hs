@@ -17,6 +17,7 @@ import Test.Hspec            as X
 import Yesod.Default.Config2 (useEnv, loadYamlSettings)
 import Yesod.Auth            as X
 import Yesod.Test            as X
+import Yesod.Core.Unsafe     (fakeHandlerGetLogger)
 
 -- Wiping the database
 import Database.Persist.Sqlite              (sqlDatabase, wrapConnection, createSqlPool)
@@ -29,6 +30,11 @@ runDB :: SqlPersistM a -> YesodExample App a
 runDB query = do
     pool <- fmap appConnPool getTestYesod
     liftIO $ runSqlPersistMPool query pool
+
+runHandler :: Handler a -> YesodExample App a
+runHandler handler = do
+    app <- getTestYesod
+    fakeHandlerGetLogger appLogger app handler
 
 withApp :: SpecWith (TestApp App) -> Spec
 withApp = before $ do
