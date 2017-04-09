@@ -34,7 +34,7 @@ before_install:
 
 script:
   - stack init $ARGS
-  - stack build --test --install-ghc
+  - stack build --test --install-ghc --jobs 1
 
 cache:
   directories:
