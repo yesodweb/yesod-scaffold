@@ -5,3 +5,9 @@ hsfiles/
 yesod-scaffold/
 dist/
 /.stack-work/
+\#*
+*~
+yesod-devel/
+config/
+static/
+yesod-scaffold.cabal

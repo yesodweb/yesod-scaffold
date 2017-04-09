@@ -1,0 +1,27 @@
+name: yesod-scaffold
+synopsis: Yesod scaffolding tools
+description: See README
+maintainer: Michael Snoyman <michael@snoyman.com>
+license: MIT
+github: yesodweb/yesod-scaffold
+category: Development
+
+ghc-options: -Wall -Werror
+
+dependencies:
+- base
+- classy-prelude-conduit
+- typed-process
+- project-template
+- directory
+- filepath
+- conduit
+- text
+- optparse-simple
+
+executables:
+  yesod-scaffold:
+    main: Main.hs
+    source-dirs: app
+    other-modules:
+    - Paths_yesod_scaffold
