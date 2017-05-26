@@ -50,18 +50,6 @@ dependencies:
 # defined below is just a thin wrapper.
 library:
   source-dirs: src
-  exposed-modules:
-  - Application
-  - Foundation
-  - Import
-  - Import.NoFoundation
-  - Model
-  - Settings
-  - Settings.StaticFiles
-  - Handler.Common
-  - Handler.Home
-  - Handler.Comment
-  - Handler.Profile
   when:
   - condition: (flag(dev)) || (flag(library-only))
     then:
