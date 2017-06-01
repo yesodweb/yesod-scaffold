@@ -1,3 +1,5 @@
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE OverloadedStrings #-}
 module Handler.Fay where
 
 import Fay.Convert (readFromFay)

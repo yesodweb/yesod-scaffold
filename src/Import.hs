@@ -1,3 +1,4 @@
+{-# LANGUAGE TemplateHaskell #-}
 module Import
     ( module Import
     ) where
