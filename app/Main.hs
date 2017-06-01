@@ -49,7 +49,7 @@ build noRunTests = do
     let testArgs
             | noRunTests = ["test", "--pedantic", "--no-run-tests"]
             | otherwise = ["test", "--pedantic"]
-    removeDirectoryRecursive "yesod-scaffold"
+    void $ tryIO $ removeDirectoryRecursive "yesod-scaffold"
     runProcess_ $ proc "git" ["clone", ".", "yesod-scaffold"]
     let run_ cmd args = runProcess_ $ setWorkingDir "yesod-scaffold" $ proc cmd args
     forM_ branches $ \branch -> do
