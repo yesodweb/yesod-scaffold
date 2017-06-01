@@ -1,14 +1,14 @@
+{-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE FlexibleContexts #-}
 module TestImport
     ( module TestImport
     , module X
     ) where
 
 import Application              (makeFoundation, makeLogWare)
-#if MIN_VERSION_classy_prelude(1, 0, 0)
 import ClassyPrelude            as X hiding (delete, deleteBy, Handler)
-#else
-import ClassyPrelude            as X hiding (delete, deleteBy)
-#endif
 import Database.Persist         as X hiding (get)
 import Database.Persist.MongoDB hiding (master)
 import Foundation               as X
