@@ -1,4 +1,8 @@
-{-# Language CPP #-}
+{-# LANGUAGE CPP               #-}
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RecordWildCards   #-}
+{-# LANGUAGE TemplateHaskell   #-}
 -- | Settings are centralized, as much as possible, into this file. This
 -- includes database connection settings, static file locations, etc.
 -- In addition, you can configure a number of different aspects of Yesod
@@ -56,7 +60,7 @@ data AppSettings = AppSettings
 instance FromJSON AppSettings where
     parseJSON = withObject "AppSettings" $ \o -> do
         let defaultDev =
-#if DEVELOPMENT
+#ifdef DEVELOPMENT
                 True
 #else
                 False
