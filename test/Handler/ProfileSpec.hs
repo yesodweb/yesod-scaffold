@@ -1,3 +1,5 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE OverloadedStrings #-}
 module Handler.ProfileSpec (spec) where
 
 import TestImport
