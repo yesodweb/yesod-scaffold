@@ -12,6 +12,7 @@ LINE_LENGTH=80
 function hindent_file {
     filename="$1"
     output_filename="${filename}.hindented"
+    echo Indenting: $filename
     # In hindent 0.5+, the style is hard-coded to johan-tibell
     ${HINDENT} --style johan-tibell --line-length "${LINE_LENGTH}" < "${filename}" > "${output_filename}"
     mv "${output_filename}" "${filename}"
