@@ -1,4 +1,5 @@
 {-# LANGUAGE PackageImports #-}
+
 import "PROJECTNAME" Application (develMain)
 import Prelude (IO)
 
