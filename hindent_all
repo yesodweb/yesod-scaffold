@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
+# Based on https://github.com/commercialhaskell/hindent/issues/309#issue-180517159
+
 set -e
 
 HINDENT=hindent
 GIT=git
 
-LINE_LENGTH=200
+LINE_LENGTH=80
 
 function hindent_file {
     filename="$1"
@@ -19,7 +21,7 @@ function list_haskell_files {
     # TODO: Figure out if it's a Haskell file in a more reliable way, e.g.
     # using `file`, or just running hindent on everything.
 
-    # TODO: Exclude ./src/Settings.hs
+    # TODO: Exclude ./src/Settings.hs, due to https://github.com/commercialhaskell/hindent/issues/383
     ${GIT} ls-files './*.hs'
 }
 

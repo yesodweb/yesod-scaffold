@@ -38,7 +38,11 @@ runHandler handler = do
 withApp :: SpecWith (TestApp App) -> Spec
 withApp =
     before $ do
-        settings <- loadYamlSettings ["config/test-settings.yml", "config/settings.yml"] [] useEnv
+        settings <-
+            loadYamlSettings
+                ["config/test-settings.yml", "config/settings.yml"]
+                []
+                useEnv
         foundation <- makeFoundation settings
         wipeDB foundation
         logWare <- liftIO $ makeLogWare foundation

@@ -95,15 +95,37 @@ instance Yesod App
         (title, parents) <- breadcrumbs
         -- Define the menu items of the header.
         let menuItems =
-                [ NavbarLeft $ MenuItem {menuItemLabel = "Home", menuItemRoute = HomeR, menuItemAccessCallback = True}
-                , NavbarLeft $ MenuItem {menuItemLabel = "Profile", menuItemRoute = ProfileR, menuItemAccessCallback = isJust muser}
-                , NavbarRight $ MenuItem {menuItemLabel = "Login", menuItemRoute = AuthR LoginR, menuItemAccessCallback = isNothing muser}
-                , NavbarRight $ MenuItem {menuItemLabel = "Logout", menuItemRoute = AuthR LogoutR, menuItemAccessCallback = isJust muser}
+                [ NavbarLeft $
+                  MenuItem
+                  { menuItemLabel = "Home"
+                  , menuItemRoute = HomeR
+                  , menuItemAccessCallback = True
+                  }
+                , NavbarLeft $
+                  MenuItem
+                  { menuItemLabel = "Profile"
+                  , menuItemRoute = ProfileR
+                  , menuItemAccessCallback = isJust muser
+                  }
+                , NavbarRight $
+                  MenuItem
+                  { menuItemLabel = "Login"
+                  , menuItemRoute = AuthR LoginR
+                  , menuItemAccessCallback = isNothing muser
+                  }
+                , NavbarRight $
+                  MenuItem
+                  { menuItemLabel = "Logout"
+                  , menuItemRoute = AuthR LogoutR
+                  , menuItemAccessCallback = isJust muser
+                  }
                 ]
         let navbarLeftMenuItems = [x | NavbarLeft x <- menuItems]
         let navbarRightMenuItems = [x | NavbarRight x <- menuItems]
-        let navbarLeftFilteredMenuItems = [x | x <- navbarLeftMenuItems, menuItemAccessCallback x]
-        let navbarRightFilteredMenuItems = [x | x <- navbarRightMenuItems, menuItemAccessCallback x]
+        let navbarLeftFilteredMenuItems =
+                [x | x <- navbarLeftMenuItems, menuItemAccessCallback x]
+        let navbarRightFilteredMenuItems =
+                [x | x <- navbarRightMenuItems, menuItemAccessCallback x]
         -- We break up the default layout into two components:
         -- default-layout is the contents of the body tag, and
         -- default-layout-wrapper is the entire page. Since the final
@@ -131,13 +153,22 @@ instance Yesod App
     addStaticContent ext mime content = do
         master <- getYesod
         let staticDir = appStaticDir $ appSettings master
-        addStaticContentExternal minifym genFileName staticDir (StaticR . flip StaticRoute []) ext mime content
+        addStaticContentExternal
+            minifym
+            genFileName
+            staticDir
+            (StaticR . flip StaticRoute [])
+            ext
+            mime
+            content
         -- Generate a unique filename based on the content itself
       where
         genFileName lbs = "autogen-" ++ base64md5 lbs
     -- What messages should be logged. The following includes all messages when
     -- in development, and warnings and errors in production.
-    shouldLog app _source level = appShouldLogAll (appSettings app) || level == LevelWarn || level == LevelError
+    shouldLog app _source level =
+        appShouldLogAll (appSettings app) ||
+        level == LevelWarn || level == LevelError
     makeLogger = return . appLogger
 
 -- Define breadcrumbs.
@@ -170,7 +201,11 @@ instance YesodAuth App where
             x <- getBy $ UniqueUser $ credsIdent creds
             case x of
                 Just (Entity uid _) -> return $ Authenticated uid
-                Nothing -> Authenticated <$> insert User {userIdent = credsIdent creds, userPassword = Nothing}
+                Nothing ->
+                    Authenticated <$>
+                    insert
+                        User
+                        {userIdent = credsIdent creds, userPassword = Nothing}
     -- You can add other plugins like Google Email, email or OAuth here
     authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
         -- Enable authDummy login if enabled.

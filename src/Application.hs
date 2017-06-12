@@ -73,10 +73,15 @@ makeFoundation appSettings
         -- The App {..} syntax is an example of record wild cards. For more
         -- information, see:
         -- https://ocharles.org.uk/blog/posts/2014-12-04-record-wildcards.html
-        tempFoundation = mkFoundation $ error "connPool forced in tempFoundation"
+        tempFoundation =
+            mkFoundation $ error "connPool forced in tempFoundation"
         logFunc = messageLoggerSource tempFoundation appLogger
     -- Create the database connection pool
-    pool <- flip runLoggingT logFunc $ createPostgresqlPool (pgConnStr $ appDatabaseConf appSettings) (pgPoolSize $ appDatabaseConf appSettings)
+    pool <-
+        flip runLoggingT logFunc $
+        createPostgresqlPool
+            (pgConnStr $ appDatabaseConf appSettings)
+            (pgPoolSize $ appDatabaseConf appSettings)
     -- Perform database migration using our application's logging settings.
     runLoggingT (runSqlPool (runMigration migrateAll) pool) logFunc
     -- Return the foundation
@@ -112,7 +117,14 @@ warpSettings foundation =
     setHost (appHost $ appSettings foundation) $
     setOnException
         (\_req e ->
-             when (defaultShouldDisplayException e) $ messageLoggerSource foundation (appLogger foundation) $(qLocation >>= liftLoc) "yesod" LevelError (toLogStr $ "Exception from Warp: " ++ show e))
+             when (defaultShouldDisplayException e) $
+             messageLoggerSource
+                 foundation
+                 (appLogger foundation)
+                 $(qLocation >>= liftLoc)
+                 "yesod"
+                 LevelError
+                 (toLogStr $ "Exception from Warp: " ++ show e))
         defaultSettings
 
 -- | For yesod devel, return the Warp settings and WAI Application.
