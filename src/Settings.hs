@@ -66,12 +66,6 @@ data AppSettings = AppSettings
 
 instance FromJSON AppSettings where
     parseJSON = withObject "AppSettings" $ \o -> do
-        let defaultDev =
-#ifdef DEVELOPMENT
-                True
-#else
-                False
-#endif
         appStaticDir              <- o .: "static-dir"
         appDatabaseConf           <- o .: "database"
         appRoot                   <- o .:? "approot"
@@ -91,6 +85,12 @@ instance FromJSON AppSettings where
         appAuthDummyLogin         <- o .:? "auth-dummy-login"      .!= defaultDev
 
         return AppSettings {..}
+      where
+#ifdef DEVELOPMENT
+        defaultDev = True
+#else
+        defaultDev = False
+#endif
 
 -- | Settings for 'widgetFile', such as which template languages to support and
 -- default Hamlet settings.
