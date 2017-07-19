@@ -19,9 +19,9 @@ import Yesod.Test            as X
 import Yesod.Core.Unsafe     (fakeHandlerGetLogger)
 
 -- Wiping the database
-import Database.Persist.Sqlite              (sqlDatabase, wrapConnection, createSqlPool)
-import qualified Database.Sqlite as Sqlite
+import Database.Persist.Sqlite              (sqlDatabase, mkSqliteConnectionInfo, fkEnabled, createSqlitePoolFromInfo)
 import Control.Monad.Logger                 (runLoggingT)
+import Lens.Micro                           (set)
 import Settings (appDatabaseConf)
 import Yesod.Core (messageLoggerSource)
 
@@ -51,32 +51,26 @@ withApp = before $ do
 -- spec to run in.
 wipeDB :: App -> IO ()
 wipeDB app = do
-    -- In order to wipe the database, we need to temporarily disable foreign key checks.
-    -- Unfortunately, disabling FK checks in a transaction is a noop in SQLite.
-    -- Normal Persistent functions will wrap your SQL in a transaction,
-    -- so we create a raw SQLite connection to disable foreign keys.
-    -- Foreign key checks are per-connection, so this won't effect queries outside this function.
-
-    -- Aside: SQLite by default *does not enable foreign key checks*
-    -- (disabling foreign keys is only necessary for those who specifically enable them).
-    let settings = appSettings app
-    sqliteConn <- rawConnection (sqlDatabase $ appDatabaseConf settings)
-    disableForeignKeys sqliteConn
+    -- In order to wipe the database, we need to use a connection which has
+    -- foreign key checks disabled.  Foreign key checks are enabled or disabled
+    -- per connection, so this won't effect queries outside this function.
+    --
+    -- Aside: foreign key checks are enabled by persistent-sqlite, as of
+    -- version 2.6.2, unless they are explicitly disabled in the
+    -- SqliteConnectionInfo.
 
     let logFunc = messageLoggerSource app (appLogger app)
-    pool <- runLoggingT (createSqlPool (wrapConnection sqliteConn) 1) logFunc
+
+    let dbName = sqlDatabase $ appDatabaseConf $ appSettings app
+        connInfo = set fkEnabled False $ mkSqliteConnectionInfo dbName
+
+    pool <- runLoggingT (createSqlitePoolFromInfo connInfo 1) logFunc
 
     flip runSqlPersistMPool pool $ do
         tables <- getTables
         sqlBackend <- ask
         let queries = map (\t -> "DELETE FROM " ++ (connEscapeName sqlBackend $ DBName t)) tables
         forM_ queries (\q -> rawExecute q [])
-
-rawConnection :: Text -> IO Sqlite.Connection
-rawConnection t = Sqlite.open t
-
-disableForeignKeys :: Sqlite.Connection -> IO ()
-disableForeignKeys conn = Sqlite.prepare conn "PRAGMA foreign_keys = OFF;" >>= void . Sqlite.step
 
 getTables :: MonadIO m => ReaderT SqlBackend m [Text]
 getTables = do
