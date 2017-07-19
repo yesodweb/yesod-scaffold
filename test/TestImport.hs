@@ -87,17 +87,10 @@ authenticateAs (Entity _ u) = do
         addPostParam "ident" $ userIdent u
         setUrl $ AuthR $ PluginR "dummy" []
 
--- | Create a user.  The dummy email entry helps to confirm that foreign-key
--- checking is switched off in wipeDB above.
+-- | Create a user.
 createUser :: Text -> YesodExample App (Entity User)
-createUser ident = runDB $ do
-    user <- insertEntity User
+createUser ident = do
+    runDB $ insertEntity User
         { userIdent = ident
         , userPassword = Nothing
         }
-    _ <- insert Email
-        { emailEmail = ident
-        , emailUserId = Just $ entityKey user
-        , emailVerkey = Nothing
-        }
-    return user
