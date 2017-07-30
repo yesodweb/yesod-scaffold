@@ -26,7 +26,7 @@ $newline never
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
 
     <script>
-      /* The `defaultCsrfMiddleware` Middleware added in Foundation.hs adds a CSRF token the request cookies. */
+      /* The `defaultCsrfMiddleware` Middleware added in Foundation.hs adds a CSRF token to the request cookies. */
       /* AJAX requests should add that token to a header to be validated by the server. */
       /* See the CSRF documentation in the Yesod.Core.Handler module of the yesod-core package for details. */
       var csrfHeaderName = "#{TE.decodeUtf8 $ CI.foldedCase defaultCsrfHeaderName}";
