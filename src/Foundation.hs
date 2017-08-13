@@ -73,12 +73,12 @@ instance Yesod App where
     -- For details, see the CSRF documentation in the Yesod.Core.Handler module of the yesod-core package.
     yesodMiddleware = defaultYesodMiddleware
 
-    defaultLayout widget = do
-        master <- getYesod
-        mmsg <- getMessage
+    defaultLayout _ = do
+        _master <- getYesod
+        _mmsg <- getMessage
 
-        muser <- maybeAuthPair
-        mcurrentRoute <- getCurrentRoute
+        _muser <- maybeAuthPair
+        _mcurrentRoute <- getCurrentRoute
 
         -- We break up the default layout into two components:
         -- default-layout is the contents of the body tag, and

@@ -83,6 +83,7 @@ library:
     else:
       ghc-options:
       - -Wall
+      - -Werror
       - -fwarn-tabs
       - -O2
 
