@@ -1,15 +1,36 @@
 name:    PROJECTNAME
 version: "0.0.0"
-
+default-extensions:
+- BangPatterns
+- ConstraintKinds
+- DataKinds
+- DeriveDataTypeable
+- DeriveGeneric
+- EmptyDataDecls
+- FlexibleContexts
+- FlexibleInstances
+- GADTs
+- GeneralizedNewtypeDeriving
+- MultiParamTypeClasses
+- NoImplicitPrelude
+- NoMonomorphismRestriction
+- OverloadedStrings
+- QuasiQuotes
+- RankNTypes
+- RecordWildCards
+- ScopedTypeVariables
+- TemplateHaskell
+- TupleSections
+- TypeFamilies
+- TypeOperators
+- ViewPatterns
 dependencies:
 
 # Due to a bug in GHC 8.0.1, we block its usage
 # See: https://ghc.haskell.org/trac/ghc/ticket/12130
 - base >=4.8.2.0 && <4.9 || >=4.9.1.0 && <5
-
 # version 1.0 had a bug in reexporting Handler, causing trouble
 - classy-prelude-yesod >=0.10.2 && <1.0 || >=1.1
-
 - yesod >=1.4.3 && <1.5
 - yesod-core >=1.4.30 && <1.5
 - yesod-auth >=1.4.0 && <1.5
@@ -45,6 +66,7 @@ dependencies:
 - time
 - case-insensitive
 - wai
+- http-types
 
 # The library contains all of our application code. The executable
 # defined below is just a thin wrapper.
@@ -61,6 +83,7 @@ library:
     else:
       ghc-options:
       - -Wall
+      - -Werror
       - -fwarn-tabs
       - -O2
 
@@ -78,6 +101,15 @@ executables:
     when:
     - condition: flag(library-only)
       buildable: false
+
+  seed:
+    main:           Seed.hs
+    source-dirs:    test
+    dependencies:
+    - base
+    - PROJECTNAME
+    - persistent
+    - persistent-postgresql
 
 # Test suite
 tests:

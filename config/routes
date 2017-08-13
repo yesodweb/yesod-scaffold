@@ -4,8 +4,8 @@
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 
-/ HomeR GET POST
-
-/comments CommentR POST
-
-/profile ProfileR GET
+/ HomeR GET
+/posts         PostsR GET POST
+/posts/#PostId PostR  GET PUT DELETE
+/posts/#PostId/comments            CommentsR GET POST
+/posts/#PostId/comments/#CommentId CommentR  GET DELETE
