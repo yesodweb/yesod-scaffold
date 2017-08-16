@@ -3,6 +3,8 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE ViewPatterns #-}
+
 module Foundation where
 
 import Database.Persist.MongoDB hiding (master)
@@ -175,10 +177,6 @@ instance Yesod App where
             || level == LevelError
 
     makeLogger = return . appLogger
-
-    -- Provide proper Bootstrap styling for default displays, like
-    -- error pages
-    defaultMessageWidget title body = $(widgetFile "default-message-widget")
 
 -- Define breadcrumbs.
 instance YesodBreadcrumbs App where
