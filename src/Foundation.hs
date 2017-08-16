@@ -4,6 +4,8 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE ViewPatterns #-}
+
 module Foundation where
 
 import Database.Persist.Sql        (ConnectionPool, runSqlPool)
@@ -178,10 +180,6 @@ instance Yesod App where
             || level == LevelError
 
     makeLogger = return . appLogger
-
-    -- Provide proper Bootstrap styling for default displays, like
-    -- error pages
-    defaultMessageWidget title body = $(widgetFile "default-message-widget")
 
 instance YesodJquery App
 instance YesodFay App where
