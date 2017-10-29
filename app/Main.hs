@@ -111,6 +111,6 @@ createHsFiles root fp branch = do
     -- Replace the PROJECTNAME and PROJECTNAME_LOWER syntax for something Stack
     -- supports
     replaceProjectName = encodeUtf8
-                       . T.replace "PROJECTNAME_LOWER" "{{name}}"
                        . T.replace "PROJECTNAME" "{{name}}"
+                       . T.replace "PROJECTNAME_LOWER" "{{name}}"
                        . decodeUtf8
