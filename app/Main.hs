@@ -11,6 +11,7 @@ import System.Directory
 import System.FilePath
 import qualified Paths_yesod_scaffold
 import Text.ProjectTemplate
+import qualified Data.List as List
 
 main :: IO ()
 main = do
@@ -96,6 +97,7 @@ createHsFiles root fp branch = do
     runConduitRes
         $ mapM_ (yield . toPair. unpack) (lines (decodeUtf8 files))
        .| filterC (not . isTravis)
+       .| mapC renameFiles
        .| createTemplate
        .| mapC replaceProjectName
        .| sinkFile fp
@@ -107,6 +109,18 @@ createHsFiles root fp branch = do
     -- to the yesod-scaffold repo somewhat
     isTravis (".travis.yml", _) = True
     isTravis _ = False
+
+    -- Certain filenames are already taken by the scaffolding tooling, like .travis.yml, preventing us from adding a .travis.yml to the user's generated project
+    -- Workaround this by renaming files beginning with __ to the non-underscored version.
+    -- WARNING: The old file must be filtered out the way .travis.yml is before the rename.
+    renameFiles :: (FilePath, ResourceT IO ByteString) -> (FilePath, ResourceT IO ByteString)
+    renameFiles (fp', x) =
+        let
+          fileName = takeFileName fp'
+          shouldReplace = "__" `List.isPrefixOf` fileName
+          withoutUnderscores = drop 2 fileName
+        in
+          if shouldReplace then (replaceFileName fp' withoutUnderscores, x) else (fp', x)
 
     -- Replace the PROJECTNAME and PROJECTNAME_LOWER syntax for something Stack
     -- supports
