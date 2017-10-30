@@ -1,25 +1,12 @@
 sudo: false
 
-language: c
+language: generic
 
 addons:
   postgresql: "9.3"
   apt:
    packages:
    - libgmp-dev
-
-matrix:
-  include:
-  - env: ARGS="--resolver nightly"
-    compiler: ": #newest nightly"
-  - env: ARGS="--resolver lts-8"
-    compiler: ": #newest lts 8"
-  - env: ARGS="--resolver lts-7"
-    compiler: ": #newest lts 7"
-  allow_failures:
-  # GHC 8 bug: https://twitter.com/snoyberg/status/772465852780273664
-  - env: ARGS="--resolver nightly"
-  - env: ARGS="--resolver lts-7"
 
 before_install:
   # Using compiler above sets CC to an invalid value, so unset it
@@ -37,8 +24,8 @@ before_script:
     CREATE DATABASE "PROJECTNAME_LOWER_test" OWNER "PROJECTNAME_LOWER";
 
 script:
-  - stack init $ARGS
-  - stack build --test --bench --install-ghc --haddock --no-haddock-deps --jobs 1
+  - stack init --no-terminal
+  - stack build --no-terminal --test --bench --install-ghc --haddock --no-haddock-deps --jobs 1
 
 cache:
   directories:
