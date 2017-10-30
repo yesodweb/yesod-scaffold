@@ -8,11 +8,6 @@ addons:
    packages:
    - libgmp-dev
 
-matrix:
-  include:
-  - env: ARGS="--resolver lts-9"
-    compiler: ": #newest lts 9"
-
 before_install:
   # Using compiler above sets CC to an invalid value, so unset it
   - unset CC
@@ -29,8 +24,7 @@ before_script:
     CREATE DATABASE "PROJECTNAME_LOWER_test" OWNER "PROJECTNAME_LOWER";
 
 script:
-  - stack init $ARGS
-  - stack build --test --bench --install-ghc --haddock --no-haddock-deps --jobs 1
+  - stack build --no-terminal --test --bench --install-ghc --haddock --no-haddock-deps --jobs 1
 
 cache:
   directories:
