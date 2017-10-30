@@ -24,6 +24,7 @@ before_script:
     CREATE DATABASE "PROJECTNAME_LOWER_test" OWNER "PROJECTNAME_LOWER";
 
 script:
+  - stack init --no-terminal
   - stack build --no-terminal --test --bench --install-ghc --haddock --no-haddock-deps --jobs 1
 
 cache:
