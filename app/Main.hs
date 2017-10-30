@@ -96,6 +96,7 @@ createHsFiles root fp branch = do
     runConduitRes
         $ mapM_ (yield . toPair. unpack) (lines (decodeUtf8 files))
        .| filterC (not . isTravis)
+       .| mapC (renameTravis)
        .| createTemplate
        .| mapC replaceProjectName
        .| sinkFile fp
@@ -107,6 +108,11 @@ createHsFiles root fp branch = do
     -- to the yesod-scaffold repo somewhat
     isTravis (".travis.yml", _) = True
     isTravis _ = False
+
+    -- Rename the __.travis.yml file intended for the user's project to .travis.yml
+    renameTravis :: (FilePath, ResourceT IO ByteString) -> (FilePath, ResourceT IO ByteString)
+    renameTravis ("__.travis.yml", x) = (".travis.yml", x)
+    renameTravis a = a
 
     -- Replace the PROJECTNAME and PROJECTNAME_LOWER syntax for something Stack
     -- supports
