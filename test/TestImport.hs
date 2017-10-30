@@ -9,7 +9,7 @@ module TestImport
 import Application           (makeFoundation, makeLogWare)
 import ClassyPrelude         as X hiding (delete, deleteBy, Handler)
 import Database.Persist      as X hiding (get)
-import Database.Persist.Sql  (SqlPersistM, SqlBackend, runSqlPersistMPool, rawExecute, rawSql, unSingle, connEscapeName)
+import Database.Persist.Sql  (SqlPersistM, runSqlPersistMPool, rawExecute, rawSql, unSingle, connEscapeName)
 import Foundation            as X
 import Model                 as X
 import Test.Hspec            as X
@@ -58,7 +58,7 @@ wipeDB app = runDBWithApp app $ do
     forM_ queries (\q -> rawExecute q [])
     rawExecute "SET foreign_key_checks = 1;" []
 
-getTables :: MonadIO m => ReaderT SqlBackend m [Text]
+getTables :: DB [Text]
 getTables = do
     tables <- rawSql "SHOW TABLES;" []
     return $ map unSingle tables
