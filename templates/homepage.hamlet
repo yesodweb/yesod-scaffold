@@ -121,6 +121,8 @@
                        Your comments will appear here. You can also open the
                        console log to see the raw response from the server.
                    <ul ##{commentListId}>
+                       $forall comment <- allComments
+                           <li>#{commentMessage $ entityVal comment}
 
     <hr>
 

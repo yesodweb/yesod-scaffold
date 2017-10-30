@@ -5,6 +5,8 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE ExplicitForAll #-}
+{-# LANGUAGE RankNTypes #-}
 
 module Foundation where
 
@@ -62,6 +64,10 @@ mkYesodData "App" $(parseRoutesFile "config/routes")
 
 -- | A convenient synonym for creating forms.
 type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
+
+-- | A convenient synonym for database access functions.
+type DB a = forall (m :: * -> *).
+    (MonadIO m, Functor m) => ReaderT SqlBackend m a
 
 -- Please see the documentation for the Yesod typeclass. There are a number
 -- of settings which can be configured by overriding methods here.
