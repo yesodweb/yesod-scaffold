@@ -29,8 +29,8 @@ separate branches. The master branch contains code for performing
 merges between these branches, testing that the branches build
 correctly, and generating the .hsfiles used by the
 [stack-template repository](https://github.com/commercialhaskell/stack-templates). (Note:
-the full list of recognized branches is maintained in the `Shared.hs`
-file on the master branch.
+the full list of recognized branches is maintained in the
+`app/Main.hs` file on the master branch, in the `branches` value.
 
 The basic workflow for this repository is as follows:
 
@@ -38,20 +38,31 @@ The basic workflow for this repository is as follows:
    to be applied to all variants, it should be made to the `postgres`
    branch (as mentioned above).
 
-2. Check out the `master` branch and run `stack build` to generate the
-   helper executables.
+2. Changes on a branch can be tested with normal Stack commands,
+   e.g. `stack test --haddock`.
 
-3. Merge the changes from `postgres` to all other branches by running
-   `stack exec yesod-scaffold-merge`. Note that there will often be
-   merge conflicts, which will need to be resolved and then the
-   command rerun until all branches merge successfully.
+### For maintainers
 
-4. Run `stack exec yesod-scaffold-build` to compile and run tests in
-   all branches. You will need some system libraries and to set up
-   some databases for testing.  (NOTE: We should consider automating
-   this process and/or using a Docker image for all of this.) After
-   this completes successfully, the `hsfiles` directory will be
-   populated.
+If you are a maintainer of this repo, you will additionally need to
+merge changes from `postgres` to other branches and deal with updating
+the `stack-templates` repo.
 
-5. The generated .hsfiles should be copied into the stack-templates
-   repo, with `yesod-` prefixed to the names.
+__Install the `yesod-scaffold` executable__ by running `stack install`
+on the `master` branch.
+
+__Merge changes from `postgres`__ to all other branches by running
+`yesod-scaffold merge`. Note that there will often be merge conflicts,
+which will need to be resolved and then the command rerun until all
+branches merge successfully.
+
+__Confirm that changes build correctly__ by running `yesod-scaffold
+build`. Usually you'll want to add `--no-run-tests` if you don't have
+databases set up locally. The Travis builds set up the databases for
+proper testing, and you can rely on that. If you encounter a build
+error on one of the branches, check it out, fix it up, and then rerun
+`yesod-scaffold build`.
+
+__Copy the template files__ in the `hsfiles` directory. This directory
+is populated after a successful `yesod-scaffold build` run. Place the
+`stack-templates` directory as a sibling to the `yesod-scaffold`
+directory, and then run the `to-stack-templates.sh` script.
