@@ -29,8 +29,8 @@ main = do
         "Make a template"
         id
         (createHsFiles
-          <$> strArgument (metavar "REPO")
-          <*> strArgument (metavar "DEST")
+          <$> strArgument (metavar "relative/path/to/scaffold")
+          <*> strArgument (metavar "out.hsfiles")
           <*> (pack <$> strArgument (metavar "BRANCH" <> value "HEAD")))
       addCommand
         "merge"
