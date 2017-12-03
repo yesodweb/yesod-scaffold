@@ -36,7 +36,7 @@ stack test --flag PROJECTNAME_LOWER:library-only --flag PROJECTNAME_LOWER:dev
 
 ## Getting Help
 
-* Ask questions on [Stack Overflow, using the Yesod or Haskell tags](https://stackoverflow.com/questions/tagged/yesod+haskell) 
+* Ask questions on [Stack Overflow, using the Yesod or Haskell tags](https://stackoverflow.com/questions/tagged/yesod+haskell)
 * Ask the [Yesod Google Group](https://groups.google.com/forum/#!forum/yesodweb)
 * There are several chatrooms you can ask for help:
 	* For IRC, try Freenode#yesod and Freenode#haskell
