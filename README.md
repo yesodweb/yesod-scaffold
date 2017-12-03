@@ -1,13 +1,3 @@
-## Database Setup
-
-After installing Postgres, run:
-
-```
-createuser PROJECTNAME_LOWER --password PROJECTNAME --superuser
-createdb PROJECTNAME_LOWER
-createdb PROJECTNAME_LOWER_test
-```
-
 ## Haskell Setup
 
 1. If you haven't already, [install Stack](https://haskell-lang.org/get-started)
