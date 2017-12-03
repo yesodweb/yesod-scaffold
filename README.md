@@ -1,12 +1,6 @@
 ## Database Setup
 
-After installing Postgres, run:
-
-```
-createuser PROJECTNAME_LOWER --password PROJECTNAME --superuser
-createdb PROJECTNAME_LOWER
-createdb PROJECTNAME_LOWER_test
-```
+[Install MongoDB](https://docs.mongodb.com/manual/installation/)
 
 ## Haskell Setup
 
