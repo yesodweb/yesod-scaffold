@@ -1,11 +1,18 @@
 ## Database Setup
 
-After installing Postgres, run:
+After installing MySQL, run:
 
 ```
-createuser PROJECTNAME_LOWER --password PROJECTNAME --superuser
-createdb PROJECTNAME_LOWER
-createdb PROJECTNAME_LOWER_test
+mysql --user=root
+```
+
+Then enter:
+
+```
+CREATE DATABASE PROJECTNAME;
+CREATE DATABASE PROJECTNAME_test;
+CREATE USER 'PROJECTNAME'@'localhost' IDENTIFIED BY 'PROJECTNAME';
+GRANT ALL PRIVILEGES ON *.* to 'PROJECTNAME'@'localhost';
 ```
 
 ## Haskell Setup
