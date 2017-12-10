@@ -10,6 +10,11 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 # Uncomment to set an explicit approot
 #approot:        "_env:APPROOT:http://localhost:3000"
 
+# By default, `yesod devel` runs in development, and built executables use
+# production settings (see below). To override this, use the following:
+#
+# development: false
+
 # Optional values with the following production defaults.
 # In development, they default to the inverse.
 #
