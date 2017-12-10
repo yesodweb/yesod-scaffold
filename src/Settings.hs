@@ -71,11 +71,13 @@ instance FromJSON AppSettings where
         appPort                   <- o .: "port"
         appIpFromHeader           <- o .: "ip-from-header"
 
-        appDetailedRequestLogging <- o .:? "detailed-logging" .!= defaultDev
-        appShouldLogAll           <- o .:? "should-log-all"   .!= defaultDev
-        appReloadTemplates        <- o .:? "reload-templates" .!= defaultDev
-        appMutableStatic          <- o .:? "mutable-static"   .!= defaultDev
-        appSkipCombining          <- o .:? "skip-combining"   .!= defaultDev
+        dev                       <- o .:? "development"      .!= defaultDev
+
+        appDetailedRequestLogging <- o .:? "detailed-logging" .!= dev
+        appShouldLogAll           <- o .:? "should-log-all"   .!= dev
+        appReloadTemplates        <- o .:? "reload-templates" .!= dev
+        appMutableStatic          <- o .:? "mutable-static"   .!= dev
+        appSkipCombining          <- o .:? "skip-combining"   .!= dev
 
         appCopyright              <- o .: "copyright"
         appAnalytics              <- o .:? "analytics"
