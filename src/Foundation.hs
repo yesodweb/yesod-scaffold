@@ -6,6 +6,7 @@
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE InstanceSigs #-}
 
 module Foundation where
 
@@ -13,6 +14,7 @@ import Import.NoFoundation
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Text.Hamlet          (hamletFile)
 import Text.Jasmine         (minifym)
+import Control.Monad.Logger (LogSource)
 
 -- Used only when in "auth-dummy-login" setting is enabled.
 import Yesod.Auth.Dummy
@@ -72,6 +74,7 @@ type DB a = forall (m :: * -> *).
 instance Yesod App where
     -- Controls the base of generated URLs. For more information on modifying,
     -- see: https://github.com/yesodweb/yesod/wiki/Overriding-approot
+    approot :: Approot App
     approot = ApprootRequest $ \app req ->
         case appRoot $ appSettings app of
             Nothing -> getApprootText guessApproot app req
@@ -79,6 +82,7 @@ instance Yesod App where
 
     -- Store session data on the client in encrypted cookies,
     -- default session idle timeout is 120 minutes
+    makeSessionBackend :: App -> IO (Maybe SessionBackend)
     makeSessionBackend _ = Just <$> defaultClientSessionBackend
         120    -- timeout in minutes
         "config/client_session_key.aes"
@@ -90,8 +94,10 @@ instance Yesod App where
     --   b) Validates that incoming write requests include that token in either a header or POST parameter.
     -- To add it, chain it together with the defaultMiddleware: yesodMiddleware = defaultYesodMiddleware . defaultCsrfMiddleware
     -- For details, see the CSRF documentation in the Yesod.Core.Handler module of the yesod-core package.
+    yesodMiddleware :: ToTypedContent res => Handler res -> Handler res
     yesodMiddleware = defaultYesodMiddleware
 
+    defaultLayout :: Widget -> Handler Html
     defaultLayout widget = do
         master <- getYesod
         mmsg <- getMessage
@@ -144,8 +150,15 @@ instance Yesod App where
         withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
     -- The page to be redirected to when authentication is required.
+    authRoute
+        :: App
+        -> Maybe (Route App)
     authRoute _ = Just $ AuthR LoginR
 
+    isAuthorized
+        :: Route App  -- ^ The route the user is visiting.
+        -> Bool       -- ^ Whether or not this is a "write" request.
+        -> Handler AuthResult
     -- Routes not requiring authentication.
     isAuthorized (AuthR _) _ = return Authorized
     isAuthorized CommentR _ = return Authorized
@@ -154,12 +167,19 @@ instance Yesod App where
     isAuthorized RobotsR _ = return Authorized
     isAuthorized (StaticR _) _ = return Authorized
 
+    -- the profile route requires that the user is authenticated, so we
+    -- delegate to that function
     isAuthorized ProfileR _ = isAuthenticated
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows
     -- expiration dates to be set far in the future without worry of
     -- users receiving stale content.
+    addStaticContent
+        :: Text  -- ^ The file extension
+        -> Text -- ^ The MIME content type
+        -> LByteString -- ^ The contents of the file
+        -> Handler (Maybe (Either Text (Route App, [(Text, Text)])))
     addStaticContent ext mime content = do
         master <- getYesod
         let staticDir = appStaticDir $ appSettings master
@@ -177,39 +197,54 @@ instance Yesod App where
 
     -- What messages should be logged. The following includes all messages when
     -- in development, and warnings and errors in production.
+    shouldLog :: App -> LogSource -> LogLevel -> Bool
     shouldLog app _source level =
         appShouldLogAll (appSettings app)
             || level == LevelWarn
             || level == LevelError
 
+    makeLogger :: App -> IO Logger
     makeLogger = return . appLogger
 
 -- Define breadcrumbs.
 instance YesodBreadcrumbs App where
-  breadcrumb HomeR = return ("Home", Nothing)
-  breadcrumb (AuthR _) = return ("Login", Just HomeR)
-  breadcrumb ProfileR = return ("Profile", Just HomeR)
-  breadcrumb  _ = return ("home", Nothing)
+    -- Takes the route that the user is currently on, and returns a tuple
+    -- of the 'Text' that you want the label to display, and a previous
+    -- breadcrumb route.
+    breadcrumb
+        :: Route App  -- ^ The route the user is visiting currently.
+        -> Handler (Text, Maybe (Route App))
+    breadcrumb HomeR = return ("Home", Nothing)
+    breadcrumb (AuthR _) = return ("Login", Just HomeR)
+    breadcrumb ProfileR = return ("Profile", Just HomeR)
+    breadcrumb  _ = return ("home", Nothing)
 
 -- How to run database actions.
 instance YesodPersist App where
     type YesodPersistBackend App = SqlBackend
+    runDB :: SqlPersistT Handler a -> Handler a
     runDB action = do
         master <- getYesod
         runSqlPool action $ appConnPool master
+
 instance YesodPersistRunner App where
+    getDBRunner :: Handler (DBRunner App, Handler ())
     getDBRunner = defaultGetDBRunner appConnPool
 
 instance YesodAuth App where
     type AuthId App = UserId
 
     -- Where to send a user after successful login
+    loginDest :: App -> Route App
     loginDest _ = HomeR
     -- Where to send a user after logout
+    logoutDest :: App -> Route App
     logoutDest _ = HomeR
     -- Override the above two destinations when a Referer: header is present
+    redirectToReferer :: App -> Bool
     redirectToReferer _ = True
 
+    authenticate :: Creds App -> Handler (AuthenticationResult App)
     authenticate creds = runDB $ do
         x <- getBy $ UniqueUser $ credsIdent creds
         case x of
@@ -220,10 +255,12 @@ instance YesodAuth App where
                 }
 
     -- You can add other plugins like Google Email, email or OAuth here
+    authPlugins :: App -> [AuthPlugin App]
     authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
         -- Enable authDummy login if enabled.
         where extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
 
+    authHttpManager :: App -> Manager
     authHttpManager = getHttpManager
 
 -- | Access function to determine if a user is logged in.
@@ -239,12 +276,14 @@ instance YesodAuthPersist App
 -- This instance is required to use forms. You can modify renderMessage to
 -- achieve customized and internationalized form validation messages.
 instance RenderMessage App FormMessage where
+    renderMessage :: App -> [Lang] -> FormMessage -> Text
     renderMessage _ _ = defaultFormMessage
 
 -- Useful when writing code that is re-usable outside of the Handler context.
 -- An example is background jobs that send email.
 -- This can also be useful for writing code that works across multiple Yesod applications.
 instance HasHttpManager App where
+    getHttpManager :: App -> Manager
     getHttpManager = appHttpManager
 
 unsafeHandler :: App -> Handler a -> IO a
