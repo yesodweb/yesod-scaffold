@@ -11,7 +11,6 @@
 module Foundation where
 
 import Import.NoFoundation
-import qualified Data.ByteString.Lazy as Lazy
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Text.Hamlet          (hamletFile)
 import Text.Jasmine         (minifym)
@@ -179,7 +178,7 @@ instance Yesod App where
     addStaticContent
         :: Text  -- ^ The file extension
         -> Text -- ^ The MIME content type
-        -> Lazy.ByteString -- ^ The contents of the file
+        -> LByteString -- ^ The contents of the file
         -> Handler (Maybe (Either Text (Route App, [(Text, Text)])))
     addStaticContent ext mime content = do
         master <- getYesod
