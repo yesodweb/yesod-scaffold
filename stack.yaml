@@ -1,3 +1,1 @@
-resolver: lts-8.8
-extra-deps:
-- optparse-simple-0.0.4
+resolver: lts-11.2
