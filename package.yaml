@@ -7,29 +7,28 @@ dependencies:
 # See: https://ghc.haskell.org/trac/ghc/ticket/12130
 - base >=4.8.2.0 && <4.9 || >=4.9.1.0 && <5
 
-# version 1.0 had a bug in reexporting Handler, causing trouble
-- classy-prelude-yesod >=0.10.2 && <1.0 || >=1.1
-
-- yesod >=1.4.3 && <1.5
-- yesod-core >=1.4.30 && <1.5
-- yesod-auth >=1.4.0 && <1.5
-- yesod-static >=1.4.0.3 && <1.6
-- yesod-form >=1.4.0 && <1.5
-- classy-prelude >=0.10.2
-- classy-prelude-conduit >=0.10.2
+- yesod >=1.6 && <1.7
+- yesod-core >=1.6 && <1.7
+- yesod-auth >=1.6 && <1.7
+- yesod-static >=1.6 && <1.7
+- yesod-form >=1.6 && <1.7
+- classy-prelude >=1.4 && <1.5
+- classy-prelude-conduit >=1.4 && <1.5
+- classy-prelude-yesod >=1.4 && <1.5
 - bytestring >=0.9 && <0.11
 - text >=0.11 && <2.0
-- persistent >=2.0 && <2.8
-- persistent-mysql >=2.1.2 && <2.8
+- persistent >=2.8 && <2.9
+- persistent-mysql >=2.8 && <2.9
 - mysql >= 0.1.4
-- persistent-template >=2.0 && <2.8
+- persistent-template >=2.5 && <2.9
 - template-haskell
 - shakespeare >=2.0 && <2.1
 - hjsmin >=0.1 && <0.3
 - monad-control >=0.3 && <1.1
 - wai-extra >=3.0 && <3.1
 - yaml >=0.8 && <0.9
-- http-conduit >=2.1 && <2.3
+- http-client-tls >=0.3 && <0.4
+- http-conduit >=2.3 && <2.4
 - directory >=1.1 && <1.4
 - warp >=3.0 && <3.3
 - data-default
