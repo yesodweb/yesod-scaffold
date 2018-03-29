@@ -10,13 +10,10 @@ ghc-options: -Wall -Werror
 
 dependencies:
 - base
-- classy-prelude-conduit
-- typed-process
+- rio
+- rio-orphans
 - project-template
-- directory
-- filepath
 - conduit
-- text
 - optparse-simple
 
 executables:
