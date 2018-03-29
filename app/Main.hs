@@ -75,7 +75,7 @@ push :: IO ()
 push = forM_ branches $ \branch -> runProcess_ $ proc "git" ["push", "origin", unpack branch]
 
 branches :: [Text]
-branches = [ "postgres", "sqlite", "mysql", "mongo", "simple", "postgres-fay"
+branches = [ "postgres", "sqlite", "mysql", "mongo", "simple" -- , "postgres-fay"
            , "minimal"
            ]
 
