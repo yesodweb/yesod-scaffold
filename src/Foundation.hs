@@ -63,7 +63,7 @@ data MenuTypes
 mkYesodData "App" $(parseRoutesFile "config/routes")
 
 -- | A convenient synonym for creating forms.
-type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
+type Form x = Html -> MForm (HandlerFor App) (FormResult x, Widget)
 
 -- | A convenient synonym for database access functions.
 type DB a = forall (m :: * -> *).
@@ -197,8 +197,9 @@ instance Yesod App where
 
     -- What messages should be logged. The following includes all messages when
     -- in development, and warnings and errors in production.
-    shouldLog :: App -> LogSource -> LogLevel -> Bool
-    shouldLog app _source level =
+    shouldLogIO :: App -> LogSource -> LogLevel -> IO Bool
+    shouldLogIO app _source level =
+        return $
         appShouldLogAll (appSettings app)
             || level == LevelWarn
             || level == LevelError
@@ -244,8 +245,9 @@ instance YesodAuth App where
     redirectToReferer :: App -> Bool
     redirectToReferer _ = True
 
-    authenticate :: Creds App -> Handler (AuthenticationResult App)
-    authenticate creds = runDB $ do
+    authenticate :: (MonadHandler m, HandlerSite m ~ App)
+                 => Creds App -> m (AuthenticationResult App)
+    authenticate creds = liftHandler $ runDB $ do
         x <- getBy $ UniqueUser $ credsIdent creds
         case x of
             Just (Entity uid _) -> return $ Authenticated uid
@@ -259,9 +261,6 @@ instance YesodAuth App where
     authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
         -- Enable authDummy login if enabled.
         where extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
-
-    authHttpManager :: App -> Manager
-    authHttpManager = getHttpManager
 
 -- | Access function to determine if a user is logged in.
 isAuthenticated :: Handler AuthResult
