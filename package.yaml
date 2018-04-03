@@ -77,7 +77,7 @@ executables:
 
 # Test suite
 tests:
-  test:
+  PROJECTNAME-test:
     main: Spec.hs
     source-dirs: test
     ghc-options: -Wall
