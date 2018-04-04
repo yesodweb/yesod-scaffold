@@ -1,7 +1,5 @@
-resolver: lts-11.2
+resolver: lts-11.3
 
 extra-deps:
-- archive: https://github.com/commercialhaskell/rio/archive/248557ef565278b3e63568d7b33a60c19652e9f1.tar.gz
-  subdirs:
-  - rio
-  - rio-orphans
+- rio-0.1.0.0@rev:0
+- rio-orphans-0.1.0.0@rev:0
