@@ -59,6 +59,11 @@ main = do
         "Push to origin"
         id
         (pure push)
+      addCommand
+        "pull"
+        "Pull from origin"
+        id
+        (pure pull)
 
   lo <- logOptionsHandle stdout verbose
   appProcessContext <- mkDefaultProcessContext
@@ -94,6 +99,14 @@ merge push' = do
 
 push :: RIO App ()
 push = forM_ branches $ \branch -> proc "git" ["push", "origin", T.unpack branch] runProcess_
+
+pull :: RIO App ()
+pull = do
+  proc "git" ["fetch", "origin"] runProcess_
+  forM_ branches $ \branch -> do
+    proc "git" ["checkout", T.unpack branch] runProcess_
+    proc "git" ["merge", "origin/" ++ T.unpack branch] runProcess_
+  proc "git" ["checkout", "master"] runProcess_
 
 branches :: [Text]
 branches = [ "postgres", "sqlite", "mysql", "mongo", "simple" -- , "postgres-fay"
