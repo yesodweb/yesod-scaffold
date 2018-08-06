@@ -3,7 +3,8 @@
 After installing Postgres, run:
 
 ```
-createuser PROJECTNAME_LOWER --password PROJECTNAME --superuser
+createuser PROJECTNAME_LOWER --pwprompt --superuser
+# Enter password PROJECTNAME when prompted
 createdb PROJECTNAME_LOWER
 createdb PROJECTNAME_LOWER_test
 ```
