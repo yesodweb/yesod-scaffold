@@ -160,4 +160,5 @@ createHsFiles root fp branch = do
           return $ encodeUtf8
                  $ T.replace "PROJECTNAME" "{{name}}"
                  $ T.replace "PROJECTNAME_LOWER" "{{name}}"
+                 $ T.replace "PROJECTNAME_MODULE" "{{name-as-module}}"
                    text
