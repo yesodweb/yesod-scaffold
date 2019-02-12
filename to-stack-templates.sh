@@ -10,7 +10,5 @@ do
         # This next one is a hack...
         sed s@PROJECTNAME_LOWER@{{name}}@g | \
         sed s@PROJECTNAME@{{name}}@g > \
-        ../stack-templates/$BASE
-
-    cp ../stack-templates/$BASE ../yesod-stack-templates/${BASE#yesod-}
+        ../yesod-stack-templates/${BASE#yesod-}
 done
