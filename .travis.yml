@@ -25,7 +25,7 @@ before_script:
 
 script:
   - stack init --no-terminal
-  - stack build --no-terminal --test --bench --install-ghc --haddock --no-haddock-deps --jobs 1
+  - stack build --no-terminal --test --bench --jobs 1
 
 cache:
   directories:
