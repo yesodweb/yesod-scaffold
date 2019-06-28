@@ -13,7 +13,22 @@ import Network.HTTP.Client.Conduit  as X hiding (Proxy(..))
 import Network.HTTP.Types           as X
 import Settings                     as X
 import Settings.StaticFiles         as X
-import Yesod                        as X hiding (Header, parseTime)
+import Yesod                        as X
+  hiding
+   ( Header
+   , parseTime
+   , LogLevel(..)
+   , logDebug
+   , logDebugS
+   , logError
+   , logErrorS
+   , logInfo
+   , logInfoS
+   , logOther
+   , logOtherS
+   , logWarn
+   , logWarnS
+   )
 import Yesod.Core.Types             as X (loggerSet)
 import Yesod.Default.Config2        as X
 import Yesod.Feed                   as X
