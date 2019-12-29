@@ -7,14 +7,16 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE InstanceSigs #-}
-module App where 
+-- | This module defines the core datatype 'App', as well as basic instances for it.
+--
+-- The remaining instances are located in 'Foundation.Orphans'.
+module Foundation.Primitive where 
 
 import ClassyPrelude.Yesod
 import Settings (AppSettings)
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Yesod.Core.Types     (Logger)
 import Yesod.Auth (Auth, getAuth)
-
 
 -- | The foundation datatype for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
