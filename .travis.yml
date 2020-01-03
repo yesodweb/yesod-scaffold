@@ -18,7 +18,7 @@ before_install:
 
 script:
   - stack init --no-terminal
-  - stack build --no-terminal --test --install-ghc --jobs 1
+  - stack build --no-terminal --test --bench --jobs 1
 
 cache:
   directories:
