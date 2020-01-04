@@ -3,7 +3,7 @@ sudo: false
 language: generic
 
 addons:
-  postgresql: "9.3"
+  postgresql: "9.6"
   apt:
    packages:
    - libgmp-dev
