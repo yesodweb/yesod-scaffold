@@ -8,7 +8,6 @@ yesod-scaffold
 * simple: [![Build Status](https://travis-ci.org/yesodweb/yesod-scaffold.svg?branch=simple)](https://travis-ci.org/yesodweb/yesod-scaffold)
 * mongo: [![Build Status](https://travis-ci.org/yesodweb/yesod-scaffold.svg?branch=mongo)](https://travis-ci.org/yesodweb/yesod-scaffold)
 * minimal: [![Build Status](https://travis-ci.org/yesodweb/yesod-scaffold.svg?branch=minimal)](https://travis-ci.org/yesodweb/yesod-scaffold)
-* postgres-fay: [![Build Status](https://travis-ci.org/yesodweb/yesod-scaffold.svg?branch=postgres-fay)](https://travis-ci.org/yesodweb/yesod-scaffold)
 
 The Yesod scaffolding, with branches for different versions.
 
