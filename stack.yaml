@@ -1,5 +1,1 @@
-resolver: lts-11.3
-
-extra-deps:
-- rio-0.1.0.0@rev:0
-- rio-orphans-0.1.0.0@rev:0
+resolver: lts-14.19
