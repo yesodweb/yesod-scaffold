@@ -14,8 +14,8 @@ dependencies:
 - classy-prelude-yesod >=1.5 && <1.6
 - bytestring >=0.10 && <0.11
 - text >=0.11 && <2.0
-- persistent >=2.9 && <2.10
-- persistent-sqlite >=2.9 && <2.10
+- persistent >=2.9 && <2.11
+- persistent-sqlite >=2.9 && <2.11
 - persistent-template >=2.5 && <2.9
 - template-haskell
 - shakespeare >=2.0 && <2.1
@@ -31,7 +31,7 @@ dependencies:
 - aeson >=1.4 && <1.5
 - conduit >=1.0 && <2.0
 - monad-logger >=0.3 && <0.4
-- fast-logger >=2.2 && <2.5
+- fast-logger >=2.2 && <3.1
 - wai-logger >=2.2 && <2.4
 - file-embed
 - safe
