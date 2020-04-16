@@ -82,7 +82,7 @@ build noRunTests = do
         run_ "git" ["checkout", T.unpack branch]
         unless (branch == master) $ run_ "git" ["merge", T.unpack master]
         run_ "git" ["diff", "--exit-code"]
-        run_ "stack" ["init"]
+        run_ "stack" ["init", "--resolver", "lts"]
         run_ "stack" testArgs
         run_ "packdeps" ["PROJECTNAME.cabal"]
         run_ "git" ["clean", "-fxd"]
