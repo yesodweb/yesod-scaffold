@@ -4,10 +4,10 @@
     <div .container>
         <div .navbar-header>
             <button type="button" .navbar-toggle.collapsed data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+                <span class="sr-only">Toggle navigation
+                <span class="icon-bar">
+                <span class="icon-bar">
+                <span class="icon-bar">
 
         <div #navbar .collapse.navbar-collapse>
             <ul .nav.navbar-nav>
