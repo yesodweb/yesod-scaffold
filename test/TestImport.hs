@@ -52,6 +52,10 @@ wipeDB app = runDBWithApp app $ do
     tables <- getTables
     sqlBackend <- ask
 
+    -- TRUNCATEing all tables is the simplest approach to wiping the database.
+    -- Should your application grow to hundreds of tables and tests,
+    -- switching to DELETE could be a substantial speedup.
+    -- See: https://github.com/yesodweb/yesod-scaffold/issues/201
     let escapedTables = map (connEscapeName sqlBackend . DBName) tables
         query = "TRUNCATE TABLE " ++ intercalate ", " escapedTables
     rawExecute query []
