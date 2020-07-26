@@ -32,7 +32,7 @@
                         <li .list-group-item>
                             The <tt>#{handlerName}</tt> handler is set to generate your
                             site's home screen in the Routes file
-                            <tt>config/routes
+                            <tt>config/routes.yesodroutes
 
                         <li .list-group-item>
                             We can link to other handlers, like the <a href="@{ProfileR}">Profile</a>.
