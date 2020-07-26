@@ -17,7 +17,7 @@ data FileForm = FileForm
 
 -- This is a handler function for the GET request method on the HomeR
 -- resource pattern. All of your resource patterns are defined in
--- config/routes
+-- config/routes.yesodroutes
 --
 -- The majority of the code you will write in Yesod lives in these handler
 -- functions. You can spread them across multiple files if you are so
