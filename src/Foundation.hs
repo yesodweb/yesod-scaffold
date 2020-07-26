@@ -8,6 +8,6 @@ import Yesod.Core
 
 data App = App
 
-mkYesodData "App" $(parseRoutesFile "routes")
+mkYesodData "App" $(parseRoutesFile "routes.yesodroutes")
 
 instance Yesod App
