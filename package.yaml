@@ -4,13 +4,17 @@ version: "0.0.0"
 dependencies:
 
 - base >=4.9.1.0 && <5
+
 - yesod >=1.6 && <1.7
 - yesod-core >=1.6 && <1.7
 - yesod-static >=1.6 && <1.7
 - yesod-form >=1.6 && <1.7
-- classy-prelude >=1.5 && <1.6
-- classy-prelude-conduit >=1.5 && <1.6
-- classy-prelude-yesod >=1.5 && <1.6
+
+- rio >= 0.1.8.0
+- http-types
+- persistent
+- yesod-newsfeed
+
 - bytestring >=0.10 && <0.11
 - text >=0.11 && <2.0
 - template-haskell
