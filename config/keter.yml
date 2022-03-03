@@ -1,5 +1,8 @@
 # After you've edited this file, remove the following line to allow
 # `yesod keter` to build your bundle.
+#
+# Also, please make sure that `port` value on `config/settings.yaml` is set to
+# use `PORT` env variable.
 user-edited: false
 
 # A Keter app is composed of 1 or more stanzas. The main stanza will define our
