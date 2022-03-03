@@ -19,3 +19,21 @@ import Yesod.Static (staticFiles)
 --
 --     StaticFile ["js", "script.js"] []
 staticFiles (appStaticDir compileTimeAppSettings)
+
+-- If you prefer to updating the references by force
+--  -- especially when you are devloping like `stack exec -- yesod devel` --
+-- you can update references by chaning file stamp.
+--
+-- On linux or Unix-like system, you can use
+--     shell> touch /Path/To/Settings/StaticFiles.hs
+--
+-- or save without changes on your favorite editor.
+-- so yesod devel will re-compile automatically and generate the refereces
+-- including new one.
+--
+-- In this way you can use on your shakespearean template(s)
+-- Let's say you have image on "yourStaticDir/img/background-1.jpg"
+-- you can use the reference of the file on shakespearean templates like bellow
+--
+--     /* note: `-' becomes '_' as well */
+--     @{StaticR img_background_1_jpg}

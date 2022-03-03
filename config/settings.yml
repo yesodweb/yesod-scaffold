@@ -4,6 +4,9 @@
 static-dir:     "_env:YESOD_STATIC_DIR:static"
 host:           "_env:YESOD_HOST:*4" # any IPv4 host
 port:           "_env:YESOD_PORT:3000" # NB: The port `yesod devel` uses is distinct from this value. Set the `yesod devel` port from the command line.
+# For `keter` user, enable the follwing line, and comment out previous one.
+#port:           "_env:PORT:3000" # `keter` uses `PORT` env var name
+
 ip-from-header: "_env:YESOD_IP_FROM_HEADER:false"
 
 # Default behavior: determine the application root from the request headers.
