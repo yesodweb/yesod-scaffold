@@ -8,15 +8,23 @@
 
 module Foundation where
 
-import Import.NoFoundation
+import Import.NoFoundation hiding (LogSource,LogLevel(..))
 import Control.Monad.Logger        (LogSource)
 import Text.Hamlet                 (hamletFile)
 import Text.Jasmine                (minifym)
+import Yesod                       (LogLevel(..))
 import Yesod.Core.Types            (Logger)
 import Yesod.Default.Util          (addStaticContentExternal)
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
+
+
+-- | run a 'RIO' function from a 'MondHandler' context
+runRIOinHandler :: (MonadHandler m, HandlerSite m ~ App) => RIO App a -> m a
+runRIOinHandler rio = do
+    a <- getYesod
+    liftIO $ runRIO a rio
 
 -- | The foundation datatype for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -27,6 +35,7 @@ data App = App
     , appStatic      :: Static -- ^ Settings for static file serving.
     , appHttpManager :: Manager
     , appLogger      :: Logger
+    , appLogFunc     :: LogFunc
     }
 
 data MenuItem = MenuItem

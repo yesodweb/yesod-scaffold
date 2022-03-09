@@ -20,7 +20,7 @@ module Application
     ) where
 
 import Control.Monad.Logger                 (liftLoc)
-import Import
+import Import hiding (LevelError)
 import Language.Haskell.TH.Syntax           (qLocation)
 import Network.HTTP.Client.TLS              (getGlobalManager)
 import Network.Wai (Middleware)
@@ -34,6 +34,7 @@ import Network.Wai.Middleware.RequestLogger (Destination (Logger),
                                              mkRequestLogger, outputFormat)
 import System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet,
                                              toLogStr)
+import Yesod                                (LogLevel(LevelError))
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
@@ -50,8 +51,8 @@ mkYesodDispatch "App" resourcesApp
 -- performs initialization and returns a foundation datatype value. This is also
 -- the place to put your migrate statements to have automatic database
 -- migrations handled by Yesod.
-makeFoundation :: AppSettings -> IO App
-makeFoundation appSettings = do
+makeFoundation :: AppSettings -> LogFunc -> IO App
+makeFoundation appSettings appLogFunc = do
     -- Some basic initializations: HTTP connection manager, logger, and static
     -- subsite.
     appHttpManager <- getGlobalManager
@@ -105,10 +106,11 @@ warpSettings foundation =
 getApplicationDev :: IO (Settings, Application)
 getApplicationDev = do
     settings <- getAppSettings
-    foundation <- makeFoundation settings
-    wsettings <- getDevSettings $ warpSettings foundation
-    app <- makeApplication foundation
-    return (wsettings, app)
+    crLogFunc settings $ \logFunc -> do
+      foundation <- makeFoundation settings logFunc
+      wsettings <- getDevSettings $ warpSettings foundation
+      app <- makeApplication foundation
+      return (wsettings, app)
 
 getAppSettings :: IO AppSettings
 getAppSettings = loadYamlSettings [configSettingsYml] [] useEnv
@@ -128,26 +130,29 @@ appMain = do
         -- allow environment variables to override
         useEnv
 
-    -- Generate the foundation from the settings
-    foundation <- makeFoundation settings
+    crLogFunc settings $ \logFunc -> do
+      -- Generate the foundation from the settings
+      foundation <- makeFoundation settings logFunc
 
-    -- Generate a WAI Application from the foundation
-    app <- makeApplication foundation
+      -- Generate a WAI Application from the foundation
+      app <- makeApplication foundation
 
-    -- Run the application with Warp
-    runSettings (warpSettings foundation) app
+      -- Run the application with Warp
+      runSettings (warpSettings foundation) app
 
 
 --------------------------------------------------------------
 -- Functions for DevelMain.hs (a way to run the app from GHCi)
 --------------------------------------------------------------
+
 getApplicationRepl :: IO (Int, App, Application)
 getApplicationRepl = do
     settings <- getAppSettings
-    foundation <- makeFoundation settings
-    wsettings <- getDevSettings $ warpSettings foundation
-    app1 <- makeApplication foundation
-    return (getPort wsettings, foundation, app1)
+    crLogFunc settings $ \logFunc -> do
+      foundation <- makeFoundation settings logFunc
+      wsettings <- getDevSettings $ warpSettings foundation
+      app1 <- makeApplication foundation
+      return (getPort wsettings, foundation, app1)
 
 shutdownApp :: App -> IO ()
 shutdownApp _ = return ()
@@ -159,4 +164,25 @@ shutdownApp _ = return ()
 
 -- | Run a handler
 handler :: Handler a -> IO a
-handler h = getAppSettings >>= makeFoundation >>= flip unsafeHandler h
+handler h = do
+    settings <- getAppSettings
+    crLogFunc settings $ \logFunc -> do
+      makeFoundation settings logFunc >>= flip unsafeHandler h
+
+
+---------------------------------------------
+-- RIO logFunc wrapper
+---------------------------------------------
+
+crLogFunc :: AppSettings -> (LogFunc -> IO a) -> IO a
+crLogFunc appSettings cb = do
+    lo <- opts <$> logOptionsHandle stdout is_logging
+    withLogFunc lo cb
+  where
+    opts =
+      setLogVerboseFormat   is_detailed
+      . setLogUseTime       is_detailed
+      . setLogUseLoc        is_detailed
+
+    is_logging  = True
+    is_detailed = appDetailedRequestLogging appSettings
