@@ -8,31 +8,31 @@ dependencies:
 - yesod-core >=1.6 && <1.7
 - yesod-auth >=1.6 && <1.7
 - yesod-static >=1.6 && <1.7
-- yesod-form >=1.6 && <1.7
+- yesod-form >=1.6 && <1.8
 - classy-prelude >=1.5 && <1.6
 - classy-prelude-conduit >=1.5 && <1.6
 - classy-prelude-yesod >=1.5 && <1.6
 - bytestring >=0.10 && <0.11
 - text >=0.11 && <2.0
-- persistent >=2.9 && <2.11
-- persistent-postgresql >=2.9 && <2.11
-- persistent-template >=2.5 && <2.9
+- persistent >=2.9 && <2.14
+- persistent-postgresql >=2.13 && <2.14
+- persistent-template >=2.5 && <2.14
 - template-haskell
 - shakespeare >=2.0 && <2.1
 - hjsmin >=0.1 && <0.3
 - monad-control >=0.3 && <1.1
-- wai-extra >=3.0 && <3.1
+- wai-extra >=3.0 && <3.2
 - yaml >=0.11 && <0.12
 - http-client-tls >=0.3 && <0.4
 - http-conduit >=2.3 && <2.4
 - directory >=1.1 && <1.4
 - warp >=3.0 && <3.4
 - data-default
-- aeson >=1.4 && <1.5
+- aeson >=1.4 && <2.1
 - conduit >=1.0 && <2.0
 - monad-logger >=0.3 && <0.4
-- fast-logger >=2.2 && <3.1
-- wai-logger >=2.2 && <2.4
+- fast-logger >=2.2 && <3.2
+- wai-logger >=2.2 && <2.5
 - file-embed
 - safe
 - unordered-containers
