@@ -7,7 +7,14 @@ module TestImport
     ) where
 
 import Application           (makeFoundation, makeLogWare)
+<<<<<<< HEAD
 import ClassyPrelude         as X hiding (Handler)
+=======
+import ClassyPrelude         as X hiding (delete, deleteBy, Handler)
+import Database.Persist      as X hiding (get)
+import Database.Persist.Sql  (SqlPersistM, runSqlPersistMPool, rawExecute, rawSql, unSingle)
+import Database.Persist.SqlBackend (getEscapedRawName)
+>>>>>>> postgres
 import Foundation            as X
 import Test.Hspec            as X
 import Yesod.Default.Config2 (useEnv, loadYamlSettings)
