@@ -40,7 +40,10 @@ main = do
         "build"
         "Compile all of the scaffoldings"
         build
-        (switch (long "no-run-tests" <> help "Don't run the test suites"))
+        ((,)
+          <$> switch (long "no-run-tests" <> help "Don't run the test suites")
+          <*> switch (long "no-pedantic" <> help "Don't use the --pedantic flag")
+        )
       addCommand
         "make-template"
         "Make a template"
@@ -70,11 +73,13 @@ main = do
   withLogFunc lo $ \appLogFunc -> withResourceMap $ \appResourceMap ->
     runRIO App {..} cmd
 
-build :: Bool -> RIO App ()
-build noRunTests = do
-    let testArgs
-            | noRunTests = ["test", "--pedantic", "--no-run-tests"]
-            | otherwise = ["test", "--pedantic"]
+build :: (Bool, Bool) -> RIO App ()
+build (noRunTests, noPedantic) = do
+    let testArgs = concat
+            [ ["test"]
+            , ["--pedantic" | not noPedantic]
+            , ["--no-run-tests" | noRunTests]
+            ]
     void $ tryIO $ removeDirectoryRecursive "yesod-scaffold"
     proc "git" ["clone", ".", "yesod-scaffold"] runProcess_
     let run_ cmd args = withWorkingDir "yesod-scaffold" $ proc cmd args runProcess_
