@@ -50,7 +50,7 @@ wipeDB :: App -> IO ()
 wipeDB app = runDBWithApp app $ do
     tables <- getTables
     sqlBackend <- ask
-    let queries = map (\t -> "TRUNCATE TABLE " ++ connEscapeName sqlBackend (DBName t)) tables
+    let queries = map (\t -> "TRUNCATE TABLE " ++ getEscapedRawName t sqlBackend) tables
 
     -- In MySQL, a table cannot be truncated if another table references it via foreign key.
     -- Since we're wiping both the parent and child tables, though, it's safe
