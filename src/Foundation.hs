@@ -11,6 +11,7 @@
 module Foundation where
 
 import Database.Persist.MongoDB hiding (master)
+import Data.Kind(Type)
 import Import.NoFoundation
 import Text.Hamlet                 (hamletFile)
 import Text.Jasmine                (minifym)
@@ -66,7 +67,7 @@ mkYesodData "App" $(parseRoutesFile "config/routes")
 type Form x = Html -> MForm (HandlerFor App) (FormResult x, Widget)
 
 -- | A convenient synonym for database access functions.
-type DB a = forall (m :: * -> *).
+type DB a = forall (m :: Type -> Type).
     (MonadIO m) => ReaderT MongoContext m a
 
 -- Please see the documentation for the Yesod typeclass. There are a number
