@@ -14,6 +14,7 @@ import Text.Hamlet                 (hamletFile)
 import Text.Jasmine                (minifym)
 import Yesod.Core.Types            (Logger)
 import Yesod.Default.Util          (addStaticContentExternal)
+import Data.Kind            (Type)
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
@@ -56,6 +57,13 @@ mkYesodData "App" $(parseRoutesFile "config/routes.yesodroutes")
 -- | A convenient synonym for creating forms.
 type Form x = Html -> MForm (HandlerFor App) (FormResult x, Widget)
 
+<<<<<<< HEAD
+=======
+-- | A convenient synonym for database access functions.
+type DB a = forall (m :: Type -> Type).
+    (MonadUnliftIO m) => ReaderT SqlBackend m a
+
+>>>>>>> postgres
 -- Please see the documentation for the Yesod typeclass. There are a number
 -- of settings which can be configured by overriding methods here.
 instance Yesod App where
