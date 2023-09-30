@@ -1,4 +1,4 @@
-name:    PROJECTNAME
+name:    toy-project
 version: "0.0.0"
 
 dependencies:
@@ -13,12 +13,12 @@ dependencies:
 - classy-prelude-conduit >=1.5 && <1.6
 - classy-prelude-yesod >=1.5 && <1.6
 - bytestring >=0.10 && <0.12
-- text >=0.11 && <2.0
-- persistent >=2.9 && <2.14
+- text 
+- persistent 
 - persistent-postgresql >=2.13 && <2.14
 - persistent-template >=2.5 && <2.14
 - template-haskell
-- shakespeare >=2.0 && <2.1
+- shakespeare 
 - hjsmin >=0.1 && <0.3
 - monad-control >=0.3 && <1.1
 - wai-extra >=3.0 && <3.2
@@ -28,10 +28,10 @@ dependencies:
 - directory >=1.1 && <1.4
 - warp >=3.0 && <3.4
 - data-default
-- aeson >=1.4 && <2.1
+- aeson 
 - conduit >=1.0 && <2.0
 - monad-logger >=0.3 && <0.4
-- fast-logger >=2.2 && <3.2
+- fast-logger 
 - wai-logger >=2.2 && <2.5
 - file-embed
 - safe
@@ -63,7 +63,7 @@ library:
 
 # Runnable executable for our application
 executables:
-  PROJECTNAME:
+  toy-project:
     main: main.hs
     source-dirs: app
     ghc-options:
@@ -71,20 +71,21 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - PROJECTNAME
+    - toy-project
     when:
     - condition: flag(library-only)
       buildable: false
 
 # Test suite
 tests:
-  PROJECTNAME-test:
+  toy-project-test:
     main: Spec.hs
     source-dirs: test
     ghc-options: -Wall
     dependencies:
-    - PROJECTNAME
+    - toy-project
     - hspec >=2.0.0
+    - QuickCheck
     - yesod-test
 
 # Define flags used by "yesod devel" to make compilation faster
