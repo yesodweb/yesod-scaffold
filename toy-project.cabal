@@ -24,6 +24,10 @@ library
       DB.Email
       DB.JSON
       DB.User
+      Model.Email
+      Model.Entity
+      Model.JSON
+      Model.User
       Web.Application
       Web.Foundation
       Web.Handler.Comment
