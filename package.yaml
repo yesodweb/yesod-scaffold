@@ -14,6 +14,7 @@ dependencies:
 - classy-prelude-yesod >=1.5 && <1.6
 - bytestring >=0.10 && <0.12
 - text 
+- flow
 - persistent 
 - persistent-postgresql >=2.13 && <2.14
 - persistent-template >=2.5 && <2.14
@@ -25,6 +26,7 @@ dependencies:
 - yaml >=0.11 && <0.12
 - http-client-tls >=0.3 && <0.4
 - rio
+- interpolate
 - http-conduit >=2.3 && <2.4
 - directory >=1.1 && <1.4
 - warp >=3.0 && <3.4

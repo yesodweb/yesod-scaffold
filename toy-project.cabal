@@ -20,6 +20,7 @@ flag library-only
 
 library
   exposed-modules:
+      DB
       DB.Email
       DB.JSON
       DB.User
@@ -51,10 +52,12 @@ library
     , directory >=1.1 && <1.4
     , fast-logger
     , file-embed
+    , flow
     , foreign-store
     , hjsmin >=0.1 && <0.3
     , http-client-tls ==0.3.*
     , http-conduit ==2.3.*
+    , interpolate
     , monad-control >=0.3 && <1.1
     , monad-logger ==0.3.*
     , persistent
@@ -107,10 +110,12 @@ executable toy-project
     , directory >=1.1 && <1.4
     , fast-logger
     , file-embed
+    , flow
     , foreign-store
     , hjsmin >=0.1 && <0.3
     , http-client-tls ==0.3.*
     , http-conduit ==2.3.*
+    , interpolate
     , monad-control >=0.3 && <1.1
     , monad-logger ==0.3.*
     , persistent
@@ -167,11 +172,13 @@ test-suite toy-project-test
     , directory >=1.1 && <1.4
     , fast-logger
     , file-embed
+    , flow
     , foreign-store
     , hjsmin >=0.1 && <0.3
     , hspec >=2.0.0
     , http-client-tls ==0.3.*
     , http-conduit ==2.3.*
+    , interpolate
     , monad-control >=0.3 && <1.1
     , monad-logger ==0.3.*
     , persistent
