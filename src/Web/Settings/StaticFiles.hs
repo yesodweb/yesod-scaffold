@@ -1,9 +1,10 @@
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell   #-}
-module Settings.StaticFiles where
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
-import Settings     (appStaticDir, compileTimeAppSettings)
+module Web.Settings.StaticFiles where
+
+import Web.Settings (appStaticDir, compileTimeAppSettings)
 import Yesod.Static (staticFiles)
 
 -- This generates easy references to files in the static directory at compile time,

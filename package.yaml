@@ -24,6 +24,7 @@ dependencies:
 - wai-extra >=3.0 && <3.2
 - yaml >=0.11 && <0.12
 - http-client-tls >=0.3 && <0.4
+- rio
 - http-conduit >=2.3 && <2.4
 - directory >=1.1 && <1.4
 - warp >=3.0 && <3.4
