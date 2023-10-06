@@ -1,7 +1,16 @@
 module Web.Handler.Comment where
 
-import DB.JSON
+import DB (runDB)
+import DB.JSON (Comment (commentUserId))
 import Web.Import
+  ( Handler,
+    MonadIO (liftIO),
+    Value,
+    YesodAuth (maybeAuthId),
+    insertEntity,
+    requireCheckJsonBody,
+    returnJson,
+  )
 
 postCommentR :: Handler Value
 postCommentR = do
@@ -13,5 +22,5 @@ postCommentR = do
   maybeCurrentUserId <- maybeAuthId
   let comment' = comment {commentUserId = maybeCurrentUserId}
 
-  insertedComment <- runDB $ insertEntity comment'
+  insertedComment <- liftIO $ runDB $ insertEntity comment'
   returnJson insertedComment
