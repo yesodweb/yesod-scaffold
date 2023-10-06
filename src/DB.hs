@@ -30,7 +30,7 @@ data Config = Config
 config :: Config
 config =
   Config
-    { dbHost = "127.0.1.0",
+    { dbHost = "localhost",
       dbPort = 5432,
       dbName = "toy-project",
       dbUser = "toy-project",

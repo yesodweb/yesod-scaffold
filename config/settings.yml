@@ -24,7 +24,7 @@ development: true
 #
 # detailed-logging: false
 # should-log-all: false
-# reload-templates: false
+reload-templates: false
 # mutable-static: false
 # skip-combining: false
 # auth-dummy-login : false
