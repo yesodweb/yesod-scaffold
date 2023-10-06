@@ -28,6 +28,8 @@ import Control.Monad.Logger (liftLoc, runLoggingT)
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
 
+import DB.Email
+import DB.JSON
 import DB.User
 import Database.Persist.Postgresql
   ( createPostgresqlPool,
@@ -108,7 +110,9 @@ makeFoundation appSettings = do
         (pgPoolSize $ appDatabaseConf appSettings)
 
   -- Perform database migration using our application's logging settings.
-  runLoggingT (runSqlPool (runMigration migrateAll) pool) logFunc
+  runLoggingT (runSqlPool (runMigration DB.Email.migrateAll) pool) logFunc
+  runLoggingT (runSqlPool (runMigration DB.User.migrateAll) pool) logFunc
+  runLoggingT (runSqlPool (runMigration DB.JSON.migrateAll) pool) logFunc
 
   -- Return the foundation
   return $ mkFoundation pool
