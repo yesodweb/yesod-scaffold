@@ -1,10 +1,6 @@
 $newline never
-\<!doctype html>
-\<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
-\<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
-\<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
-\<!--[if gt IE 8]><!-->
-<html class="no-js" lang="en"> <!--<![endif]-->
+<!doctype html>
+<html class="no-js" lang="en">
   <head>
     <meta charset="UTF-8">
 
@@ -16,9 +12,6 @@ $newline never
 
     ^{pageHead pc}
 
-    \<!--[if lt IE 9]>
-    \<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    \<![endif]-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.0.3/js.cookie.min.js">
 
@@ -44,7 +37,7 @@ $newline never
       }
 
     <script>
-      document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
+      document.documentElement.classList.replace("no-js", "js");
   <body>
     ^{pageBody pc}
 
